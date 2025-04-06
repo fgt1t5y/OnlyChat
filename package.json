@@ -1,0 +1,11 @@
+{
+  "name": "onlychat",
+  "version": "1.0.0",
+  "private": true,
+  "author": "fgt1t5y",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "pnpm --filter @onlychat/server run start:dev",
+    "dev:app": "pnpm --filter @onlychat/app run dev"
+  }
+}
