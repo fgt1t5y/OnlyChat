@@ -4,6 +4,7 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
@@ -22,7 +23,7 @@ export class MessageGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('message')
-  handleMessage(@MessageBody() data: string) {
-    return data;
+  handleMessage(@MessageBody() data: string): WsResponse {
+    return { event: 'message', data: data };
   }
 }
