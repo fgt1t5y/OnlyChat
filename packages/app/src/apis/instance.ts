@@ -8,11 +8,18 @@ export const alovaInstance = createAlova({
   timeout: 10000,
   requestAdapter: adapterFetch(),
   statesHook: VueHook,
+  beforeRequest(method) {
+    if (localStorage.getItem('token')) {
+      method.config.headers.Authorization = localStorage.getItem('token')
+    }
+  },
   responded: {
-    onSuccess: async (response, method) => {
+    onSuccess: async (response) => {
       const json = (await response.json()) as IResponse<unknown>
 
-      if (!json.success) {
+      if (json.statusCode > 400 || !json?.success) {
+        console.error(json.message)
+
         throw new Error(json.message)
       }
 

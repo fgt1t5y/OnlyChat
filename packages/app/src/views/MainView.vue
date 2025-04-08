@@ -12,4 +12,18 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import apis from '@/apis'
+import { useAuth } from '@/stores/auth'
+import { onMounted } from 'vue'
+
+const auth = useAuth()
+
+const getUserInfo = async () => {
+  try {
+    auth.user = await apis.auth.me()
+  } catch (e) {}
+}
+
+onMounted(getUserInfo)
+</script>

@@ -29,10 +29,14 @@ export class AuthService {
       },
     });
 
+    if (user.disabled) {
+      return no(HttpStatus.FORBIDDEN, 'User is disabled.');
+    }
+
     if (!user || !comparePassword(password, user.password)) {
       return no(
         HttpStatus.UNAUTHORIZED,
-        'Account is not existing or wrong password.',
+        'User is not existing or wrong password.',
       );
     }
 

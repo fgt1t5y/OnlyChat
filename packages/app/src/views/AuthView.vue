@@ -71,7 +71,9 @@ import { useRequest } from 'alova/client'
 import FieldError from '@/components/form/FieldError.vue'
 import apis from '@/apis'
 import { useRouter } from 'vue-router'
+import { useAuth } from '@/stores/auth'
 
+const auth = useAuth()
 const router = useRouter()
 
 const {
@@ -81,7 +83,7 @@ const {
   send: sendLogin,
 } = useRequest(apis.auth.login, { immediate: false }).onSuccess(() => {
   if (data.value.token) {
-    localStorage.setItem('token', data.value.token)
+    auth.setAccessToken(data.value.token)
     router.replace({ name: 'home' })
   }
 })

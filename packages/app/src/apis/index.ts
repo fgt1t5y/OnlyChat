@@ -1,8 +1,9 @@
-import { login } from './api'
+import { login, me } from './api'
 
 const apis = {
   auth: {
     login,
+    me,
   },
 }
 
