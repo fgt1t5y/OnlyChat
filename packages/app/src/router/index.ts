@@ -20,12 +20,12 @@ const router = createRouter({
       ],
     },
     {
-      path: '/auth',
+      path: '/login',
       component: Blank,
       children: [
         {
           path: '',
-          name: 'auth',
+          name: 'login',
           component: AuthView,
         },
       ],

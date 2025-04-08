@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   UseGuards,
@@ -21,8 +22,7 @@ export class AuthController {
     return this.authService.login(userLoginDto);
   }
 
-  @Post('info')
-  @HttpCode(200)
+  @Get('info')
   @UseGuards(AuthGuard)
   info(@Request() request) {
     return this.authService.info(request);
