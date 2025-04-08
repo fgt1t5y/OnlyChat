@@ -46,7 +46,7 @@ export class AuthService {
     return ok({ token: await this.jwtService.signAsync(jwtPayload) });
   }
 
-  async info(@Request() request: any) {
+  async me(@Request() request: any) {
     return ok(request.user);
   }
 }

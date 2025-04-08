@@ -22,9 +22,9 @@ export class AuthController {
     return this.authService.login(userLoginDto);
   }
 
-  @Get('info')
+  @Get('me')
   @UseGuards(AuthGuard)
   info(@Request() request) {
-    return this.authService.info(request);
+    return this.authService.me(request);
   }
 }

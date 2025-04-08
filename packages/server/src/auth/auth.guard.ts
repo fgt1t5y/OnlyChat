@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
         secret: 'afsde5ye5fas4y7edg6hy',
       });
       request['user'] = payload;
-    } catch (e) {
+    } catch {
       return false;
     }
 

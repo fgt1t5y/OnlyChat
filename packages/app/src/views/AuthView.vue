@@ -18,7 +18,7 @@
                 :name="field.name"
                 :id="field.name"
                 :value="field.state.value"
-                @input="(e) => field.handleChange((e.target as HTMLInputElement).value)"
+                @input="field.handleChange(($event.target as HTMLInputElement).value)"
                 @blur="field.handleBlur"
               />
               <FieldError :state="state" />
