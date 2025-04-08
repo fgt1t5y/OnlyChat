@@ -17,7 +17,7 @@ export class AuthService {
 
   async login({ username, password }: UserLoginDto) {
     if (!username || !password) {
-      return no(HttpStatus.BAD_REQUEST);
+      return no(HttpStatus.BAD_REQUEST, 'Username or password is required.');
     }
 
     const user = await this.userRepository.findOne({

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.state.meta.isTouched">
+  <div v-if="props.state.meta.errors.length">
     <em v-for="error of props.state.meta.errors" class="form-field-error">{{ error }}</em>
   </div>
   <div v-else>&nbsp;</div>

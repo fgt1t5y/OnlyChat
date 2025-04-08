@@ -2,7 +2,7 @@
   <div class="flex h-screen w-full justify-center items-center">
     <div class="w-[400px]">
       <div class="text-2xl text-center text-primary mb-6">OnlyChat</div>
-      <form class="flex flex-col gap-2" @submit.prevent="console.log(12)">
+      <form class="flex flex-col gap-2" @submit.prevent.stop="handleSubmit">
         <div class="form-field">
           <Field
             name="username"
@@ -53,12 +53,13 @@
           </Field>
         </div>
         <Subscribe>
-          <template v-slot="{ canSubmit, isSubmitting }">
-            <button class="btn-primary btn-md" type="submit" :disabled="!canSubmit || isSubmitting">
+          <template v-slot="{ canSubmit }">
+            <button class="btn-primary btn-md" type="submit" :disabled="!canSubmit || loading">
               Login
             </button>
           </template>
         </Subscribe>
+        <div v-if="error?.message" class="form-field-error">{{ error.message }}</div>
       </form>
     </div>
   </div>
@@ -66,27 +67,32 @@
 
 <script setup lang="ts">
 import { useForm } from '@tanstack/vue-form'
+import { useRequest } from 'alova/client'
 import FieldError from '@/components/form/FieldError.vue'
+import apis from '@/apis'
+import { useRouter } from 'vue-router'
 
-const { Field, Subscribe } = useForm({
+const router = useRouter()
+
+const {
+  data,
+  error,
+  loading,
+  send: sendLogin,
+} = useRequest(apis.auth.login, { immediate: false }).onSuccess(() => {
+  if (data.value.token) {
+    localStorage.setItem('token', data.value.token)
+    router.replace({ name: 'home' })
+  }
+})
+
+const { Field, Subscribe, handleSubmit } = useForm({
   defaultValues: {
     username: '',
     password: '',
   },
+  onSubmit: async ({ value }) => {
+    sendLogin(value)
+  },
 })
-
-// const loginUser = async () => {
-//   loading.value = true;
-//   const res = await login(username.value, password.value);
-
-//   if (res.success) {
-//     if (res.data.token) {
-//       localStorage.setItem("nmToken", res.data.token);
-//     }
-//     router.replace({ name: "welcome" });
-//   } else {
-//     errorMessage.value = res.message || "";
-//     loading.value = false;
-//   }
-// };
 </script>
