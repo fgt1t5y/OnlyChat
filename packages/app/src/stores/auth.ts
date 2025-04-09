@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 
 import type { User } from '@/types'
+import apis from '@/apis'
+import { useRouter } from 'vue-router'
 
 export const useAuth = defineStore('account', {
   state: () => ({
@@ -11,6 +13,16 @@ export const useAuth = defineStore('account', {
     hasToken: (state) => !!state.accessToken,
   },
   actions: {
+    async getUserProfile() {
+      const router = useRouter()
+
+      try {
+        this.user = await apis.auth.me()
+      } catch {
+        this.clearAccessToken()
+        router.replace({ name: 'login' })
+      }
+    },
     setAccessToken(token: string) {
       this.accessToken = token
       localStorage.setItem('token', token)

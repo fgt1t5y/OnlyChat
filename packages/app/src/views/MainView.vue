@@ -19,23 +19,29 @@
 </template>
 
 <script setup lang="ts">
-import apis from '@/apis'
 import { useAuth } from '@/stores/auth'
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import UserAvatar from '@/components/UserAvatar.vue'
+import { io } from 'socket.io-client'
 
 const auth = useAuth()
-const router = useRouter()
 
-const getUserInfo = async () => {
-  try {
-    auth.user = await apis.auth.me()
-  } catch {
-    auth.clearAccessToken()
-    router.replace({ name: 'login' })
-  }
+await auth.getUserProfile()
+
+const wsSocket = io('http://localhost:3000', {
+  autoConnect: false,
+  withCredentials: true,
+  transports: ['websocket'],
+  query: {
+    userId: auth.user?.id,
+  },
+})
+
+const connectWSSocket = () => {
+  wsSocket.connect()
 }
 
-onMounted(getUserInfo)
+onMounted(async () => {
+  // connectWSSocket()
+})
 </script>
