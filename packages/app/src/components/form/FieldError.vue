@@ -1,6 +1,6 @@
 <template>
   <div v-if="props.state.meta.errors.length">
-    <em v-for="error of props.state.meta.errors" class="form-field-error">{{ error }}</em>
+    <em v-for="error of props.state.meta.errors" class="text-danger">{{ error }}</em>
   </div>
   <div v-else>&nbsp;</div>
 </template>

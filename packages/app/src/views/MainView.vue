@@ -8,11 +8,7 @@
         </aside>
       </section>
       <section class="flex gap-2 border-t border-content p-3">
-        <div
-          class="flex justify-center items-center text-2xl h-[50px] w-[50px] bg-primary-500 rounded-full"
-        >
-          F
-        </div>
+        <UserAvatar :user="auth.user!" />
         <div>{{ auth.user?.username }}</div>
       </section>
     </nav>
@@ -27,6 +23,7 @@ import apis from '@/apis'
 import { useAuth } from '@/stores/auth'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import UserAvatar from '@/components/UserAvatar.vue'
 
 const auth = useAuth()
 const router = useRouter()

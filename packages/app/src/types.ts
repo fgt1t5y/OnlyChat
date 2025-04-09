@@ -16,7 +16,13 @@ export interface AuthLoginPayload {
 
 export interface User {
   id: number
+  displayName: string
   username: string
-  roles: number[]
+  avatarUrl: string
+  avatarVersion: number
   disabled: boolean
+  isOnline: boolean
+  createdAt: string
+  updatedAt: string
+  roles?: number[]
 }

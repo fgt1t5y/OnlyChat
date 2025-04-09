@@ -2,8 +2,8 @@
   <div class="flex h-screen w-full justify-center items-center">
     <div class="w-[400px]">
       <div class="text-2xl text-center text-primary mb-6">OnlyChat</div>
-      <form class="flex flex-col gap-2" @submit.prevent.stop="handleSubmit">
-        <div class="form-field">
+      <form class="flex flex-col" @submit.prevent.stop="handleSubmit">
+        <div class="flex flex-col">
           <Field
             name="username"
             :validators="{
@@ -12,12 +12,10 @@
           >
             <template v-slot="{ field, state }">
               <label :for="field.name">Username</label>
-              <input
-                class="input"
-                type="text"
+              <InputText
                 :name="field.name"
                 :id="field.name"
-                :value="field.state.value"
+                :model-value="field.state.value"
                 @input="field.handleChange(($event.target as HTMLInputElement).value)"
                 @blur="field.handleBlur"
               />
@@ -25,7 +23,7 @@
             </template>
           </Field>
         </div>
-        <div class="form-field">
+        <div class="flex flex-col">
           <Field
             name="password"
             :validators="{
@@ -39,13 +37,14 @@
           >
             <template v-slot="{ field, state }">
               <label :for="field.name">Password</label>
-              <input
-                class="input"
-                type="password"
+              <Password
+                input-class="grow"
                 :name="field.name"
                 :id="field.name"
                 :value="field.state.value"
-                @input="(e) => field.handleChange((e.target as HTMLInputElement).value)"
+                :feedback="false"
+                toggleMask
+                @input="field.handleChange(($event.target as HTMLInputElement).value)"
                 @blur="field.handleBlur"
               />
               <FieldError :state="state" />
@@ -54,9 +53,7 @@
         </div>
         <Subscribe>
           <template v-slot="{ canSubmit }">
-            <button class="btn-primary btn-md" type="submit" :disabled="!canSubmit || loading">
-              Login
-            </button>
+            <Button label="Login" type="submit" :loading="loading" :disabled="!canSubmit" />
           </template>
         </Subscribe>
         <div v-if="error?.message" class="form-field-error">{{ error.message }}</div>
@@ -72,6 +69,7 @@ import FieldError from '@/components/form/FieldError.vue'
 import apis from '@/apis'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth'
+import { Button, InputText, Password } from 'primevue'
 
 const auth = useAuth()
 const router = useRouter()

@@ -1,3 +1,9 @@
 packages:
-  - "packages/app"
-  - "packages/server"
+  - packages/app
+  - packages/server
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - bcrypt
+  - esbuild
+  - vue-demi

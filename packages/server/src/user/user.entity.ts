@@ -16,7 +16,7 @@ export class User {
   id: number;
 
   @Column({ length: 32 })
-  display_name: string;
+  displayName: string;
 
   @Column({ unique: true, length: 32 })
   username: string;
