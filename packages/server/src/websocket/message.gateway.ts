@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   MessageBody,
   OnGatewayConnection,
@@ -7,6 +8,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -22,6 +24,7 @@ export class MessageGateway implements OnGatewayConnection {
     console.log('Client connected:', client.id);
   }
 
+  @UseGuards(AuthGuard)
   @SubscribeMessage('message')
   handleMessage(@MessageBody() data: string): WsResponse {
     return { event: 'message', data: data };

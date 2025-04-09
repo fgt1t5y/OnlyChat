@@ -2,7 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
@@ -16,23 +15,32 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 32 })
+  display_name: string;
+
+  @Column({ unique: true, length: 32 })
   username: string;
 
   @Column({ length: 64, transformer: new PasswordTransformer() })
   password: string;
 
+  @Column({ nullable: true })
+  avatarUrl: string;
+
+  @Column({ default: 0 })
+  avatarVersion: number;
+
   @Column({ default: false })
   disabled: boolean;
+
+  @Column({ default: false })
+  isOnline: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @Column({ type: 'longtext', nullable: true })
-  meta: string;
 
   @ManyToMany(() => Role, (role) => role.id)
   @JoinTable()
