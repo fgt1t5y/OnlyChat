@@ -7,7 +7,7 @@ import { Role } from './role/role.entity';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { Permission } from './permission/permission.entity';
-import { WebsocketModule } from './websocket/websocket.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { WebsocketModule } from './websocket/websocket.module';
     AuthModule,
     RoleModule,
     PermissionModule,
-    WebsocketModule,
+    ChatModule,
   ],
 })
 export class AppModule {}

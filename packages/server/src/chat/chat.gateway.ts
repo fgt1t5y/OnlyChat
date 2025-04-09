@@ -1,7 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import {
   MessageBody,
-  OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -14,15 +13,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
   cors: { origin: '*' },
   transports: ['websocket'],
 })
-export class MessageGateway implements OnGatewayConnection {
+export class ChatGateway {
   constructor() {}
 
   @WebSocketServer()
   server: Server;
-
-  handleConnection(client: any) {
-    console.log('Client connected:', client.id);
-  }
 
   @UseGuards(AuthGuard)
   @SubscribeMessage('message')
