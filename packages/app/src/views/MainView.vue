@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen">
+  <div v-if="auth.user" class="flex h-screen">
     <nav class="flex flex-col min-w-[350px] border-r border-content">
       <section class="flex grow">
         <menu class="w-[72px] border-r border-content">1</menu>
@@ -9,7 +9,7 @@
       </section>
       <section class="flex gap-2 border-t border-content p-3">
         <UserAvatar :user="auth.user!" />
-        <div>{{ auth.user?.username }}</div>
+        <div>{{ auth.user.username }}</div>
       </section>
     </nav>
     <main class="grow">
