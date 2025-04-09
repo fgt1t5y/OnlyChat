@@ -7,7 +7,7 @@ export const login = ({ username, password }: AuthLoginForm) => {
 }
 
 export const me = () => {
-  return alovaInstance.Get<User>('/auth/me', {
-    cacheFor: null
+  return alovaInstance.Get<User>('/auth/profile', {
+    cacheFor: null,
   })
 }

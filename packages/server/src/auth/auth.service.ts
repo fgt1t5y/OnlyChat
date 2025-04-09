@@ -21,9 +21,6 @@ export class AuthService {
     }
 
     const user = await this.userRepository.findOne({
-      relations: {
-        roles: true,
-      },
       where: {
         username: username,
       },
@@ -48,7 +45,16 @@ export class AuthService {
     return ok({ token: await this.jwtService.signAsync(jwtPayload) });
   }
 
-  async me(@Request() request: any) {
-    return ok(request.user);
+  async profile(@Request() request: any) {
+    const userId = request.user.id as number;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    return ok(rest);
   }
 }
