@@ -22,21 +22,6 @@ const router = createRouter({
           },
         },
         {
-          path: 'settings',
-          name: 'settings',
-          redirect() {
-            return { name: 'settings_theme' }
-          },
-        },
-        {
-          path: 'settings/theme',
-          name: 'settings_theme',
-          components: {
-            aside: SettingsAside,
-            default: ThemePage,
-          },
-        },
-        {
           path: 'friend/list',
           name: 'friend_list',
           components: {
@@ -50,6 +35,27 @@ const router = createRouter({
           components: {
             aside: HomeAside,
             default: FriendListPage,
+          },
+        },
+      ],
+    },
+    {
+      path: '/settings',
+      component: MainView,
+      children: [
+        {
+          path: '',
+          name: 'settings',
+          redirect() {
+            return { name: 'settings_theme' }
+          },
+        },
+        {
+          path: 'settings/theme',
+          name: 'settings_theme',
+          components: {
+            aside: SettingsAside,
+            default: ThemePage,
           },
         },
       ],
