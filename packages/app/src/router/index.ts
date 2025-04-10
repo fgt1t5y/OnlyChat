@@ -12,24 +12,32 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      redirect() {
-        return { name: 'friend_list' }
-      }
-    },
-    {
-      path: '/settings',
-      name: 'settings',
-      redirect() {
-        return { name: 'settings_theme' }
-      }
-    },
-    {
-      path: '/friend',
       component: MainView,
       children: [
         {
-          path: 'list',
+          path: '',
+          name: 'home',
+          redirect() {
+            return { name: 'friend_list' }
+          },
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          redirect() {
+            return { name: 'settings_theme' }
+          },
+        },
+        {
+          path: 'settings/theme',
+          name: 'settings_theme',
+          components: {
+            aside: SettingsAside,
+            default: ThemePage,
+          },
+        },
+        {
+          path: 'friend/list',
           name: 'friend_list',
           components: {
             aside: HomeAside,
@@ -37,7 +45,7 @@ const router = createRouter({
           },
         },
         {
-          path: 'add',
+          path: 'friend/add',
           name: 'friend_find',
           components: {
             aside: HomeAside,
@@ -46,21 +54,6 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: '/settings',
-      component: MainView,
-      children: [
-        {
-          path: 'theme',
-          name: 'settings_theme',
-          components: {
-            aside: SettingsAside,
-            default: ThemePage,
-          },
-        },
-      ],
-    },
-
     {
       path: '/login',
       name: 'login',

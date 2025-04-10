@@ -3,7 +3,7 @@
     <nav class="flex flex-col min-w-[350px] border-r border-content">
       <section class="flex grow">
         <menu class="flex flex-col gap-3 p-3 items-center border-r border-content">
-          <RouterLink class="menu-link" :to="{ name: 'friend_list' }">
+          <RouterLink class="menu-link" :to="{ name: 'home' }">
             <Avatar icon="ti ti-home" size="large" />
           </RouterLink>
         </menu>
