@@ -5,6 +5,8 @@ import HomeAside from '@/views/aside/HomeAside.vue'
 import FriendAddPage from '@/views/page/FriendAddPage.vue'
 import FriendListPage from '@/views/page/FriendListPage.vue'
 import SettingsAside from '@/views/aside/SettingsAside.vue'
+import ProfilePage from '@/views/page/settings/ProfilePage.vue'
+import AvatarPage from '@/views/page/settings/AvatarPage.vue'
 import ThemePage from '@/views/page/settings/ThemePage.vue'
 
 const router = createRouter({
@@ -47,11 +49,27 @@ const router = createRouter({
           path: '',
           name: 'settings',
           redirect() {
-            return { name: 'settings_theme' }
+            return { name: 'settings_profile' }
           },
         },
         {
-          path: 'settings/theme',
+          path: 'profile',
+          name: 'settings_profile',
+          components: {
+            aside: SettingsAside,
+            default: ProfilePage,
+          },
+        },
+        {
+          path: 'avatar',
+          name: 'settings_avatar',
+          components: {
+            aside: SettingsAside,
+            default: AvatarPage,
+          },
+        },
+        {
+          path: 'theme',
           name: 'settings_theme',
           components: {
             aside: SettingsAside,

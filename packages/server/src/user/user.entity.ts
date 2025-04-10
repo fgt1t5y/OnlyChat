@@ -21,6 +21,12 @@ export class User {
   @Column({ unique: true, length: 32 })
   username: string;
 
+  @Column({ length: 64, nullable: true })
+  email: string;
+
+  @Column({ default: '', length: 250, nullable: true })
+  introduction: string;
+
   @Column({ length: 64, transformer: new PasswordTransformer(), select: false })
   password: string;
 

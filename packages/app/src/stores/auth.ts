@@ -14,13 +14,10 @@ export const useAuth = defineStore('account', {
   },
   actions: {
     async getUserProfile() {
-      const router = useRouter()
-
       try {
         this.user = await apis.auth.profile()
       } catch {
-        this.clearAccessToken()
-        router.replace({ name: 'login' })
+        this.logout()
       }
     },
     setAccessToken(token: string) {

@@ -7,7 +7,7 @@
             <Avatar icon="ti ti-home" size="large" />
           </RouterLink>
         </menu>
-        <aside class="grow p-3">
+        <aside class="grow p-2">
           <RouterView name="aside" />
         </aside>
       </section>
@@ -30,6 +30,9 @@
       </section>
     </nav>
     <RouterView />
+  </div>
+  <div v-else class="text-center">
+    Failed to load user profile, plase try refresh page.
   </div>
 </template>
 

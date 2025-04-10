@@ -41,7 +41,7 @@
 }
 
 @utility w-setting-page {
-  @apply w-[600px]
+  @apply w-[600px];
 }
 
 @layer base {
@@ -73,13 +73,17 @@
  * Components
  */
 .router-Menu {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-1;
 }
 
 .router-Menu-Item {
   @apply flex items-center gap-2 p-2 rounded text-base;
 
-  &.router-link-active,
+  &.router-link-active {
+    color: var(--p-primary-color);
+    background-color: var(--p-button-secondary-hover-background);
+  }
+
   &:hover {
     background-color: var(--p-button-secondary-hover-background);
   }

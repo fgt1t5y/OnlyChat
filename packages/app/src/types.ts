@@ -20,7 +20,9 @@ export interface User {
   id: number
   displayName: string
   username: string
-  avatarUrl: string
+  email?: string
+  introduction?: string
+  avatarUrl?: string
   avatarVersion: number
   disabled: boolean
   isOnline: boolean
