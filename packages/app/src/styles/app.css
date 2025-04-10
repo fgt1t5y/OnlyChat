@@ -44,4 +44,36 @@
   body {
     @apply text-color text-sm bg-content;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+.menu-link.router-link-active {
+  @apply outline-2 outline-primary rounded;
+}
+
+.p-button-lg .p-button-icon {
+  font-size: 1.5rem !important;
+}
+
+/*
+ * Components
+ */
+.router-menu {
+  @apply flex flex-col gap-2;
+}
+
+.router-menu-item {
+  @apply flex items-center gap-2 p-2 rounded text-base;
+
+  &.router-link-active,
+  &:hover {
+    background-color: var(--p-button-text-secondary-hover-background);
+  }
+}
+
+.page-title {
+  @apply flex gap-2 px-2 h-[45px];
 }

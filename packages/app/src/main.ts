@@ -1,9 +1,10 @@
 import '@/styles/app.css'
+import '@/styles/tabler-icons.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/aura'
+import Nora from '@primeuix/themes/nora'
 
 import App from './App.vue'
 import router from './router'
@@ -14,7 +15,7 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: Nora,
     options: {
       darkModeSelector: '.dark',
   }

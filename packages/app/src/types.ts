@@ -1,3 +1,5 @@
+import type { RouteLocationAsRelativeGeneric } from 'vue-router'
+
 export interface IResponse<T> {
   success?: boolean
   statusCode: number
@@ -25,4 +27,10 @@ export interface User {
   createdAt: string
   updatedAt: string
   roles?: number[]
+}
+
+export interface RouterMenuItem {
+  label: string
+  icon: string
+  to: RouteLocationAsRelativeGeneric
 }

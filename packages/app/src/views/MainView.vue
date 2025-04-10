@@ -2,26 +2,41 @@
   <div v-if="auth.user" class="flex h-screen">
     <nav class="flex flex-col min-w-[350px] border-r border-content">
       <section class="flex grow">
-        <menu class="w-[72px] border-r border-content">1</menu>
-        <aside class="grow">
+        <menu class="flex flex-col gap-3 p-3 items-center border-r border-content">
+          <RouterLink class="menu-link" :to="{ name: 'home' }">
+            <Avatar icon="ti ti-home" size="large" />
+          </RouterLink>
+        </menu>
+        <aside class="grow p-3">
           <RouterView name="aside" />
         </aside>
       </section>
-      <section class="flex gap-2 border-t border-content p-3">
+      <section class="flex gap-2 items-center border-t border-content p-3">
         <UserAvatar :user="auth.user!" />
-        <div>{{ auth.user.username }}</div>
+        <div class="flex flex-col justify-center grow">
+          <div>{{ auth.user.username }}</div>
+          <div class="text-primary">Online</div>
+        </div>
+        <Button
+          icon="ti ti-settings"
+          size="large"
+          severity="secondary"
+          rounded
+          variant="text"
+          title="Settings"
+          aria-label="Settings"
+        />
       </section>
     </nav>
-    <main class="grow">
-      <RouterView />
-    </main>
+    <RouterView />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useAuth } from '@/stores/auth'
 import UserAvatar from '@/components/UserAvatar.vue'
-import { useSocketIO } from '@/router/socket'
+import { useSocketIO } from '@/stores/socket'
+import { Avatar, Button } from 'primevue'
 
 const auth = useAuth()
 const socket = useSocketIO()

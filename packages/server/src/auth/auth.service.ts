@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from 'src/user/user.entity';
 import { comparePassword, ok, no } from 'src/utils';
 
-import type { UserLoginDto } from './auth.dto';
+import type { UserLoginDto, UserRegisterDto } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +43,26 @@ export class AuthService {
     };
 
     return ok({ token: await this.jwtService.signAsync(jwtPayload) });
+  }
+
+  async register({ username, password }: UserRegisterDto) {
+    if (!username || !password) {
+      return no(HttpStatus.BAD_REQUEST, 'Username or password is required.');
+    }
+
+    if (this.userRepository.existsBy({ username })) {
+      return no(HttpStatus.BAD_REQUEST, `Username ${username} already exists.`);
+    }
+
+    const user = await this.userRepository.create({
+      displayName: username,
+      username: username,
+      password: password,
+    });
+
+    delete user.password;
+
+    return ok(user);
   }
 
   async profile(@Request() request: any) {

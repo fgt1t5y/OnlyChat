@@ -37,18 +37,18 @@ export class ChatGateway implements OnGatewayConnection {
       const payload = (await this.jwtService.verifyAsync(token)) as JwtPayload;
 
       socket.data.userId = payload.sub;
+
+      this.logger.log(
+        `Client connected: ${socket.id} - User ID: ${payload.sub}`,
+      );
     } catch (error) {
-      this.handleConnectionAuthError(socket, error);
+      this.logger.error(
+        `Connection auth error for socket ${socket.id}: ${error.message}`,
+      );
+
+      socket.emit('exception', 'Authentication error');
+      socket.disconnect();
     }
-  }
-
-  handleConnectionAuthError(socket: Socket, error: Error): void {
-    this.logger.error(
-      `Connection auth error for socket ${socket.id}: ${error.message}`,
-    );
-
-    socket.emit('exception', 'Authentication error');
-    socket.disconnect();
   }
 
   @SubscribeMessage('message')
