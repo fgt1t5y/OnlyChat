@@ -8,9 +8,9 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './auth.guard';
 
 import type { UserLoginDto, UserRegisterDto } from './auth.dto';
-import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -28,8 +28,8 @@ export class AuthController {
   }
 
   @Get('profile')
-  @UseGuards(AuthGuard)
-  info(@Request() request) {
+  @UseGuards(JwtAuthGuard)
+  info(@Request() request: any) {
     return this.authService.profile(request);
   }
 }

@@ -68,14 +68,12 @@ export class AuthService {
 
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...rest } = await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: {
         id: userId,
       },
     });
 
-    return ok(rest);
+    return ok(user);
   }
 }
