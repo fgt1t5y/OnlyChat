@@ -11,9 +11,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useAuth } from './stores/auth'
+import { useTheme } from './stores/theme'
 
 const auth = useAuth()
 const router = useRouter()
+const theme = useTheme()
+
+theme.init()
 
 router.beforeEach((to) => {
   if (auth.hasToken && to.name === 'login') {

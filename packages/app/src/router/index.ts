@@ -2,8 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AuthView from '@/views/AuthView.vue'
 import MainView from '@/views/MainView.vue'
 import HomeAside from '@/views/aside/HomeAside.vue'
-import FriendsPage from '@/views/page/FriendsPage.vue'
-import FindFriendPage from '@/views/page/FindFriendPage.vue'
+import FriendAddPage from '@/views/page/FriendAddPage.vue'
+import FriendListPage from '@/views/page/FriendListPage.vue'
+import SettingsAside from '@/views/aside/SettingsAside.vue'
+import ThemePage from '@/views/page/settings/ThemePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,23 +18,38 @@ const router = createRouter({
           path: '',
           name: 'home',
           redirect() {
-            return { name: 'friends' }
+            return { name: 'friend_list' }
           },
         },
         {
-          path: 'friends',
-          name: 'friends',
-          components: {
-            aside: HomeAside,
-            default: FriendsPage,
+          path: 'settings',
+          name: 'settings',
+          redirect() {
+            return { name: 'settings_theme' }
           },
         },
         {
-          path: 'friends/find',
-          name: 'find_friend',
+          path: 'settings/theme',
+          name: 'settings_theme',
+          components: {
+            aside: SettingsAside,
+            default: ThemePage,
+          },
+        },
+        {
+          path: 'friend/list',
+          name: 'friend_list',
           components: {
             aside: HomeAside,
-            default: FindFriendPage,
+            default: FriendAddPage,
+          },
+        },
+        {
+          path: 'friend/add',
+          name: 'friend_find',
+          components: {
+            aside: HomeAside,
+            default: FriendListPage,
           },
         },
       ],

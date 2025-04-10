@@ -29,7 +29,7 @@
 }
 
 @utility bg-content {
-  @apply bg-white dark:bg-[#16181C];
+  @apply bg-[#F8FAFC] dark:bg-[#16181C];
 }
 
 @utility border-content {
@@ -38,6 +38,10 @@
 
 @utility border-form {
   @apply border-gray-500 dark:border-gray-700;
+}
+
+@utility w-setting-page {
+  @apply w-[600px]
 }
 
 @layer base {
@@ -54,6 +58,9 @@
   @apply outline-2 outline-primary rounded;
 }
 
+/*
+ * Override
+ */
 .p-button-lg .p-button-icon {
   font-size: 1.5rem !important;
 }
@@ -65,20 +72,20 @@
 /*
  * Components
  */
-.router-menu {
+.router-Menu {
   @apply flex flex-col gap-2;
 }
 
-.router-menu-item {
+.router-Menu-Item {
   @apply flex items-center gap-2 p-2 rounded text-base;
 
   &.router-link-active,
   &:hover {
-    background-color: var(--p-button-text-secondary-hover-background);
+    background-color: var(--p-button-secondary-hover-background);
   }
 }
 
-.page-title {
+.page-Title {
   @apply flex gap-2 px-2 h-[45px];
 }
 
@@ -86,6 +93,6 @@
   @apply p-2 rounded;
 
   &:hover {
-    background-color: var(--p-button-text-secondary-hover-background);
+    background-color: var(--p-button-secondary-hover-background);
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <PageTitle title="Find User" icon="ti ti-user-search" />
+    <PageTitle title="Add Friend" icon="ti ti-user-search" />
     <form @submit.prevent.stop="handleSearch">
       <InputGroup>
         <InputText

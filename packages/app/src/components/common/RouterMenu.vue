@@ -1,6 +1,6 @@
 <template>
   <div :class="routerMenuClass">
-    <RouterLink v-for="item in items" :to="item.to" class="router-menu-item">
+    <RouterLink v-for="item in items" :to="item.to" class="router-Menu-Item">
       <i :class="item.icon"></i>
       <div>{{ item.label }}</div>
     </RouterLink>
@@ -22,7 +22,7 @@ const props = defineProps<{
 
 const routerMenuClass = computed(() => {
   return {
-    'router-menu': true,
+    'router-Menu': true,
     'flex-row': props.vertical,
   }
 })

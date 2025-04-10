@@ -25,6 +25,7 @@
           variant="text"
           title="Settings"
           aria-label="Settings"
+          @click="$router.push({ name: 'settings' })"
         />
       </section>
     </nav>

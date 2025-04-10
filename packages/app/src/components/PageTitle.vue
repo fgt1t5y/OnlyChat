@@ -1,5 +1,5 @@
 <template>
-  <header class="page-title">
+  <header class="page-Title">
     <div class="flex items-center gap-2 text-xl">
       <i :class="icon"></i>
       <div>{{ title }}</div>
