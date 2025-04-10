@@ -54,7 +54,7 @@
   }
 }
 
-.menu-link.router-link-active {
+.menu-Link.router-link-active {
   @apply outline-2 outline-primary rounded;
 }
 
