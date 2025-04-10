@@ -17,7 +17,7 @@ export const useAuth = defineStore('account', {
       const router = useRouter()
 
       try {
-        this.user = await apis.auth.me()
+        this.user = await apis.auth.profile()
       } catch {
         this.clearAccessToken()
         router.replace({ name: 'login' })

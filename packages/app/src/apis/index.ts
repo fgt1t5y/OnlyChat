@@ -1,10 +1,13 @@
-import { login, me } from './api'
+import { login, profile, find } from './api'
 
 const apis = {
   auth: {
     login,
-    me,
+    profile,
   },
+  user: {
+    find
+  }
 }
 
 export default apis

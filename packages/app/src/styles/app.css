@@ -58,6 +58,10 @@
   font-size: 1.5rem !important;
 }
 
+.p-button {
+  font-size: inherit !important;
+}
+
 /*
  * Components
  */
@@ -76,4 +80,12 @@
 
 .page-title {
   @apply flex gap-2 px-2 h-[45px];
+}
+
+.list-Item {
+  @apply p-2 rounded;
+
+  &:hover {
+    background-color: var(--p-button-text-secondary-hover-background);
+  }
 }

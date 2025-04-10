@@ -21,6 +21,7 @@ export class AuthService {
     }
 
     const user = await this.userRepository.findOne({
+      select: ['username', 'password', 'disabled'],
       where: {
         username: username,
       },

@@ -21,7 +21,7 @@ export class User {
   @Column({ unique: true, length: 32 })
   username: string;
 
-  @Column({ length: 64, transformer: new PasswordTransformer() })
+  @Column({ length: 64, transformer: new PasswordTransformer(), select: false })
   password: string;
 
   @Column({ nullable: true })
