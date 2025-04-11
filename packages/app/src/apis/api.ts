@@ -22,6 +22,10 @@ export const getReceived = () => {
   return alovaInstance.Get<FriendRequest[]>('/friend/request/received')
 }
 
+export const getSent = () => {
+  return alovaInstance.Get<FriendRequest[]>('/friend/request/sent')
+}
+
 // #region User API
 export const find = (searchKeyword: string) => {
   return alovaInstance.Get<User[]>('/user/find', { params: { searchKeyword } })

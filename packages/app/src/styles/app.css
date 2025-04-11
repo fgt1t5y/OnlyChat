@@ -49,6 +49,7 @@
 
 .p-button {
   font-size: inherit !important;
+  line-height: normal;
 }
 
 /*

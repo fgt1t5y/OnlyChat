@@ -1,4 +1,4 @@
-import { login, profile, sendRequest, getReceived, find } from './api'
+import { login, profile, sendRequest, getReceived, getSent, find } from './api'
 
 const apis = {
   auth: {
@@ -8,6 +8,7 @@ const apis = {
   friendRequest: {
     sendRequest,
     getReceived,
+    getSent,
   },
   user: {
     find,

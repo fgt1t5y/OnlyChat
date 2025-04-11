@@ -23,6 +23,9 @@ export class FriendRequestService {
 
   async findAllSentBy(senderId: number): Promise<FriendRequest[]> {
     return await this.friendRequestRepository.find({
+      relations: {
+        receiver: true,
+      },
       where: {
         senderId: senderId,
       },

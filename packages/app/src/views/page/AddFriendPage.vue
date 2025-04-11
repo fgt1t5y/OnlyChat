@@ -22,7 +22,8 @@
             <div class="font-bold">{{ item.displayName }}</div>
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
-          <Button label="Send request" severity="secondary" />
+          <Button v-if="wasRequested(item)" label="Requested" severity="secondary" disabled />
+          <Button v-else label="Send request" severity="secondary" />
         </li>
       </ul>
     </div>
@@ -38,7 +39,11 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
 import { Button, InputGroup, InputText } from 'primevue'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
+
+import type { AppGlobalContext, User } from '@/types'
+
+const appContext = inject<AppGlobalContext>('OC')
 
 const searchKeyword = ref<string>('')
 
@@ -53,6 +58,16 @@ const handleSearch = () => {
     return
   }
 
-  find(searchKeyword.value)
+  find(searchKeyword.value.trim())
+}
+
+const wasRequested = (receiver: User) => {
+  if (!appContext?.sentFriendRequests || !Array.isArray(appContext.sentFriendRequests)) {
+    return false
+  }
+
+  return appContext.sentFriendRequests.some(
+    (friendRequest) => friendRequest.receiverId === receiver.id,
+  )
 }
 </script>

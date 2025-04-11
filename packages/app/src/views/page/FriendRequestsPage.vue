@@ -6,11 +6,31 @@
         Received - {{ appContext.receivedFriendRequests.length }}
       </div>
       <ul>
-        <FriendRequestItem
+        <li
           v-for="item in appContext.receivedFriendRequests"
-          :key="item.id"
-          :item="item"
-        />
+          class="list-Item flex items-center gap-2"
+        >
+          <UserAvatar :user="item.sender" />
+          <div class="grow">
+            <div class="font-bold">{{ item.sender.displayName }}</div>
+            <div class="text-muted-color">@{{ item.sender.username }}</div>
+          </div>
+          <Button label="Accept" icon="ti ti-check" />
+          <Button label="Ignore" icon="ti ti-x" severity="secondary" />
+        </li>
+      </ul>
+    </div>
+    <div v-if="appContext?.sentFriendRequests">
+      <div class="text-muted-color px-2">Sent - {{ appContext.sentFriendRequests.length }}</div>
+      <ul>
+        <li v-for="item in appContext.sentFriendRequests" class="list-Item flex items-center gap-2">
+          <UserAvatar :user="item.receiver" />
+          <div class="grow">
+            <div class="font-bold">{{ item.receiver.displayName }}</div>
+            <div class="text-muted-color">@{{ item.receiver.username }}</div>
+          </div>
+          <Button label="Cancle" icon="ti ti-x" severity="secondary" />
+        </li>
       </ul>
     </div>
   </Page>
@@ -19,8 +39,9 @@
 <script setup lang="ts">
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/PageTitle.vue'
-import FriendRequestItem from '@/components/list-item/FriendRequestItem.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 import { inject } from 'vue'
+import { Button } from 'primevue'
 
 import type { AppGlobalContext } from '@/types'
 

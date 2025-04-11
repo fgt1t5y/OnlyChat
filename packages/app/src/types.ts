@@ -53,4 +53,5 @@ export interface RouterMenuItem {
 
 export interface AppGlobalContext {
   receivedFriendRequests: FriendRequest[]
+  sentFriendRequests: FriendRequest[]
 }

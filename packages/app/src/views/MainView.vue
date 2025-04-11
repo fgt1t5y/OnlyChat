@@ -51,5 +51,6 @@ await auth.getUserProfile()
 
 provide<AppGlobalContext>('OC', {
   receivedFriendRequests: await apis.friendRequest.getReceived(),
+  sentFriendRequests: await apis.friendRequest.getSent(),
 })
 </script>
