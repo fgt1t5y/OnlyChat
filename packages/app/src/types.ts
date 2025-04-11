@@ -52,6 +52,7 @@ export interface RouterMenuItem {
 }
 
 export interface AppGlobalContext {
+  isDev: boolean
   receivedFriendRequests: FriendRequest[]
   sentFriendRequests: FriendRequest[]
 }

@@ -31,11 +31,13 @@
     <RouterView />
   </div>
   <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
+  <DebugBar v-if="isDev" />
 </template>
 
 <script setup lang="ts">
 import apis from '@/apis'
 import UserAvatar from '@/components/UserAvatar.vue'
+import DebugBar from '@/components/DebugBar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
@@ -43,13 +45,18 @@ import { provide } from 'vue'
 
 import type { AppGlobalContext } from '@/types'
 
+const isDev = import.meta.env.DEV
 const auth = useAuth()
 const ws = useSocketIO()
 
 await auth.getUserProfile()
-await ws.connectAsync()
+
+if (!isDev) {
+  await ws.connectAsync()
+}
 
 provide<AppGlobalContext>('OC', {
+  isDev: isDev,
   receivedFriendRequests: await apis.friendRequest.getReceived(),
   sentFriendRequests: await apis.friendRequest.getSent(),
 })
