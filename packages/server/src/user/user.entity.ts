@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
 import { Role } from 'src/role/role.entity';
-import { FriendRequest } from 'src/friend/entities/friend-request.entity';
+import { FriendRequest } from 'src/friend/friend-request.entity';
 
 @Entity({ name: 'users' })
 export class User {

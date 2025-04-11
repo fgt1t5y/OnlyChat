@@ -55,3 +55,11 @@ export interface AppGlobalContext {
   receivedFriendRequests: FriendRequest[]
   sentFriendRequests: FriendRequest[]
 }
+
+export interface AcceptFriendRequestDto {
+  friendRequestId: number;
+}
+
+export interface WsEventBodyMap {
+  "friend_request.accept": AcceptFriendRequestDto
+}

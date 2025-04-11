@@ -2,6 +2,7 @@ import { Logger, UseFilters } from '@nestjs/common';
 import {
   MessageBody,
   OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -18,7 +19,7 @@ import { JwtPayload } from 'src/common/types';
   cors: { origin: '*' },
   transports: ['websocket'],
 })
-export class ChatGateway implements OnGatewayConnection {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger('ChatGateway');
 
   constructor(private readonly jwtService: JwtService) {}
@@ -51,7 +52,11 @@ export class ChatGateway implements OnGatewayConnection {
     }
   }
 
-  @SubscribeMessage('message')
+  async handleDisconnect(socket: Socket) {
+    this.logger.log(`Client disconnected: ${socket.id}`);
+  }
+
+  @SubscribeMessage('friend_request.accept')
   handleMessage(@MessageBody() data: string): WsResponse {
     return { event: 'message', data: data };
   }

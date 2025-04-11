@@ -44,10 +44,10 @@ import { provide } from 'vue'
 import type { AppGlobalContext } from '@/types'
 
 const auth = useAuth()
-const socket = useSocketIO()
+const ws = useSocketIO()
 
 await auth.getUserProfile()
-// await socket.connectAsync()
+// await ws.connectAsync()
 
 provide<AppGlobalContext>('OC', {
   receivedFriendRequests: await apis.friendRequest.getReceived(),

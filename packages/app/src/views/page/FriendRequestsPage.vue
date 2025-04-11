@@ -15,7 +15,7 @@
             <div class="font-bold">{{ item.sender.displayName }}</div>
             <div class="text-muted-color">@{{ item.sender.username }}</div>
           </div>
-          <Button label="Accept" icon="ti ti-check" />
+          <Button label="Accept" icon="ti ti-check" @click="handleAcceptFriendRequest(item.id)" />
           <Button label="Ignore" icon="ti ti-x" severity="secondary" />
         </li>
       </ul>
@@ -44,6 +44,13 @@ import { inject } from 'vue'
 import { Button } from 'primevue'
 
 import type { AppGlobalContext } from '@/types'
+import { useSocketIO } from '@/stores/socket'
 
 const appContext = inject<AppGlobalContext>('OC')
+
+const ws = useSocketIO()
+
+const handleAcceptFriendRequest = (friendRequestId: number) => {
+  ws.emit('friend_request.accept', { friendRequestId })
+}
 </script>

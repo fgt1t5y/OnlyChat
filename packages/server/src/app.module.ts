@@ -9,7 +9,7 @@ import { PermissionModule } from './permission/permission.module';
 import { Permission } from './permission/permission.entity';
 import { ChatModule } from './chat/chat.module';
 import { FriendModule } from './friend/friend.module';
-import { FriendRequest } from './friend/entities/friend-request.entity';
+import { FriendRequest } from './friend/friend-request.entity';
 
 @Module({
   imports: [

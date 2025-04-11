@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
-import { SendFriendRequestDto, AcceptFriendRequestDto } from './dto';
+import { SendFriendRequestDto, AcceptFriendRequestDto } from './friend.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
