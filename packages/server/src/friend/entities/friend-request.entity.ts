@@ -19,9 +19,6 @@ export class FriendRequest {
   @Column()
   receiverId: number;
 
-  @Column({ nullable: true })
-  description: string;
-
   @Column({ default: false })
   accepted: boolean;
 

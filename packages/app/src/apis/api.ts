@@ -14,8 +14,8 @@ export const profile = () => {
 }
 
 // #region Friend Request API
-export const sendRequest = (receiverId: number, description: string | null) => {
-  return alovaInstance.Post<FriendRequest>('/friend/request/send', { receiverId, description })
+export const sendRequest = (receiverId: number) => {
+  return alovaInstance.Post<FriendRequest>('/friend/request/send', { receiverId })
 }
 
 export const getReceived = () => {

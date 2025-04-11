@@ -32,15 +32,10 @@ export class FriendRequestService {
     });
   }
 
-  create(
-    senderId: number,
-    receiverId: number,
-    description: string | null,
-  ): FriendRequest {
+  create(senderId: number, receiverId: number): FriendRequest {
     return this.friendRequestRepository.create({
       senderId,
       receiverId,
-      description,
     });
   }
 }

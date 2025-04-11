@@ -30,7 +30,6 @@ export class FriendRequestController {
     return this.friendRequestService.create(
       user.id,
       sendFriendRequestDto.receiverId,
-      sendFriendRequestDto.description,
     );
   }
 }
