@@ -47,7 +47,7 @@ const auth = useAuth()
 const ws = useSocketIO()
 
 await auth.getUserProfile()
-// await ws.connectAsync()
+await ws.connectAsync()
 
 provide<AppGlobalContext>('OC', {
   receivedFriendRequests: await apis.friendRequest.getReceived(),

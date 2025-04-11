@@ -1,6 +1,5 @@
 import { Logger, UseFilters } from '@nestjs/common';
 import {
-  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
@@ -13,6 +12,7 @@ import { Server, Socket } from 'socket.io';
 import { WsExceptionFilter } from 'src/common/filters/ws-exception.filter';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/common/types';
+import { FriendRequestService } from 'src/friend/friend-request.service';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -22,7 +22,10 @@ import { JwtPayload } from 'src/common/types';
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger('ChatGateway');
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly friendRequestService: FriendRequestService,
+  ) {}
 
   @WebSocketServer()
   server: Server;
@@ -37,7 +40,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       const payload = (await this.jwtService.verifyAsync(token)) as JwtPayload;
 
-      socket.data.userId = payload.id;
+      socket.data.user = payload;
 
       this.logger.log(
         `Client connected: ${socket.id} - User ID: ${payload.id}`,
@@ -57,7 +60,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('friend_request.accept')
-  handleMessage(@MessageBody() data: string): WsResponse {
-    return { event: 'message', data: data };
+  handleAcceptFriendRequest(): WsResponse {
+    return { event: 'message', data: true };
   }
 }

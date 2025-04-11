@@ -8,5 +8,6 @@ import { FriendRequestService } from './friend-request.service';
   controllers: [FriendRequestController],
   imports: [TypeOrmModule.forFeature([FriendRequest])],
   providers: [FriendRequestService],
+  exports: [FriendRequestService],
 })
 export class FriendModule {}
