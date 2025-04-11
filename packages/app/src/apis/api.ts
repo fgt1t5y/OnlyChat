@@ -7,7 +7,7 @@ export const login = ({ username, password }: AuthLoginForm) => {
   return alovaInstance.Post<AuthLoginPayload>('/auth/login', { username, password })
 }
 
-export const profile = () => {
+export const getProfile = () => {
   return alovaInstance.Get<User>('/auth/profile', {
     cacheFor: null,
   })
@@ -27,6 +27,6 @@ export const getSent = () => {
 }
 
 // #region User API
-export const find = (searchKeyword: string) => {
+export const findUser = (searchKeyword: string) => {
   return alovaInstance.Get<User[]>('/user/find', { params: { searchKeyword } })
 }

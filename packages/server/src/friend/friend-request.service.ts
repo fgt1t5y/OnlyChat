@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FriendRequest } from './entities/friend-request.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,14 @@ export class FriendRequestService {
     @InjectRepository(FriendRequest)
     private readonly friendRequestRepository: Repository<FriendRequest>,
   ) {}
+
+  async findOne(friendRequestId: number) {
+    return await this.friendRequestRepository.findOne({
+      where: {
+        id: friendRequestId,
+      },
+    });
+  }
 
   async findAllReceivedBy(receiverId: number): Promise<FriendRequest[]> {
     return await this.friendRequestRepository.find({
@@ -37,5 +45,27 @@ export class FriendRequestService {
       senderId,
       receiverId,
     });
+  }
+
+  async accept(userId: number, friendRequestId: number) {
+    const friendRequest = await this.findOne(friendRequestId);
+
+    if (!friendRequest || friendRequest.receiverId !== userId) {
+      throw new NotFoundException('Friend request not found.');
+    }
+
+    return await this.friendRequestRepository.update(friendRequestId, {
+      accepted: true,
+    });
+  }
+
+  async cancle(userId: number, friendRequestId: number) {
+    const friendRequest = await this.findOne(friendRequestId);
+
+    if (!friendRequest || friendRequest.senderId !== userId) {
+      throw new NotFoundException('Friend request not found.');
+    }
+
+    return await this.friendRequestRepository.delete(friendRequestId);
   }
 }

@@ -1,8 +1,8 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
-import { SendFriendRequestDto } from './dto/send-friend-request.dto';
+import { SendFriendRequestDto, AcceptFriendRequestDto } from './dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
 
 @Controller('friend/request')
@@ -30,6 +30,30 @@ export class FriendRequestController {
     return this.friendRequestService.create(
       user.id,
       sendFriendRequestDto.receiverId,
+    );
+  }
+
+  @Post('accept')
+  @UseGuards(JwtAuthGuard)
+  acceptRequest(
+    @CurrentUser() user: JwtPayload,
+    @Body() acceptFriendRequestDto: AcceptFriendRequestDto,
+  ) {
+    return this.friendRequestService.accept(
+      user.id,
+      acceptFriendRequestDto.friendRequestId,
+    );
+  }
+
+  @Post('cancle')
+  @UseGuards(JwtAuthGuard)
+  cancleRequest(
+    @CurrentUser() user: JwtPayload,
+    @Body() acceptFriendRequestDto: AcceptFriendRequestDto,
+  ) {
+    return this.friendRequestService.cancle(
+      user.id,
+      acceptFriendRequestDto.friendRequestId,
     );
   }
 }

@@ -15,7 +15,7 @@ export const useAuth = defineStore('account', {
   actions: {
     async getUserProfile() {
       try {
-        this.user = await apis.auth.profile()
+        this.user = await apis.auth.getProfile()
       } catch {
         this.logout()
       }
