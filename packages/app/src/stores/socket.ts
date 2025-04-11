@@ -1,6 +1,6 @@
 import { useAuth } from '@/stores/auth'
 import { defineStore } from 'pinia'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
 export const useSocketIO = defineStore('socket', {
   state: () => ({
@@ -9,18 +9,30 @@ export const useSocketIO = defineStore('socket', {
   }),
   actions: {
     connect() {
-      const auth = useAuth()
-
       this.socket.on('connect', () => {
         this.connected = true
       })
-
       this.socket.on('disconnect', () => {
         this.connected = false
       })
 
-      this.socket.auth = { token: auth.accessToken }
+      this.socket.auth = { token: useAuth().accessToken }
       this.socket.connect()
+    },
+    connectAsync(): Promise<typeof this.socket> {
+      return new Promise((resolve, reject) => {
+        this.socket.on('connect', () => {
+          this.connected = true
+          resolve(this.socket)
+        })
+        this.socket.on('connect_error', (err) => {
+          this.connected = false
+          reject(err)
+        })
+
+        this.socket.auth = { token: useAuth().accessToken }
+        this.socket.connect()
+      })
     },
     disconnect() {
       this.socket.disconnect()

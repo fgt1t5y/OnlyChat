@@ -11,7 +11,7 @@
             }"
           >
             <template v-slot="{ field, state }">
-              <label :for="field.name">Username</label>
+              <label class="text-muted-color" :for="field.name">Username</label>
               <InputText
                 :name="field.name"
                 :id="field.name"
@@ -36,14 +36,14 @@
             }"
           >
             <template v-slot="{ field, state }">
-              <label :for="field.name">Password</label>
+              <label class="text-muted-color" :for="field.name">Password</label>
               <Password
-                input-class="grow"
                 :name="field.name"
                 :id="field.name"
                 :value="field.state.value"
                 :feedback="false"
                 toggleMask
+                fluid
                 @input="field.handleChange(($event.target as HTMLInputElement).value)"
                 @blur="field.handleBlur"
               />

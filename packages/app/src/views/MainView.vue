@@ -31,14 +31,12 @@
     </nav>
     <RouterView />
   </div>
-  <div v-else class="text-center">
-    Failed to load user profile, plase try refresh page.
-  </div>
+  <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '@/stores/auth'
 import UserAvatar from '@/components/UserAvatar.vue'
+import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
 
@@ -46,6 +44,5 @@ const auth = useAuth()
 const socket = useSocketIO()
 
 await auth.getUserProfile()
-
-// socket.connect()
+// await socket.connectAsync()
 </script>

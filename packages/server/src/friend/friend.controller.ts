@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { FriendService } from './friend.service';
-import { CreateFriendDto } from './dto/create-friend.dto';
-import { UpdateFriendDto } from './dto/update-friend.dto';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { FriendRequestService } from './friend-request.service';
+import { SendFriendRequestDto } from './dto/send-friend-request.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { JwtPayload } from 'src/common/types';
 
 @Controller('friend')
 export class FriendController {
-  constructor(private readonly friendService: FriendService) {}
+  constructor(private readonly friendRequestService: FriendRequestService) {}
 
-  @Post()
-  create(@Body() createFriendDto: CreateFriendDto) {
-    return this.friendService.create(createFriendDto);
+  @Get('received')
+  @UseGuards(JwtAuthGuard)
+  findAllReceived(@CurrentUser() user: JwtPayload) {
+    return this.friendRequestService.findAllReceivedBy(user.sub);
   }
 
-  @Get()
-  findAll() {
-    return this.friendService.findAll();
+  @Get('sent')
+  @UseGuards(JwtAuthGuard)
+  findAllSent(@CurrentUser() user: JwtPayload) {
+    return this.friendRequestService.findAllSentBy(user.sub);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.friendService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFriendDto: UpdateFriendDto) {
-    return this.friendService.update(+id, updateFriendDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.friendService.remove(+id);
+  @Post('request')
+  @UseGuards(JwtAuthGuard)
+  createRequest(@Body() sendFriendRequestDto: SendFriendRequestDto) {
+    return this.friendRequestService.create(sendFriendRequestDto);
   }
 }
