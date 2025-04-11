@@ -21,9 +21,16 @@ export class FriendRequestController {
     return await this.friendRequestService.findAllSentBy(user.id);
   }
 
-  @Post('request')
+  @Post('send')
   @UseGuards(JwtAuthGuard)
-  createRequest(@Body() sendFriendRequestDto: SendFriendRequestDto) {
-    return this.friendRequestService.create(sendFriendRequestDto);
+  sendRequest(
+    @CurrentUser() user: JwtPayload,
+    @Body() sendFriendRequestDto: SendFriendRequestDto,
+  ) {
+    return this.friendRequestService.create(
+      user.id,
+      sendFriendRequestDto.receiverId,
+      sendFriendRequestDto.description,
+    );
   }
 }

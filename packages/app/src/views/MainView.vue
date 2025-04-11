@@ -46,10 +46,10 @@ import type { AppGlobalContext } from '@/types'
 const auth = useAuth()
 const socket = useSocketIO()
 
-provide<AppGlobalContext>('OC', {
-  receivedFriendRequests: await apis.friendRequest.received()
-})
-
 await auth.getUserProfile()
 // await socket.connectAsync()
+
+provide<AppGlobalContext>('OC', {
+  receivedFriendRequests: await apis.friendRequest.getReceived(),
+})
 </script>

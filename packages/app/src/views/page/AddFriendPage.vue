@@ -10,13 +10,20 @@
           fluid
           required
         />
-        <Button label="Search" type="submit" icon="ti ti-search" :loading="loading" />
+        <Button label="Search" type="submit" icon="ti ti-search" :loading="finding" />
       </InputGroup>
     </form>
-    <div v-if="hittedItems">
-      <div class="text-muted-color">Hitted {{ hittedItems.length }} user(s)</div>
-      <ul v-if="hittedItems.length">
-        <FindFriendItem v-for="item in hittedItems" :key="item.id" :item="item" />
+    <div v-if="foundItems">
+      <div class="text-muted-color px-2">Hitted {{ foundItems.length }} user(s)</div>
+      <ul v-if="foundItems.length">
+        <li v-for="item in foundItems" class="list-Item flex items-center gap-2">
+          <UserAvatar :user="item" />
+          <div class="grow">
+            <div class="font-bold">{{ item.displayName }}</div>
+            <div class="text-muted-color">@{{ item.username }}</div>
+          </div>
+          <Button label="Send request" severity="secondary" />
+        </li>
       </ul>
     </div>
     <SearchPlaceholder v-else />
@@ -27,7 +34,7 @@
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/PageTitle.vue'
-import FindFriendItem from '@/components/list-item/FindFriendItem.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
 import { Button, InputGroup, InputText } from 'primevue'
@@ -35,13 +42,17 @@ import { ref } from 'vue'
 
 const searchKeyword = ref<string>('')
 
-const { data: hittedItems, loading, send } = useRequest(apis.user.find, { immediate: false })
+const {
+  data: foundItems,
+  loading: finding,
+  send: find,
+} = useRequest(apis.user.find, { immediate: false })
 
 const handleSearch = () => {
   if (!searchKeyword) {
     return
   }
 
-  send(searchKeyword.value)
+  find(searchKeyword.value)
 }
 </script>

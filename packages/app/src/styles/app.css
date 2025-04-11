@@ -66,6 +66,18 @@
   }
 }
 
+.router-Menu-Item-Text {
+  @apply grow;
+}
+
+.router-Menu-Item-DotBadge {
+  @apply h-3 w-3 bg-primary rounded-full;
+}
+
+.router-Menu-Item-NumBadge {
+  @apply px-2 rounded-full text-white font-bold text-[12px] bg-red-500;
+}
+
 .page-Title {
   @apply flex gap-2 px-2 h-[45px];
 }

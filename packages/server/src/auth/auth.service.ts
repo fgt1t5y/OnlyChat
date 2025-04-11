@@ -75,8 +75,6 @@ export class AuthService {
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
 
-    console.log(userId);
-
     return await this.userRepository.findOne({
       where: {
         id: userId,

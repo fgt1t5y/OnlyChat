@@ -2,7 +2,14 @@
   <div :class="routerMenuClass">
     <RouterLink v-for="item in items" :to="item.to" class="router-Menu-Item">
       <i :class="item.icon"></i>
-      <div>{{ item.label }}</div>
+      <div class="router-Menu-Item-Text">{{ item.label }}</div>
+      <div v-if="item.badge === true" class="router-Menu-Item-DotBadge"></div>
+      <div
+        v-if="typeof item.badge === 'number' && item.badge > 0"
+        class="router-Menu-Item-NumBadge"
+      >
+        {{ item.badge }}
+      </div>
     </RouterLink>
   </div>
 </template>
