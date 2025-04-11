@@ -1,13 +1,16 @@
-import { login, profile, find } from './api'
+import { login, profile, received, find } from './api'
 
 const apis = {
   auth: {
     login,
     profile,
   },
+  friendRequest: {
+    received,
+  },
   user: {
-    find
-  }
+    find,
+  },
 }
 
 export default apis

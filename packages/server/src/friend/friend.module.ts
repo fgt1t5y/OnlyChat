@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { FriendController } from './friend.controller';
+import { FriendRequestController } from './friend-request.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FriendRequest } from './entities/friend-request.entity';
 import { FriendRequestService } from './friend-request.service';
 
 @Module({
-  controllers: [FriendController],
+  controllers: [FriendRequestController],
   imports: [TypeOrmModule.forFeature([FriendRequest])],
   providers: [FriendRequestService],
 })

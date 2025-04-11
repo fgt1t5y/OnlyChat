@@ -1,9 +1,15 @@
-import { Injectable, HttpStatus, Request } from '@nestjs/common';
+import {
+  Injectable,
+  Request,
+  BadRequestException,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/user.entity';
-import { comparePassword, ok, no } from 'src/utils';
+import { comparePassword } from 'src/utils';
 
 import type { UserLoginDto, UserRegisterDto } from './auth.dto';
 
@@ -17,7 +23,7 @@ export class AuthService {
 
   async login({ username, password }: UserLoginDto) {
     if (!username || !password) {
-      return no(HttpStatus.BAD_REQUEST, 'Username or password is required.');
+      throw new BadRequestException('Username or password is required.');
     }
 
     const user = await this.userRepository.findOne({
@@ -28,12 +34,11 @@ export class AuthService {
     });
 
     if (user.disabled) {
-      return no(HttpStatus.FORBIDDEN, 'User is disabled.');
+      throw new ForbiddenException('User is disabled.');
     }
 
     if (!user || !comparePassword(password, user.password)) {
-      return no(
-        HttpStatus.UNAUTHORIZED,
+      throw new UnauthorizedException(
         'User is not existing or wrong password.',
       );
     }
@@ -43,16 +48,16 @@ export class AuthService {
       username: username,
     };
 
-    return ok({ token: await this.jwtService.signAsync(jwtPayload) });
+    return { token: await this.jwtService.signAsync(jwtPayload) };
   }
 
   async register({ username, password }: UserRegisterDto) {
     if (!username || !password) {
-      return no(HttpStatus.BAD_REQUEST, 'Username or password is required.');
+      throw new BadRequestException('Username or password is required.');
     }
 
     if (this.userRepository.existsBy({ username })) {
-      return no(HttpStatus.BAD_REQUEST, `Username ${username} already exists.`);
+      throw new BadRequestException(`Username ${username} already exists.`);
     }
 
     const user = await this.userRepository.create({
@@ -63,17 +68,16 @@ export class AuthService {
 
     delete user.password;
 
-    return ok(user);
+    return user;
   }
 
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
-    const user = await this.userRepository.findOne({
+
+    return await this.userRepository.findOne({
       where: {
         id: userId,
       },
     });
-
-    return ok(user);
   }
 }

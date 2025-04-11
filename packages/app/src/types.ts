@@ -16,6 +16,19 @@ export interface AuthLoginPayload {
   token: string
 }
 
+export interface FriendRequest {
+  id: number
+  senderId: number
+  receiverId: number
+  desciription?: string
+  accepted: boolean
+  createdAt: string
+  updatedAt: string
+
+  sender: User
+  receiver: User
+}
+
 export interface User {
   id: number
   displayName: string
@@ -35,4 +48,8 @@ export interface RouterMenuItem {
   label: string
   icon: string
   to: RouteLocationAsRelativeGeneric
+}
+
+export interface AppGlobalContext {
+  receivedFriendRequests: FriendRequest[]
 }

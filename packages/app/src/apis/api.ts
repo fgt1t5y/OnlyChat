@@ -1,6 +1,6 @@
 import { alovaInstance } from './instance'
 
-import type { AuthLoginForm, AuthLoginPayload, User } from '@/types'
+import type { AuthLoginForm, AuthLoginPayload, FriendRequest, User } from '@/types'
 
 // #region Auth API
 export const login = ({ username, password }: AuthLoginForm) => {
@@ -11,6 +11,11 @@ export const profile = () => {
   return alovaInstance.Get<User>('/auth/profile', {
     cacheFor: null,
   })
+}
+
+// #region Friend Request API
+export const received = () => {
+  return alovaInstance.Get<FriendRequest[]>('/friend/request/received')
 }
 
 // #region User API

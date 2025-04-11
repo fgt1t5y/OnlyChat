@@ -15,15 +15,15 @@ export const alovaInstance = createAlova({
   },
   responded: {
     onSuccess: async (response) => {
-      const json = (await response.json()) as IResponse<unknown>
+      const json = await response.json()
 
-      if (json.statusCode > 400 || !json?.success) {
+      if (json.statusCode > 400) {
         console.error(json.message)
 
         throw new Error(json.message)
       }
 
-      return json.data
+      return json
     },
   },
 })

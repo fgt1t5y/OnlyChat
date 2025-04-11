@@ -5,20 +5,20 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { JwtPayload } from 'src/common/types';
 
-@Controller('friend')
-export class FriendController {
+@Controller('friend/request')
+export class FriendRequestController {
   constructor(private readonly friendRequestService: FriendRequestService) {}
 
   @Get('received')
   @UseGuards(JwtAuthGuard)
-  findAllReceived(@CurrentUser() user: JwtPayload) {
-    return this.friendRequestService.findAllReceivedBy(user.sub);
+  async findAllReceived(@CurrentUser() user: JwtPayload) {
+    return await this.friendRequestService.findAllReceivedBy(user.sub);
   }
 
   @Get('sent')
   @UseGuards(JwtAuthGuard)
-  findAllSent(@CurrentUser() user: JwtPayload) {
-    return this.friendRequestService.findAllSentBy(user.sub);
+  async findAllSent(@CurrentUser() user: JwtPayload) {
+    return await this.friendRequestService.findAllSentBy(user.sub);
   }
 
   @Post('request')

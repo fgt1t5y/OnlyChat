@@ -8,6 +8,7 @@ import SettingsAside from '@/views/aside/SettingsAside.vue'
 import ProfilePage from '@/views/page/settings/ProfilePage.vue'
 import AvatarPage from '@/views/page/settings/AvatarPage.vue'
 import ThemePage from '@/views/page/settings/ThemePage.vue'
+import FriendRequestListPage from '@/views/page/FriendRequestListPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,14 @@ const router = createRouter({
           components: {
             aside: HomeAside,
             default: FriendAddPage,
+          },
+        },
+        {
+          path: 'friend/requests',
+          name: 'friend_request_list',
+          components: {
+            aside: HomeAside,
+            default: FriendRequestListPage,
           },
         },
         {
