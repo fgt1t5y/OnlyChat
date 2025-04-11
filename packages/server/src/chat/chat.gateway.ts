@@ -36,10 +36,10 @@ export class ChatGateway implements OnGatewayConnection {
 
       const payload = (await this.jwtService.verifyAsync(token)) as JwtPayload;
 
-      socket.data.userId = payload.sub;
+      socket.data.userId = payload.id;
 
       this.logger.log(
-        `Client connected: ${socket.id} - User ID: ${payload.sub}`,
+        `Client connected: ${socket.id} - User ID: ${payload.id}`,
       );
     } catch (error) {
       this.logger.error(

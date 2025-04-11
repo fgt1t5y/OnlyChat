@@ -3,8 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,11 +13,9 @@ export class FriendRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Index()
   @Column()
   senderId: number;
 
-  @Index()
   @Column()
   receiverId: number;
 
@@ -34,9 +31,9 @@ export class FriendRequest {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => User, (user) => user.id)
-  sender: User;
-
-  @OneToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id)
   receiver: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  sender: User;
 }

@@ -22,7 +22,6 @@
           size="large"
           severity="secondary"
           rounded
-          variant="text"
           title="Settings"
           aria-label="Settings"
           @click="$router.push({ name: 'settings' })"
@@ -40,14 +39,14 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
-import { inject } from 'vue'
+import { provide } from 'vue'
 
 import type { AppGlobalContext } from '@/types'
 
 const auth = useAuth()
 const socket = useSocketIO()
 
-inject<AppGlobalContext>('OC', {
+provide<AppGlobalContext>('OC', {
   receivedFriendRequests: await apis.friendRequest.received()
 })
 

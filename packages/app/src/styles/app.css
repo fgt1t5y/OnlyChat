@@ -59,15 +59,10 @@
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded text-base;
+  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-100 dark:hover:bg-surface-800;
 
   &.router-link-active {
-    color: var(--p-primary-color);
-    background-color: var(--p-button-secondary-hover-background);
-  }
-
-  &:hover {
-    background-color: var(--p-button-secondary-hover-background);
+    @apply text-primary bg-surface-100 dark:bg-surface-800;
   }
 }
 
@@ -76,9 +71,5 @@
 }
 
 .list-Item {
-  @apply p-2 rounded;
-
-  &:hover {
-    background-color: var(--p-button-secondary-hover-background);
-  }
+  @apply p-2 rounded hover:bg-surface-100 dark:hover:bg-surface-800;
 }

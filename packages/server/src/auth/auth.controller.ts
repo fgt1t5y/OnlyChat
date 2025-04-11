@@ -18,18 +18,18 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  login(@Body() userLoginDto: UserLoginDto) {
-    return this.authService.login(userLoginDto);
+  async login(@Body() userLoginDto: UserLoginDto) {
+    return await this.authService.login(userLoginDto);
   }
 
   @Post('register')
-  resgister(@Body() userRegisterDto: UserRegisterDto) {
-    return this.authService.register(userRegisterDto);
+  async resgister(@Body() userRegisterDto: UserRegisterDto) {
+    return await this.authService.register(userRegisterDto);
   }
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
-  info(@Request() request: any) {
-    return this.authService.profile(request);
+  async info(@Request() request: any) {
+    return await this.authService.profile(request);
   }
 }

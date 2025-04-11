@@ -27,7 +27,7 @@ export class AuthService {
     }
 
     const user = await this.userRepository.findOne({
-      select: ['username', 'password', 'disabled'],
+      select: ['id', 'username', 'password', 'disabled'],
       where: {
         username: username,
       },
@@ -45,6 +45,7 @@ export class AuthService {
 
     const jwtPayload = {
       sub: user.id,
+      id: user.id,
       username: username,
     };
 
@@ -73,6 +74,8 @@ export class AuthService {
 
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
+
+    console.log(userId);
 
     return await this.userRepository.findOne({
       where: {

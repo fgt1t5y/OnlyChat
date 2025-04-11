@@ -48,6 +48,7 @@ export interface RouterMenuItem {
   label: string
   icon: string
   to: RouteLocationAsRelativeGeneric
+  badge?: number | boolean
 }
 
 export interface AppGlobalContext {

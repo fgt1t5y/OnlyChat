@@ -12,13 +12,13 @@ export class FriendRequestController {
   @Get('received')
   @UseGuards(JwtAuthGuard)
   async findAllReceived(@CurrentUser() user: JwtPayload) {
-    return await this.friendRequestService.findAllReceivedBy(user.sub);
+    return await this.friendRequestService.findAllReceivedBy(user.id);
   }
 
   @Get('sent')
   @UseGuards(JwtAuthGuard)
   async findAllSent(@CurrentUser() user: JwtPayload) {
-    return await this.friendRequestService.findAllSentBy(user.sub);
+    return await this.friendRequestService.findAllSentBy(user.id);
   }
 
   @Post('request')
