@@ -19,7 +19,7 @@ const homeAsideMenuItems = ref<RouterMenuItem[]>([
     label: 'Friend Requests',
     icon: 'ti ti-users-plus',
     to: { name: 'friend_request_list' },
-    badge: appContext.unacceptFriendRequestCount?.value,
+    badge: appContext.unacceptFriendRequestCount,
   },
   { label: 'Add Friend', icon: 'ti ti-user-search', to: { name: 'friend_find' } },
 ])

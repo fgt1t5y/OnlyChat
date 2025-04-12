@@ -6,7 +6,6 @@ import type { WsEventBodyMap } from '@/types'
 
 export const useSocketIO = defineStore('socket', {
   state: () => ({
-    connected: false,
     socket: io('http://localhost:3000', {
       autoConnect: false,
       transports: ['websocket'],
@@ -28,9 +27,7 @@ export const useSocketIO = defineStore('socket', {
       })
     },
     disconnect() {
-      this.socket.disconnect()
-
-      this.connected = false
+      this.socket.connected && this.socket.disconnect()
     },
     emit<E extends keyof WsEventBodyMap>(event: E, body: WsEventBodyMap[E]) {
       this.socket.emit(event, body)

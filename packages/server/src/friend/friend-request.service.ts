@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { FriendRequest } from './friend-request.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class FriendRequestService {
@@ -47,23 +48,28 @@ export class FriendRequestService {
     });
   }
 
-  async accept(userId: number, friendRequestId: number) {
+  async accept(
+    userId: number,
+    friendRequestId: number,
+  ): Promise<FriendRequest> {
     const friendRequest = await this.findOne(friendRequestId);
 
     if (!friendRequest || friendRequest.receiverId !== userId) {
-      throw new NotFoundException('Friend request not found.');
+      throw new WsException('Friend request not found.');
     }
 
-    return await this.friendRequestRepository.update(friendRequestId, {
+    await this.friendRequestRepository.update(friendRequestId, {
       accepted: true,
     });
+
+    return friendRequest;
   }
 
   async cancle(userId: number, friendRequestId: number) {
     const friendRequest = await this.findOne(friendRequestId);
 
     if (!friendRequest || friendRequest.senderId !== userId) {
-      throw new NotFoundException('Friend request not found.');
+      throw new WsException('Friend request not found.');
     }
 
     return await this.friendRequestRepository.delete(friendRequestId);

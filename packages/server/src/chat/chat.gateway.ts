@@ -1,5 +1,6 @@
 import { Logger, UseFilters } from '@nestjs/common';
 import {
+  ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -34,9 +35,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   async handleConnection(socket: Socket) {
-    const token = socket.handshake.auth?.token;
-
     try {
+      const token = socket.handshake.auth?.token;
+
       if (!token) {
         throw new WsException('Invalid credentials.');
       }
@@ -45,20 +46,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       socket.data.user = payload;
 
+      socket.join(this.userSocketsRoomName(payload.id));
+
       this.logger.log(
         `Client connected: ${socket.id} - User ID: ${payload.id}`,
       );
     } catch (error) {
+      socket.emit('exception', 'Authentication error');
+      socket.disconnect();
+
       this.logger.error(
         `Connection auth error for socket ${socket.id}: ${error.message}`,
       );
-
-      socket.emit('exception', 'Authentication error');
-      socket.disconnect();
     }
   }
 
   async handleDisconnect(socket: Socket) {
+    socket.leave(this.userSocketsRoomName(socket.data.user.id));
+
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
@@ -66,12 +71,21 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleAcceptFriendRequest(
     @WsCurrentUser() user: JwtPayload,
     @MessageBody() acceptFriendRequestDto: AcceptFriendRequestDto,
+    @ConnectedSocket() socket: Socket,
   ): Promise<WsResponse> {
-    await this.friendRequestService.accept(
+    const friendRequest = await this.friendRequestService.accept(
       user.id,
       acceptFriendRequestDto.friendRequestId,
     );
 
-    return { event: 'message', data: true };
+    socket
+      .to(this.userSocketsRoomName(friendRequest.senderId))
+      .emit('friend_request.accepted', acceptFriendRequestDto);
+
+    return { event: 'friend_request.accept', data: acceptFriendRequestDto };
+  }
+
+  userSocketsRoomName(userId: number) {
+    return `userSockets.${userId}`;
   }
 }

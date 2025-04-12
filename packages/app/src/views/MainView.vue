@@ -43,16 +43,13 @@ import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
 import { computed, provide, ref } from 'vue'
 
-import type { AppGlobalContext, FriendRequest } from '@/types'
+import type { AcceptFriendRequestDto, AppGlobalContext, FriendRequest } from '@/types'
 
 const auth = useAuth()
 const ws = useSocketIO()
 
 await auth.getUserProfile()
-
-if (!import.meta.env.DEV) {
-  await ws.connectAsync()
-}
+await ws.connectAsync()
 
 const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.friendRequest.getReceived())
@@ -75,4 +72,31 @@ provide<AppGlobalContext>('OC', {
   sentFriendRequests,
   unacceptFriendRequestCount,
 })
+
+const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  console.log('Accepted received friend request', friendRequestId)
+
+  const friendRequestIndex = receivedFriendRequests.value.findIndex(
+    (item) => item.id === friendRequestId,
+  )
+
+  if (friendRequestIndex !== -1) {
+    receivedFriendRequests.value[friendRequestIndex].accepted = true
+  }
+}
+
+const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  console.log('Receiver is accepted your friend request', friendRequestId)
+
+  const friendRequestIndex = sentFriendRequests.value.findIndex(
+    (item) => item.id === friendRequestId,
+  )
+
+  if (friendRequestIndex !== -1) {
+    sentFriendRequests.value[friendRequestIndex].accepted = true
+  }
+}
+
+ws.socket.on('friend_request.accept', onFriendRequestSuccessfullyAccepted)
+ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
 </script>

@@ -8,8 +8,8 @@ export class WsExceptionFilter implements ExceptionFilter {
     const client = host.switchToWs().getClient<Socket>();
 
     client.emit('exception', {
-      status: 'error',
-      message: exception.getError(),
+      event: 'error',
+      data: exception.getError(),
     });
   }
 }

@@ -56,17 +56,17 @@
             <Button label="Login" type="submit" :loading="loading" :disabled="!canSubmit" />
           </template>
         </Subscribe>
-        <div v-if="error?.message" class="form-field-error">{{ error.message }}</div>
+        <div v-if="error?.message" class="text-red-500">{{ error.message }}</div>
       </form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useForm } from '@tanstack/vue-form'
-import { useRequest } from 'alova/client'
 import FieldError from '@/components/form/FieldError.vue'
 import apis from '@/apis'
+import { useForm } from '@tanstack/vue-form'
+import { useRequest } from 'alova/client'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth'
 import { Button, InputText, Password } from 'primevue'

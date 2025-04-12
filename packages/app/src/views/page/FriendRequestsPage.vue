@@ -33,7 +33,14 @@
             <div class="font-bold">{{ item.receiver.displayName }}</div>
             <div class="text-muted-color">@{{ item.receiver.username }}</div>
           </div>
-          <Button label="Cancle" icon="ti ti-x" severity="secondary" />
+          <Button
+            v-if="item.accepted"
+            label="Accepted"
+            icon="ti ti-check"
+            severity="secondary"
+            disabled
+          />
+          <Button v-else label="Cancle" icon="ti ti-x" severity="secondary" />
         </li>
       </ul>
     </div>

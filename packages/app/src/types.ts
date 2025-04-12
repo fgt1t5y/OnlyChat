@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRef, Ref } from 'vue'
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
 
 export interface IResponse<T> {
@@ -49,7 +49,7 @@ export interface RouterMenuItem {
   label: string
   icon: string
   to: RouteLocationAsRelativeGeneric
-  badge?: number | boolean
+  badge?: MaybeRef<number | boolean>
 }
 
 export interface AppGlobalContext {
