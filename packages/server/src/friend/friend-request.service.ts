@@ -41,10 +41,20 @@ export class FriendRequestService {
     });
   }
 
-  create(senderId: number, receiverId: number): FriendRequest {
-    return this.friendRequestRepository.create({
+  async create(senderId: number, receiverId: number): Promise<FriendRequest> {
+    const friendRequest = this.friendRequestRepository.create({
       senderId,
       receiverId,
+    });
+
+    return await this.friendRequestRepository.findOne({
+      relations: {
+        receiver: true,
+        sender: true,
+      },
+      where: {
+        id: friendRequest.id,
+      },
     });
   }
 

@@ -16,7 +16,11 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/common/types';
 import { FriendRequestService } from 'src/friend/friend-request.service';
 import { WsCurrentUser } from 'src/common/decorators';
-import { AcceptFriendRequestDto } from 'src/friend/friend.dto';
+import {
+  CreateFriendRequestDto,
+  AcceptFriendRequestDto,
+  CancelFriendRequestDto,
+} from 'src/friend/friend.dto';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -67,6 +71,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
+  @SubscribeMessage('friend_request.create')
+  async handleCreateFriendRequest(
+    @WsCurrentUser() user: JwtPayload,
+    @MessageBody() createFriendRequestDto: CreateFriendRequestDto,
+    @ConnectedSocket() socket: Socket,
+  ): Promise<WsResponse> {
+    const friendRequest = await this.friendRequestService.create(
+      user.id,
+      createFriendRequestDto.receiverId,
+    );
+
+    socket
+      .to(this.userSocketsRoomName(friendRequest.senderId))
+      .emit('friend_request.received', friendRequest);
+
+    return { event: 'friend_request.create.success', data: friendRequest };
+  }
+
   @SubscribeMessage('friend_request.accept')
   async handleAcceptFriendRequest(
     @WsCurrentUser() user: JwtPayload,
@@ -82,25 +104,31 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .to(this.userSocketsRoomName(friendRequest.senderId))
       .emit('friend_request.accepted', acceptFriendRequestDto);
 
-    return { event: 'friend_request.accept', data: acceptFriendRequestDto };
+    return {
+      event: 'friend_request.accept.success',
+      data: acceptFriendRequestDto,
+    };
   }
 
   @SubscribeMessage('friend_request.cancel')
   async handleCancelFriendRequest(
     @WsCurrentUser() user: JwtPayload,
-    @MessageBody() acceptFriendRequestDto: AcceptFriendRequestDto,
+    @MessageBody() cancelFriendRequestDto: CancelFriendRequestDto,
     @ConnectedSocket() socket: Socket,
   ): Promise<WsResponse> {
     const friendRequest = await this.friendRequestService.cancel(
       user.id,
-      acceptFriendRequestDto.friendRequestId,
+      cancelFriendRequestDto.friendRequestId,
     );
 
     socket
       .to(this.userSocketsRoomName(friendRequest.receiverId))
-      .emit('friend_request.canceled', acceptFriendRequestDto);
+      .emit('friend_request.canceled', cancelFriendRequestDto);
 
-    return { event: 'friend_request.cancel', data: acceptFriendRequestDto };
+    return {
+      event: 'friend_request.cancel.success',
+      data: cancelFriendRequestDto,
+    };
   }
 
   userSocketsRoomName(userId: number) {

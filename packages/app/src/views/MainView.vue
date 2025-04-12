@@ -121,8 +121,8 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendReques
   }
 }
 
-ws.socket.on('friend_request.accept', onFriendRequestSuccessfullyAccepted)
+ws.socket.on('friend_request.accept.success', onFriendRequestSuccessfullyAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
-ws.socket.on('friend_request.cancel', onFriendRequestSuccessfullyCanceled)
+ws.socket.on('friend_request.cancel.success', onFriendRequestSuccessfullyCanceled)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
 </script>
