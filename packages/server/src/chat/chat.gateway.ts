@@ -85,6 +85,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return { event: 'friend_request.accept', data: acceptFriendRequestDto };
   }
 
+  @SubscribeMessage('friend_request.cancel')
+  async handleCancelFriendRequest(
+    @WsCurrentUser() user: JwtPayload,
+    @MessageBody() acceptFriendRequestDto: AcceptFriendRequestDto,
+    @ConnectedSocket() socket: Socket,
+  ): Promise<WsResponse> {
+    const friendRequest = await this.friendRequestService.cancel(
+      user.id,
+      acceptFriendRequestDto.friendRequestId,
+    );
+
+    socket
+      .to(this.userSocketsRoomName(friendRequest.receiverId))
+      .emit('friend_request.canceled', acceptFriendRequestDto);
+
+    return { event: 'friend_request.cancel', data: acceptFriendRequestDto };
+  }
+
   userSocketsRoomName(userId: number) {
     return `userSockets.${userId}`;
   }

@@ -65,13 +65,15 @@ export class FriendRequestService {
     return friendRequest;
   }
 
-  async cancle(userId: number, friendRequestId: number) {
+  async cancel(userId: number, friendRequestId: number) {
     const friendRequest = await this.findOne(friendRequestId);
 
     if (!friendRequest || friendRequest.senderId !== userId) {
       throw new WsException('Friend request not found.');
     }
 
-    return await this.friendRequestRepository.delete(friendRequestId);
+    await this.friendRequestRepository.delete(friendRequestId);
+
+    return friendRequest;
   }
 }

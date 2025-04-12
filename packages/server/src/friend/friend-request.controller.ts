@@ -45,13 +45,13 @@ export class FriendRequestController {
     );
   }
 
-  @Post('cancle')
+  @Post('cancel')
   @UseGuards(JwtAuthGuard)
-  cancleRequest(
+  cancelRequest(
     @CurrentUser() user: JwtPayload,
     @Body() acceptFriendRequestDto: AcceptFriendRequestDto,
   ) {
-    return this.friendRequestService.cancle(
+    return this.friendRequestService.cancel(
       user.id,
       acceptFriendRequestDto.friendRequestId,
     );

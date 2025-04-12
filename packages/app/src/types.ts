@@ -65,4 +65,5 @@ export interface AcceptFriendRequestDto {
 
 export interface WsEventBodyMap {
   'friend_request.accept': AcceptFriendRequestDto
+  'friend_request.cancel': AcceptFriendRequestDto
 }

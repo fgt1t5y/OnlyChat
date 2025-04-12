@@ -74,7 +74,7 @@ provide<AppGlobalContext>('OC', {
 })
 
 const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {
-  console.log('Accepted received friend request', friendRequestId)
+  console.log('Accepted this friend request', friendRequestId)
 
   const friendRequestIndex = receivedFriendRequests.value.findIndex(
     (item) => item.id === friendRequestId,
@@ -86,7 +86,7 @@ const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRe
 }
 
 const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequestDto) => {
-  console.log('Receiver is accepted your friend request', friendRequestId)
+  console.log('Receiver is accepted this friend request', friendRequestId)
 
   const friendRequestIndex = sentFriendRequests.value.findIndex(
     (item) => item.id === friendRequestId,
@@ -97,6 +97,32 @@ const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequ
   }
 }
 
+const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  console.log('Canceled this friend request', friendRequestId)
+
+  const friendRequestIndex = sentFriendRequests.value.findIndex(
+    (item) => item.id === friendRequestId,
+  )
+
+  if (friendRequestIndex !== -1) {
+    sentFriendRequests.value.splice(friendRequestIndex, 1)
+  }
+}
+
+const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  console.log('Sender is canceled this friend request', friendRequestId)
+
+  const friendRequestIndex = receivedFriendRequests.value.findIndex(
+    (item) => item.id === friendRequestId,
+  )
+
+  if (friendRequestIndex !== -1) {
+    receivedFriendRequests.value.splice(friendRequestIndex, 1)
+  }
+}
+
 ws.socket.on('friend_request.accept', onFriendRequestSuccessfullyAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
+ws.socket.on('friend_request.cancel', onFriendRequestSuccessfullyCanceled)
+ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
 </script>

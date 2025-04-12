@@ -17,10 +17,12 @@
             severity="secondary"
             disabled
           />
-          <div v-else class="flex gap-2">
-            <Button label="Accept" icon="ti ti-check" @click="handleAcceptFriendRequest(item.id)" />
-            <Button label="Ignore" icon="ti ti-x" severity="secondary" />
-          </div>
+          <Button
+            v-else
+            label="Accept"
+            icon="ti ti-check"
+            @click="handleAcceptFriendRequest(item.id)"
+          />
         </li>
       </ul>
     </div>
@@ -40,7 +42,13 @@
             severity="secondary"
             disabled
           />
-          <Button v-else label="Cancle" icon="ti ti-x" severity="secondary" />
+          <Button
+            v-else
+            label="Cancel"
+            icon="ti ti-x"
+            severity="secondary"
+            @click="handleCancelFriendRequest(item.id)"
+          />
         </li>
       </ul>
     </div>
@@ -63,5 +71,9 @@ const ws = useSocketIO()
 
 const handleAcceptFriendRequest = (friendRequestId: number) => {
   ws.emit('friend_request.accept', { friendRequestId })
+}
+
+const handleCancelFriendRequest = (friendRequestId: number) => {
+  ws.emit('friend_request.cancel', { friendRequestId })
 }
 </script>
