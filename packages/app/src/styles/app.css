@@ -47,6 +47,10 @@
   font-size: 1.5rem !important;
 }
 
+.p-inputtext {
+  line-height: normal;
+}
+
 .p-button {
   font-size: inherit !important;
   line-height: normal;
