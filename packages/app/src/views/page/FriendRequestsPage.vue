@@ -16,7 +16,6 @@
           <div v-else>
             <Button
               icon="ti ti-check"
-              size="large"
               variant="text"
               rounded
               @click="handleAcceptFriendRequest(item.id)"
@@ -24,7 +23,6 @@
             <Button
               icon="ti ti-x"
               severity="danger"
-              size="large"
               variant="text"
               rounded
               @click="handleAcceptFriendRequest(item.id)"
@@ -53,7 +51,6 @@
             v-else
             icon="ti ti-x"
             severity="danger"
-            size="large"
             variant="text"
             rounded
             @click="handleCancelFriendRequest(item.id)"

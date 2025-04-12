@@ -15,6 +15,20 @@
             <div class="font-bold">{{ item.userB.displayName }}</div>
             <div class="text-muted-color">@{{ item.userB.username }}</div>
           </div>
+          <div class="flex gap-2">
+            <Button
+              icon="ti ti-messages"
+              severity="contrast"
+              variant="text"
+              rounded
+            />
+            <Button
+              icon="ti ti-dots"
+              severity="contrast"
+              variant="text"
+              rounded
+            />
+          </div>
         </li>
       </ul>
     </div>
