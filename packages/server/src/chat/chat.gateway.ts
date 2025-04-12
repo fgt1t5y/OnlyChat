@@ -66,8 +66,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(socket: Socket) {
-    socket.leave(this.userSocketsRoomName(socket.data.user.id));
-
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 

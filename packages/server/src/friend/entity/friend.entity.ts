@@ -8,19 +8,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'friend_request' })
-export class FriendRequest {
+@Entity({ name: 'friends' })
+export class Friend {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  senderId: number;
+  userAId: number; // friend request sender
 
   @Column()
-  receiverId: number;
+  userBId: number; // friend request receiver
 
-  @Column({ default: false })
-  accepted: boolean;
+  @Column({ length: 32 })
+  noteName: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -29,8 +29,8 @@ export class FriendRequest {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.id)
-  receiver: User;
+  userA: User;
 
   @ManyToOne(() => User, (user) => user.id)
-  sender: User;
+  userB: User;
 }

@@ -5,9 +5,17 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 
 import App from './App.vue'
 import router from './router'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(relativeTime)
 
 const app = createApp(App)
 
@@ -18,7 +26,7 @@ app.use(PrimeVue, {
     preset: Aura,
     options: {
       darkModeSelector: '.dark',
-  }
+    },
   },
 })
 

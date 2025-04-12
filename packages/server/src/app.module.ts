@@ -9,7 +9,7 @@ import { PermissionModule } from './permission/permission.module';
 import { Permission } from './permission/permission.entity';
 import { ChatModule } from './chat/chat.module';
 import { FriendModule } from './friend/friend.module';
-import { FriendRequest } from './friend/friend-request.entity';
+import { FriendRequest, Friend } from './friend/entity';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { FriendRequest } from './friend/friend-request.entity';
       username: 'root',
       password: 'lyghj456',
       database: 'onlychat',
-      entities: [User, Role, Permission, FriendRequest],
+      entities: [User, Role, Permission, FriendRequest, Friend],
       synchronize: true,
     }),
     UserModule,

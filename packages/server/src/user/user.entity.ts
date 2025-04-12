@@ -6,11 +6,9 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
-  OneToMany,
 } from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
 import { Role } from 'src/role/role.entity';
-import { FriendRequest } from 'src/friend/friend-request.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -53,10 +51,4 @@ export class User {
   @ManyToMany(() => Role, (role) => role.id)
   @JoinTable()
   roles: Role[];
-
-  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.receiver)
-  receivedFriendRequests: FriendRequest[];
-
-  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.sender)
-  sentFriendRequests: FriendRequest[];
 }
