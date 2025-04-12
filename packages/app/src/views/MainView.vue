@@ -43,7 +43,7 @@ import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
 import { computed, provide, ref } from 'vue'
 
-import type { AcceptFriendRequestDto, AppGlobalContext, FriendRequest } from '@/types'
+import type { AcceptFriendRequestDto, AppGlobalContext, FriendRequest, Friend } from '@/types'
 
 const auth = useAuth()
 const ws = useSocketIO()
@@ -52,8 +52,9 @@ await auth.getUserProfile()
 await ws.connectAsync()
 
 const isDev = import.meta.env.DEV
-const receivedFriendRequests = ref<FriendRequest[]>(await apis.friendRequest.getReceived())
-const sentFriendRequests = ref<FriendRequest[]>(await apis.friendRequest.getSent())
+const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
+const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
+const friends = ref<Friend[]>(await apis.getFriends())
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
 
@@ -71,6 +72,7 @@ provide<AppGlobalContext>('OC', {
   receivedFriendRequests,
   sentFriendRequests,
   unacceptFriendRequestCount,
+  friends,
 })
 
 const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {

@@ -30,6 +30,18 @@ export interface FriendRequest {
   receiver: User
 }
 
+export interface Friend {
+  id: number
+  userAId: number
+  userBId: number
+  noteName?: string
+  createdAt: string
+  updatedAt: string
+
+  userA: User
+  userB: User
+}
+
 export interface User {
   id: number
   displayName: string
@@ -57,6 +69,7 @@ export interface AppGlobalContext {
   receivedFriendRequests: Ref<FriendRequest[]>
   sentFriendRequests: Ref<FriendRequest[]>
   unacceptFriendRequestCount?: ComputedRef<number>
+  friends: Ref<Friend[]>
 }
 
 export interface AcceptFriendRequestDto {

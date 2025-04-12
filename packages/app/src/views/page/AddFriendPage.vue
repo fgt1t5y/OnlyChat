@@ -51,7 +51,7 @@ const {
   data: foundItems,
   loading: finding,
   send: find,
-} = useRequest(apis.user.findUser, { immediate: false })
+} = useRequest(apis.findUser, { immediate: false })
 
 const handleSearch = () => {
   if (!searchKeyword) {

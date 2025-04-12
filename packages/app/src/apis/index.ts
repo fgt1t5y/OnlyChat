@@ -1,18 +1,21 @@
-import { login, getProfile, sendRequest, getReceived, getSent, findUser } from './api'
+import {
+  login,
+  getProfile,
+  sendFriendRequest,
+  getReceivedFriendRequest,
+  getSentFriendRequest,
+  getFriends,
+  findUser,
+} from './api'
 
 const apis = {
-  auth: {
-    login,
-    getProfile,
-  },
-  friendRequest: {
-    sendRequest,
-    getReceived,
-    getSent,
-  },
-  user: {
-    findUser,
-  },
+  login,
+  getProfile,
+  sendFriendRequest,
+  getReceivedFriendRequest,
+  getSentFriendRequest,
+  getFriends,
+  findUser,
 }
 
 export default apis

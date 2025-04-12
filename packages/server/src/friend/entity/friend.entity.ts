@@ -14,12 +14,12 @@ export class Friend {
   id: number;
 
   @Column()
-  userAId: number; // friend request sender
+  userAId: number;
 
   @Column()
-  userBId: number; // friend request receiver
+  userBId: number;
 
-  @Column({ length: 32 })
+  @Column({ length: 32, nullable: true })
   noteName: string;
 
   @CreateDateColumn()

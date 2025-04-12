@@ -79,7 +79,7 @@ const {
   error,
   loading,
   send: sendLogin,
-} = useRequest(apis.auth.login, { immediate: false }).onSuccess(() => {
+} = useRequest(apis.login, { immediate: false }).onSuccess(() => {
   if (data.value.token) {
     auth.setAccessToken(data.value.token)
     router.replace({ name: 'home' })

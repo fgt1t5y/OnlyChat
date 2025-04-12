@@ -42,7 +42,7 @@ const router = createRouter({
         },
         {
           path: 'friend/add',
-          name: 'friend_find',
+          name: 'friend_add',
           components: {
             aside: HomeAside,
             default: AddFriendPage,
