@@ -1,3 +1,4 @@
+import type { ComputedRef, Ref } from 'vue'
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
 
 export interface IResponse<T> {
@@ -53,14 +54,15 @@ export interface RouterMenuItem {
 
 export interface AppGlobalContext {
   isDev: boolean
-  receivedFriendRequests: FriendRequest[]
-  sentFriendRequests: FriendRequest[]
+  receivedFriendRequests: Ref<FriendRequest[]>
+  sentFriendRequests: Ref<FriendRequest[]>
+  unacceptFriendRequestCount?: ComputedRef<number>
 }
 
 export interface AcceptFriendRequestDto {
-  friendRequestId: number;
+  friendRequestId: number
 }
 
 export interface WsEventBodyMap {
-  "friend_request.accept": AcceptFriendRequestDto
+  'friend_request.accept': AcceptFriendRequestDto
 }

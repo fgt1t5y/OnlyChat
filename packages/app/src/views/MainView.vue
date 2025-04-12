@@ -41,23 +41,38 @@ import DebugBar from '@/components/DebugBar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
-import { provide } from 'vue'
+import { computed, provide, ref } from 'vue'
 
-import type { AppGlobalContext } from '@/types'
+import type { AppGlobalContext, FriendRequest } from '@/types'
 
-const isDev = import.meta.env.DEV
 const auth = useAuth()
 const ws = useSocketIO()
 
 await auth.getUserProfile()
 
-if (!isDev) {
+if (!import.meta.env.DEV) {
   await ws.connectAsync()
 }
 
+const isDev = import.meta.env.DEV
+const receivedFriendRequests = ref<FriendRequest[]>(await apis.friendRequest.getReceived())
+const sentFriendRequests = ref<FriendRequest[]>(await apis.friendRequest.getSent())
+const unacceptFriendRequestCount = computed(() => {
+  let count = 0
+
+  receivedFriendRequests.value.forEach((item) => {
+    if (!item.accepted) {
+      count++
+    }
+  })
+
+  return count
+})
+
 provide<AppGlobalContext>('OC', {
-  isDev: isDev,
-  receivedFriendRequests: await apis.friendRequest.getReceived(),
-  sentFriendRequests: await apis.friendRequest.getSent(),
+  isDev,
+  receivedFriendRequests,
+  sentFriendRequests,
+  unacceptFriendRequestCount,
 })
 </script>

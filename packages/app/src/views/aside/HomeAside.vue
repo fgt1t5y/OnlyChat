@@ -11,7 +11,7 @@ import { Divider } from 'primevue'
 
 import type { AppGlobalContext, RouterMenuItem } from '@/types'
 
-const appContext = inject<AppGlobalContext>('OC')
+const appContext = inject<AppGlobalContext>('OC')!
 
 const homeAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'Friends', icon: 'ti ti-users', to: { name: 'friend_list' } },
@@ -19,7 +19,7 @@ const homeAsideMenuItems = ref<RouterMenuItem[]>([
     label: 'Friend Requests',
     icon: 'ti ti-users-plus',
     to: { name: 'friend_request_list' },
-    badge: appContext?.receivedFriendRequests.length,
+    badge: appContext.unacceptFriendRequestCount?.value,
   },
   { label: 'Add Friend', icon: 'ti ti-user-search', to: { name: 'friend_find' } },
 ])

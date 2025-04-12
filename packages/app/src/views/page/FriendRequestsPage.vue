@@ -1,15 +1,10 @@
 <template>
   <Page>
     <PageTitle title="Friend Requests" icon="ti ti-user-plus" />
-    <div v-if="appContext?.receivedFriendRequests">
-      <div class="text-muted-color px-2">
-        Received - {{ appContext.receivedFriendRequests.length }}
-      </div>
+    <div v-if="receivedFriendRequests">
+      <div class="text-muted-color px-2">Received - {{ receivedFriendRequests.length }}</div>
       <ul>
-        <li
-          v-for="item in appContext.receivedFriendRequests"
-          class="list-Item flex items-center gap-2"
-        >
+        <li v-for="item in receivedFriendRequests" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item.sender" />
           <div class="grow">
             <div class="font-bold">{{ item.sender.displayName }}</div>
@@ -29,10 +24,10 @@
         </li>
       </ul>
     </div>
-    <div v-if="appContext?.sentFriendRequests">
-      <div class="text-muted-color px-2">Sent - {{ appContext.sentFriendRequests.length }}</div>
+    <div v-if="sentFriendRequests">
+      <div class="text-muted-color px-2">Sent - {{ sentFriendRequests.length }}</div>
       <ul>
-        <li v-for="item in appContext.sentFriendRequests" class="list-Item flex items-center gap-2">
+        <li v-for="item in sentFriendRequests" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item.receiver" />
           <div class="grow">
             <div class="font-bold">{{ item.receiver.displayName }}</div>
@@ -51,11 +46,11 @@ import PageTitle from '@/components/PageTitle.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { inject } from 'vue'
 import { Button } from 'primevue'
-
-import type { AppGlobalContext } from '@/types'
 import { useSocketIO } from '@/stores/socket'
 
-const appContext = inject<AppGlobalContext>('OC')
+import type { AppGlobalContext } from '@/types'
+
+const { receivedFriendRequests, sentFriendRequests } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
 
