@@ -15,8 +15,17 @@
             <div class="font-bold">{{ item.sender.displayName }}</div>
             <div class="text-muted-color">@{{ item.sender.username }}</div>
           </div>
-          <Button label="Accept" icon="ti ti-check" @click="handleAcceptFriendRequest(item.id)" />
-          <Button label="Ignore" icon="ti ti-x" severity="secondary" />
+          <Button
+            v-if="item.accepted"
+            label="Accepted"
+            icon="ti ti-check"
+            severity="secondary"
+            disabled
+          />
+          <div v-else class="flex gap-2">
+            <Button label="Accept" icon="ti ti-check" @click="handleAcceptFriendRequest(item.id)" />
+            <Button label="Ignore" icon="ti ti-x" severity="secondary" />
+          </div>
         </li>
       </ul>
     </div>

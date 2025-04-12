@@ -1,5 +1,6 @@
 import { Logger, UseFilters } from '@nestjs/common';
 import {
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
@@ -13,6 +14,8 @@ import { WsExceptionFilter } from 'src/common/filters/ws-exception.filter';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/common/types';
 import { FriendRequestService } from 'src/friend/friend-request.service';
+import { WsCurrentUser } from 'src/common/decorators';
+import { AcceptFriendRequestDto } from 'src/friend/friend.dto';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -60,7 +63,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('friend_request.accept')
-  handleAcceptFriendRequest(): WsResponse {
+  async handleAcceptFriendRequest(
+    @WsCurrentUser() user: JwtPayload,
+    @MessageBody() acceptFriendRequestDto: AcceptFriendRequestDto,
+  ): Promise<WsResponse> {
+    await this.friendRequestService.accept(
+      user.id,
+      acceptFriendRequestDto.friendRequestId,
+    );
+
     return { event: 'message', data: true };
   }
 }
