@@ -10,19 +10,26 @@
             <div class="font-bold">{{ item.sender.displayName }}</div>
             <div class="text-muted-color">@{{ item.sender.username }}</div>
           </div>
-          <Button
-            v-if="item.accepted"
-            label="Accepted"
-            icon="ti ti-check"
-            severity="secondary"
-            disabled
-          />
-          <Button
-            v-else
-            label="Accept"
-            icon="ti ti-check"
-            @click="handleAcceptFriendRequest(item.id)"
-          />
+          <div v-if="item.accepted">
+            <Button label="Accepted" icon="ti ti-check" severity="secondary" disabled />
+          </div>
+          <div v-else>
+            <Button
+              icon="ti ti-check"
+              size="large"
+              variant="text"
+              rounded
+              @click="handleAcceptFriendRequest(item.id)"
+            />
+            <Button
+              icon="ti ti-x"
+              severity="danger"
+              size="large"
+              variant="text"
+              rounded
+              @click="handleAcceptFriendRequest(item.id)"
+            />
+          </div>
         </li>
       </ul>
     </div>
@@ -44,9 +51,11 @@
           />
           <Button
             v-else
-            label="Cancel"
             icon="ti ti-x"
-            severity="secondary"
+            severity="danger"
+            size="large"
+            variant="text"
+            rounded
             @click="handleCancelFriendRequest(item.id)"
           />
         </li>

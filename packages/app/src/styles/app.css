@@ -64,7 +64,7 @@
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-100 dark:hover:bg-surface-800;
+  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-200 dark:hover:bg-surface-800;
 
   &.router-link-active {
     @apply text-primary bg-surface-100 dark:bg-surface-800;
@@ -88,5 +88,5 @@
 }
 
 .list-Item {
-  @apply p-2 rounded hover:bg-surface-100 dark:hover:bg-surface-800;
+  @apply p-2 rounded hover:bg-surface-200 dark:hover:bg-surface-800;
 }
