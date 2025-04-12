@@ -9,6 +9,6 @@ export class UserController {
   @Get('find')
   @UseGuards(JwtAuthGuard)
   async find(@Query('searchKeyword') searchKeyword: string) {
-    return this.userService.search(searchKeyword);
+    return this.userService.findBy(searchKeyword);
   }
 }

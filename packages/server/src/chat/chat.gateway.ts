@@ -21,6 +21,7 @@ import {
   AcceptFriendRequestDto,
   CancelFriendRequestDto,
 } from 'src/friend/friend.dto';
+import { UserService } from 'src/user/user.service';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -33,6 +34,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly jwtService: JwtService,
     private readonly friendRequestService: FriendRequestService,
+    private readonly userService: UserService,
   ) {}
 
   @WebSocketServer()
@@ -49,8 +51,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const payload = (await this.jwtService.verifyAsync(token)) as JwtPayload;
 
       socket.data.user = payload;
+      socket.join(this.userSocketsRoom(payload.id));
 
-      socket.join(this.userSocketsRoomName(payload.id));
+      await this.userService.updateIsOnline(payload.id, true);
 
       this.logger.log(
         `Client connected: ${socket.id} - User ID: ${payload.id}`,
@@ -66,6 +69,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(socket: Socket) {
+    const userSocketCount = await socket
+      .in(this.userSocketsRoom(socket.data.user.id))
+      .fetchSockets();
+
+    await this.userService.updateIsOnline(
+      socket.data.user.id,
+      userSocketCount.length > 0,
+    );
+
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
@@ -81,7 +93,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     socket
-      .to(this.userSocketsRoomName(friendRequest.senderId))
+      .to(this.userSocketsRoom(friendRequest.senderId))
       .emit('friend_request.received', friendRequest);
 
     return { event: 'friend_request.create.success', data: friendRequest };
@@ -99,7 +111,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     socket
-      .to(this.userSocketsRoomName(friendRequest.senderId))
+      .to(this.userSocketsRoom(friendRequest.senderId))
       .emit('friend_request.accepted', acceptFriendRequestDto);
 
     return {
@@ -120,7 +132,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     socket
-      .to(this.userSocketsRoomName(friendRequest.receiverId))
+      .to(this.userSocketsRoom(friendRequest.receiverId))
       .emit('friend_request.canceled', cancelFriendRequestDto);
 
     return {
@@ -129,7 +141,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     };
   }
 
-  userSocketsRoomName(userId: number) {
+  userSocketsRoom(userId: number) {
     return `userSockets.${userId}`;
   }
 }

@@ -10,7 +10,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async search(searchKeyword: string) {
+  async findBy(searchKeyword: string): Promise<User[]> {
     if (!searchKeyword) {
       throw new BadRequestException('Search keyword is required');
     }
@@ -20,5 +20,13 @@ export class UserService {
         username: Like(`%${searchKeyword}%`),
       },
     });
+  }
+
+  async updateIsOnline(userId: number, isOnline: boolean): Promise<boolean> {
+    await this.userRepository.update(userId, {
+      isOnline,
+    });
+
+    return isOnline;
   }
 }
