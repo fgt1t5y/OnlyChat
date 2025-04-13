@@ -1,8 +1,8 @@
 <template>
   <div v-if="auth.user" class="flex h-screen">
-    <nav class="flex flex-col min-w-[350px] border-r border-content">
+    <nav id="main-Nav" class="flex flex-col min-w-[350px] border-r border-surface">
       <section class="flex grow">
-        <menu class="flex flex-col gap-3 p-3 items-center border-r border-content">
+        <menu class="flex flex-col gap-3 p-3 items-center border-r border-surface">
           <RouterLink class="menu-Link" :to="{ name: 'home' }">
             <Avatar icon="ti ti-home" size="large" />
           </RouterLink>
@@ -47,9 +47,7 @@ import type {
   AcceptFriendRequestDto,
   AppGlobalContext,
   FriendRequest,
-  Friend,
   User,
-  DMSession,
 } from '@/types'
 
 const auth = useAuth()
@@ -62,7 +60,7 @@ const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
 const friends = ref<User[]>(await apis.getFriends())
-const openedDMSessions = ref<DMSession[]>(await apis.getDmSessions())
+const openedDMSessions = ref<User[]>(await apis.getDmSessions())
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
 

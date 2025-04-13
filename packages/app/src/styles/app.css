@@ -43,7 +43,7 @@
 /*
  * Override
  */
- .p-button .p-button-icon {
+.p-button .p-button-icon {
   font-size: 1.25rem !important;
 }
 
@@ -63,6 +63,10 @@
 /*
  * Components
  */
+#main-Nav {
+  @apply bg-surface-300 dark:bg-surface-800;
+}
+
 .router-Menu {
   @apply flex flex-col gap-1;
 }
