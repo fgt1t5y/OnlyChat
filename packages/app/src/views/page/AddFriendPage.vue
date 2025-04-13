@@ -23,7 +23,12 @@
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <Button v-if="wasRequested(item)" label="Requested" severity="secondary" disabled />
-          <Button v-else label="Send request" severity="secondary" />
+          <Button
+            v-else
+            label="Send request"
+            severity="secondary"
+            @click="handleSendFriendRequest(item.id)"
+          />
         </li>
       </ul>
     </div>
@@ -42,8 +47,11 @@ import { Button, InputGroup, InputText } from 'primevue'
 import { inject, ref } from 'vue'
 
 import type { AppGlobalContext, User } from '@/types'
+import { useSocketIO } from '@/stores/socket'
 
 const appContext = inject<AppGlobalContext>('OC')
+
+const ws = useSocketIO()
 
 const searchKeyword = ref<string>('')
 
@@ -69,5 +77,9 @@ const wasRequested = (receiver: User) => {
   return appContext.sentFriendRequests.some(
     (friendRequest) => friendRequest.receiverId === receiver.id,
   )
+}
+
+const handleSendFriendRequest = (receiverId: number) => {
+  ws.emit('friend_request.send', { receiverId })
 }
 </script>

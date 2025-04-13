@@ -43,7 +43,7 @@ import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'
 import { computed, provide, ref } from 'vue'
 
-import type { AcceptFriendRequestDto, AppGlobalContext, FriendRequest, Friend } from '@/types'
+import type { AcceptFriendRequestDto, AppGlobalContext, FriendRequest, Friend, User } from '@/types'
 
 const auth = useAuth()
 const ws = useSocketIO()
@@ -54,7 +54,7 @@ await ws.connectAsync()
 const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
-const friends = ref<Friend[]>(await apis.getFriends())
+const friends = ref<User[]>(await apis.getFriends())
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
 
@@ -75,8 +75,24 @@ provide<AppGlobalContext>('OC', {
   friends,
 })
 
+const onFriendRequestSuccessfullyCreated = (friendRequest: FriendRequest) => {
+  console.log('You sent this friend request', friendRequest)
+
+  if (friendRequest) {
+    sentFriendRequests.value.unshift(friendRequest)
+  }
+}
+
+const onFriendRequestReceivedByReceiver = (friendRequest: FriendRequest) => {
+  console.log('You received this friend request', friendRequest)
+
+  if (friendRequest) {
+    receivedFriendRequests.value.unshift(friendRequest)
+  }
+}
+
 const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {
-  console.log('Accepted this friend request', friendRequestId)
+  console.log('You accepted this friend request', friendRequestId)
 
   const friendRequestIndex = receivedFriendRequests.value.findIndex(
     (item) => item.id === friendRequestId,
@@ -85,6 +101,8 @@ const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRe
   if (friendRequestIndex !== -1) {
     receivedFriendRequests.value[friendRequestIndex].accepted = true
   }
+
+  friends.value.unshift(receivedFriendRequests.value[friendRequestIndex].sender)
 }
 
 const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequestDto) => {
@@ -97,6 +115,8 @@ const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequ
   if (friendRequestIndex !== -1) {
     sentFriendRequests.value[friendRequestIndex].accepted = true
   }
+
+  friends.value.unshift(sentFriendRequests.value[friendRequestIndex].receiver)
 }
 
 const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: AcceptFriendRequestDto) => {
@@ -123,6 +143,8 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendReques
   }
 }
 
+ws.socket.on('friend_request.send.success', onFriendRequestSuccessfullyCreated)
+ws.socket.on('friend_request.received', onFriendRequestReceivedByReceiver)
 ws.socket.on('friend_request.accept.success', onFriendRequestSuccessfullyAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
 ws.socket.on('friend_request.cancel.success', onFriendRequestSuccessfullyCanceled)

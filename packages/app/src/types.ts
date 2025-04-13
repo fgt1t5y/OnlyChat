@@ -69,14 +69,23 @@ export interface AppGlobalContext {
   receivedFriendRequests: Ref<FriendRequest[]>
   sentFriendRequests: Ref<FriendRequest[]>
   unacceptFriendRequestCount?: ComputedRef<number>
-  friends: Ref<Friend[]>
+  friends: Ref<User[]>
+}
+
+export interface SendFriendRequestDto {
+  receiverId: number;
 }
 
 export interface AcceptFriendRequestDto {
   friendRequestId: number
 }
 
+export interface CancelFriendRequestDto {
+  friendRequestId: number
+}
+
 export interface WsEventBodyMap {
+  'friend_request.send': SendFriendRequestDto
   'friend_request.accept': AcceptFriendRequestDto
-  'friend_request.cancel': AcceptFriendRequestDto
+  'friend_request.cancel': CancelFriendRequestDto
 }

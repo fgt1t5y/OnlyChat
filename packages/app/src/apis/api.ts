@@ -28,7 +28,7 @@ export const getSentFriendRequest = () => {
 
 // #region Friend API
 export const getFriends = () => {
-  return alovaInstance.Get<Friend[]>('/friend')
+  return alovaInstance.Get<User[]>('/friend')
 }
 
 // #region User API

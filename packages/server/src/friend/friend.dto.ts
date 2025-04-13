@@ -2,10 +2,6 @@ export interface SendFriendRequestDto {
   receiverId: number;
 }
 
-export interface CreateFriendRequestDto {
-  receiverId: number;
-}
-
 export interface AcceptFriendRequestDto {
   friendRequestId: number;
 }

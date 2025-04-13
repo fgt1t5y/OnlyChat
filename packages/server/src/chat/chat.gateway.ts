@@ -17,11 +17,12 @@ import { JwtPayload } from 'src/common/types';
 import { FriendRequestService } from 'src/friend/friend-request.service';
 import { WsCurrentUser } from 'src/common/decorators';
 import {
-  CreateFriendRequestDto,
+  SendFriendRequestDto,
   AcceptFriendRequestDto,
   CancelFriendRequestDto,
 } from 'src/friend/friend.dto';
 import { UserService } from 'src/user/user.service';
+import { FriendService } from 'src/friend/friend.service';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -34,6 +35,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly jwtService: JwtService,
     private readonly friendRequestService: FriendRequestService,
+    private readonly friendService: FriendService,
     private readonly userService: UserService,
   ) {}
 
@@ -81,22 +83,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
-  @SubscribeMessage('friend_request.create')
+  @SubscribeMessage('friend_request.send')
   async handleCreateFriendRequest(
     @WsCurrentUser() user: JwtPayload,
-    @MessageBody() createFriendRequestDto: CreateFriendRequestDto,
+    @MessageBody() sendFriendRequestDto: SendFriendRequestDto,
     @ConnectedSocket() socket: Socket,
   ): Promise<WsResponse> {
     const friendRequest = await this.friendRequestService.create(
       user.id,
-      createFriendRequestDto.receiverId,
+      sendFriendRequestDto.receiverId,
     );
 
     socket
       .to(this.userSocketsRoom(friendRequest.senderId))
       .emit('friend_request.received', friendRequest);
 
-    return { event: 'friend_request.create.success', data: friendRequest };
+    return { event: 'friend_request.send.success', data: friendRequest };
   }
 
   @SubscribeMessage('friend_request.accept')
@@ -108,6 +110,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const friendRequest = await this.friendRequestService.accept(
       user.id,
       acceptFriendRequestDto.friendRequestId,
+    );
+
+    await this.friendService.createBothSideRelationship(
+      user.id,
+      friendRequest.senderId,
     );
 
     socket

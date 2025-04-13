@@ -10,10 +10,10 @@
     <div v-if="friends.length">
       <ul>
         <li v-for="item in friends" class="list-Item flex items-center gap-2">
-          <UserAvatar :user="item.userB" />
+          <UserAvatar :user="item" />
           <div class="grow">
-            <div class="font-bold">{{ item.userB.displayName }}</div>
-            <div class="text-muted-color">@{{ item.userB.username }}</div>
+            <div class="font-bold">{{ item.displayName }}</div>
+            <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <div class="flex gap-2">
             <Button
