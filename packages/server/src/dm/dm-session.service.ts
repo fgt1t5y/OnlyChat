@@ -1,26 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDmDto } from './dto/create-dm.dto';
-import { UpdateDmDto } from './dto/update-dm.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DMSession } from './entities';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
-export class DmSessionService {
-  create(createDmDto: CreateDmDto) {
-    return 'This action adds a new dm';
+export class DMSessionService {
+  constructor(
+    @InjectRepository(DMSession)
+    private readonly dmSessionRepository: Repository<DMSession>,
+  ) {}
+
+  async findAll(userId: number): Promise<User[]> {
+    const friends = await this.dmSessionRepository.find({
+      relations: {
+        userB: true,
+      },
+      where: {
+        userAId: userId,
+      },
+    });
+
+    return friends.map((item) => item.userB);
   }
 
-  findAll() {
-    return `This action returns all dm`;
+  async exist(userAId: number, userBId: number) {
+    return await this.dmSessionRepository.existsBy({
+      userAId,
+      userBId,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dm`;
+  async create(userAId: number, userBId: number): Promise<DMSession> {
+    const dmSession = this.dmSessionRepository.create({
+      userAId: userAId,
+      userBId: userBId,
+      isOpen: true,
+    });
+
+    return await this.dmSessionRepository.save(dmSession);
   }
 
-  update(id: number, updateDmDto: UpdateDmDto) {
-    return `This action updates a #${id} dm`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} dm`;
+  async updateIsOpen(userAId: number, userBId: number, isOpen: boolean) {
+    await this.dmSessionRepository.update(
+      { userAId, userBId },
+      {
+        isOpen,
+      },
+    );
   }
 }

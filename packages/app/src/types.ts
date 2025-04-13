@@ -17,6 +17,18 @@ export interface AuthLoginPayload {
   token: string
 }
 
+export interface DMSession {
+  id: number
+  userAId: number
+  userBId: number
+  isOpen: boolean
+  createdAt: string
+  updatedAt: string
+
+  userA: User
+  userB: User
+}
+
 export interface FriendRequest {
   id: number
   senderId: number
@@ -70,10 +82,11 @@ export interface AppGlobalContext {
   sentFriendRequests: Ref<FriendRequest[]>
   unacceptFriendRequestCount?: ComputedRef<number>
   friends: Ref<User[]>
+  openedDMSessions: Ref<User[]>
 }
 
 export interface SendFriendRequestDto {
-  receiverId: number;
+  receiverId: number
 }
 
 export interface AcceptFriendRequestDto {

@@ -1,6 +1,7 @@
 import {
   login,
   getProfile,
+  getDmSessions,
   sendFriendRequest,
   getReceivedFriendRequest,
   getSentFriendRequest,
@@ -11,6 +12,7 @@ import {
 const apis = {
   login,
   getProfile,
+  getDmSessions,
   sendFriendRequest,
   getReceivedFriendRequest,
   getSentFriendRequest,

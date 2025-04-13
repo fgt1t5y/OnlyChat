@@ -9,6 +9,7 @@ import ProfilePage from '@/views/page/settings/ProfilePage.vue'
 import AvatarPage from '@/views/page/settings/AvatarPage.vue'
 import ThemePage from '@/views/page/settings/ThemePage.vue'
 import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
+import DMChatPage from '@/views/page/DMChatPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,12 +22,12 @@ const router = createRouter({
           path: '',
           name: 'home',
           redirect() {
-            return { name: 'friend_list' }
+            return { name: 'friends' }
           },
         },
         {
-          path: 'friend/list',
-          name: 'friend_list',
+          path: 'friends',
+          name: 'friends',
           components: {
             aside: HomeAside,
             default: FriendsPage,
@@ -34,7 +35,7 @@ const router = createRouter({
         },
         {
           path: 'friend/requests',
-          name: 'friend_request_list',
+          name: 'friend_requests',
           components: {
             aside: HomeAside,
             default: FriendRequestsPage,
@@ -46,6 +47,14 @@ const router = createRouter({
           components: {
             aside: HomeAside,
             default: AddFriendPage,
+          },
+        },
+        {
+          path: 'dm/:userId(\\d+)',
+          name: 'dm',
+          components: {
+            aside: HomeAside,
+            default: DMChatPage,
           },
         },
       ],

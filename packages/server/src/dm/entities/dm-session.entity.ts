@@ -7,8 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 @Entity({ name: 'dm_session' })
-export class DmSession {
+export class DMSession {
   @PrimaryGeneratedColumn()
   id: number;
 

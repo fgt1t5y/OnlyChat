@@ -57,11 +57,11 @@ export class AuthService {
       throw new BadRequestException('Username or password is required.');
     }
 
-    if (this.userRepository.existsBy({ username })) {
+    if (await this.userRepository.existsBy({ username })) {
       throw new BadRequestException(`Username ${username} already exists.`);
     }
 
-    const user = await this.userRepository.create({
+    const user = this.userRepository.create({
       displayName: username,
       username: username,
       password: password,
@@ -69,7 +69,7 @@ export class AuthService {
 
     delete user.password;
 
-    return user;
+    return await this.userRepository.save(user);
   }
 
   async profile(@Request() request: any) {

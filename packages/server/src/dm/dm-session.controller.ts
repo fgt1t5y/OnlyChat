@@ -1,42 +1,30 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { DmSessionService } from './dm-session.service';
-import { CreateDmDto } from './dto/create-dm.dto';
-import { UpdateDmDto } from './dto/update-dm.dto';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { DMSessionService } from './dm-session.service';
+import { CurrentUser } from 'src/common/decorators';
+import { JwtPayload } from 'src/common/types';
+import { CreateDMSessionDto } from './dm.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('dm/session')
-export class DmSessionController {
-  constructor(private readonly dmService: DmSessionService) {}
-
-  @Post()
-  create(@Body() createDmDto: CreateDmDto) {
-    return this.dmService.create(createDmDto);
-  }
+export class DMSessionController {
+  constructor(private readonly dmSessionService: DMSessionService) {}
 
   @Get()
-  findAll() {
-    return this.dmService.findAll();
+  @UseGuards(JwtAuthGuard)
+  async getFriends(@CurrentUser() user: JwtPayload) {
+    return await this.dmSessionService.findAll(user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dmService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDmDto: UpdateDmDto) {
-    return this.dmService.update(+id, updateDmDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dmService.remove(+id);
+  @Post('open')
+  @UseGuards(JwtAuthGuard)
+  async openSession(
+    @CurrentUser() user: JwtPayload,
+    @Body() { userBId }: CreateDMSessionDto,
+  ) {
+    if (await this.dmSessionService.exist(user.id, userBId)) {
+      await this.dmSessionService.updateIsOpen(user.id, userBId, true);
+    } else {
+      await this.dmSessionService.create(user.id, userBId);
+    }
   }
 }

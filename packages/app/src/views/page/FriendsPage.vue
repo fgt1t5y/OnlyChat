@@ -16,18 +16,10 @@
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <div class="flex gap-2">
-            <Button
-              icon="ti ti-messages"
-              severity="contrast"
-              variant="text"
-              rounded
-            />
-            <Button
-              icon="ti ti-dots"
-              severity="contrast"
-              variant="text"
-              rounded
-            />
+            <RouterLink :to="{ name: 'dm', params: { userId: item.id } }">
+              <Button icon="ti ti-messages" severity="contrast" variant="text" rounded />
+            </RouterLink>
+            <Button icon="ti ti-dots" severity="contrast" variant="text" rounded />
           </div>
         </li>
       </ul>

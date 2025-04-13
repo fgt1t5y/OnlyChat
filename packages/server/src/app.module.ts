@@ -10,8 +10,8 @@ import { Permission } from './permission/permission.entity';
 import { ChatModule } from './chat/chat.module';
 import { FriendModule } from './friend/friend.module';
 import { FriendRequest, Friend } from './friend/entity';
-import { DmModule } from './dm/dm.module';
-import { DmMessage, DmSession } from './dm/entities';
+import { DMModule } from './dm/dm.module';
+import { DMMessage, DMSession } from './dm/entities';
 
 @Module({
   imports: [
@@ -28,8 +28,8 @@ import { DmMessage, DmSession } from './dm/entities';
         Permission,
         FriendRequest,
         Friend,
-        DmMessage,
-        DmSession,
+        DMMessage,
+        DMSession,
       ],
       synchronize: true,
     }),
@@ -39,7 +39,7 @@ import { DmMessage, DmSession } from './dm/entities';
     PermissionModule,
     ChatModule,
     FriendModule,
-    DmModule,
+    DMModule,
   ],
 })
 export class AppModule {}

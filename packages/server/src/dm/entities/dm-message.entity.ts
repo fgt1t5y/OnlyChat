@@ -6,10 +6,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DmSession } from './dm-session.entity';
+import { DMSession } from './dm-session.entity';
 import { User } from 'src/user/user.entity';
+
 @Entity({ name: 'dm_message' })
-export class DmMessage {
+export class DMMessage {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -31,6 +32,6 @@ export class DmMessage {
   @ManyToOne(() => User, (user) => user.id)
   author: User;
 
-  @ManyToOne(() => DmSession, (dmSession) => dmSession.id)
-  session: DmSession;
+  @ManyToOne(() => DMSession, (dmSession) => dmSession.id)
+  session: DMSession;
 }
