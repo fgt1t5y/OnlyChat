@@ -22,7 +22,8 @@
             <div class="font-bold">{{ item.displayName }}</div>
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
-          <Button v-if="wasRequested(item)" label="Requested" severity="secondary" disabled />
+          <div v-if="isFriend(item)"></div>
+          <Button v-else-if="wasRequested(item)" label="Requested" severity="secondary" disabled />
           <Button
             v-else
             label="Send request"
@@ -49,7 +50,7 @@ import { inject, ref } from 'vue'
 import type { AppGlobalContext, User } from '@/types'
 import { useSocketIO } from '@/stores/socket'
 
-const appContext = inject<AppGlobalContext>('OC')
+const { sentFriendRequests, friends } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
 
@@ -69,14 +70,12 @@ const handleSearch = () => {
   find(searchKeyword.value.trim())
 }
 
-const wasRequested = (receiver: User) => {
-  if (!appContext?.sentFriendRequests || !Array.isArray(appContext.sentFriendRequests)) {
-    return false
-  }
+const isFriend = (receiver: User) => {
+  return friends.value.some((friend) => friend.id === receiver.id)
+}
 
-  return appContext.sentFriendRequests.some(
-    (friendRequest) => friendRequest.receiverId === receiver.id,
-  )
+const wasRequested = (receiver: User) => {
+  return sentFriendRequests.value.some((friendRequest) => friendRequest.receiverId === receiver.id)
 }
 
 const handleSendFriendRequest = (receiverId: number) => {
