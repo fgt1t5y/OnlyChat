@@ -11,7 +11,7 @@
           <RouterView name="aside" />
         </aside>
       </section>
-      <section class="flex gap-2 items-center border-t border-content p-3">
+      <section class="flex gap-2 items-center border-t border-surface p-3">
         <UserAvatar :user="auth.user!" />
         <div class="flex flex-col justify-center grow">
           <div>{{ auth.user.username }}</div>

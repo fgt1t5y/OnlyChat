@@ -27,7 +27,7 @@
     <NoFriendPlaceholder v-else />
 
     <template #rightAside>
-      <aside class="w-[360px] p-2 border-l border-content">
+      <aside class="w-[360px] p-2 border-l border-surface">
         <PageTitle title="Friend Status" icon="ti ti-stars" />
       </aside>
     </template>

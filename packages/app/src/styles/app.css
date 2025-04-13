@@ -14,14 +14,6 @@
   @apply bg-[#F8FAFC] dark:bg-[#16181C];
 }
 
-@utility border-content {
-  @apply border-gray-300 dark:border-gray-700;
-}
-
-@utility border-form {
-  @apply border-gray-500 dark:border-gray-700;
-}
-
 @utility w-setting-page {
   @apply w-[600px];
 }
