@@ -1,11 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DmService } from './dm.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { DmSessionService } from './dm-session.service';
 import { CreateDmDto } from './dto/create-dm.dto';
 import { UpdateDmDto } from './dto/update-dm.dto';
 
-@Controller('dm')
-export class DmController {
-  constructor(private readonly dmService: DmService) {}
+@Controller('dm/session')
+export class DmSessionController {
+  constructor(private readonly dmService: DmSessionService) {}
 
   @Post()
   create(@Body() createDmDto: CreateDmDto) {

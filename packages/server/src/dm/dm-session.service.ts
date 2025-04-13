@@ -3,7 +3,7 @@ import { CreateDmDto } from './dto/create-dm.dto';
 import { UpdateDmDto } from './dto/update-dm.dto';
 
 @Injectable()
-export class DmService {
+export class DmSessionService {
   create(createDmDto: CreateDmDto) {
     return 'This action adds a new dm';
   }
