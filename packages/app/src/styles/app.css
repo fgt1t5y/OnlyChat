@@ -11,7 +11,7 @@
 }
 
 @utility bg-content {
-  @apply bg-[#F8FAFC] dark:bg-[#16181C];
+  @apply bg-[#F8FAFC] dark:bg-[#10121A];
 }
 
 @utility w-setting-page {
@@ -56,7 +56,7 @@
  * Components
  */
 #main-Nav {
-  @apply bg-surface-300 dark:bg-surface-800;
+  @apply bg-surface-300 dark:bg-surface-900;
 }
 
 .router-Menu {
