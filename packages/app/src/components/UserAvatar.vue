@@ -1,5 +1,10 @@
 <template>
-  <Avatar v-if="user.avatarUrl" size="large" shape="circle" :image="user.avatarUrl" />
+  <Avatar
+    v-if="user.avatarUrl"
+    size="large"
+    shape="circle"
+    :image="`/api/content/avatars/${user.avatarUrl}`"
+  />
   <Avatar v-else size="large" shape="circle" :label="user.displayName.slice(0, 1)" />
 </template>
 
