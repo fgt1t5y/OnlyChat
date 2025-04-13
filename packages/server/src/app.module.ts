@@ -10,6 +10,8 @@ import { Permission } from './permission/permission.entity';
 import { ChatModule } from './chat/chat.module';
 import { FriendModule } from './friend/friend.module';
 import { FriendRequest, Friend } from './friend/entity';
+import { DmModule } from './dm/dm.module';
+import { DmMessage, DmSession } from './dm/entities';
 
 @Module({
   imports: [
@@ -20,7 +22,15 @@ import { FriendRequest, Friend } from './friend/entity';
       username: 'root',
       password: 'lyghj456',
       database: 'onlychat',
-      entities: [User, Role, Permission, FriendRequest, Friend],
+      entities: [
+        User,
+        Role,
+        Permission,
+        FriendRequest,
+        Friend,
+        DmMessage,
+        DmSession,
+      ],
       synchronize: true,
     }),
     UserModule,
@@ -29,6 +39,7 @@ import { FriendRequest, Friend } from './friend/entity';
     PermissionModule,
     ChatModule,
     FriendModule,
+    DmModule,
   ],
 })
 export class AppModule {}
