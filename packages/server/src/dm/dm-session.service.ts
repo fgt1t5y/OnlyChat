@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DMSession } from './entities';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class DMSessionService {
@@ -10,6 +9,12 @@ export class DMSessionService {
     @InjectRepository(DMSession)
     private readonly dmSessionRepository: Repository<DMSession>,
   ) {}
+
+  async findOne(dmSessionId: number) {
+    return await this.dmSessionRepository.findOne({
+      where: { id: dmSessionId },
+    });
+  }
 
   async findAll(userId: number): Promise<DMSession[]> {
     return await this.dmSessionRepository.find({

@@ -3,11 +3,13 @@ import { DMSessionService } from './dm-session.service';
 import { DMSessionController } from './dm-session.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DMMessage, DMSession } from './entities';
+import { DMMessageController } from './dm-message.controller';
+import { DMMessageService } from './dm-message.service';
 
 @Module({
-  controllers: [DMSessionController],
+  controllers: [DMSessionController, DMMessageController],
   imports: [TypeOrmModule.forFeature([DMSession, DMMessage])],
-  providers: [DMSessionService],
-  exports: [DMSessionService],
+  providers: [DMSessionService, DMMessageService],
+  exports: [DMSessionService, DMMessageService],
 })
 export class DMModule {}

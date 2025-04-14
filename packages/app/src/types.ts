@@ -29,6 +29,18 @@ export interface DMSession {
   userB: User
 }
 
+export interface DMMessage {
+  id: number
+  authroId: number
+  sessionId: number
+  content: string
+  createdAt: string
+  updatedAt: string
+
+  author: User
+  session: User
+}
+
 export interface FriendRequest {
   id: number
   senderId: number

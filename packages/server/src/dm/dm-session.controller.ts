@@ -17,7 +17,7 @@ export class DMSessionController {
 
   @Post('open')
   @UseGuards(JwtAuthGuard)
-  async openSession(
+  async openDMSession(
     @CurrentUser() user: JwtPayload,
     @Body() { userBId }: OpenDMSessionDto,
   ) {

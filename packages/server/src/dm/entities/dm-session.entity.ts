@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DMMessage } from './dm-message.entity';
 
 @Entity({ name: 'dm_session' })
 export class DMSession {
@@ -18,6 +20,9 @@ export class DMSession {
 
   @Column()
   userBId: number;
+
+  @Column({ nullable: true })
+  lastMessageId: number;
 
   @Column()
   isOpen: boolean;
@@ -33,4 +38,7 @@ export class DMSession {
 
   @ManyToOne(() => User, (user) => user.id)
   userB: User;
+
+  @OneToOne(() => DMMessage, (dmMessage) => dmMessage.id)
+  lastMessage: DMMessage;
 }

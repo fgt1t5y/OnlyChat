@@ -98,3 +98,7 @@
 .page-Aside {
   @apply w-[360px] p-2 border-l border-surface bg-surface-200 dark:bg-surface-900;
 }
+
+.chat-Item {
+  @apply flex gap-2 items-start p-2 rounded hover:bg-surface-200 dark:hover:bg-surface-900;
+}

@@ -1,6 +1,13 @@
 import { alovaInstance } from './instance'
 
-import type { AuthLoginForm, AuthLoginPayload, DMSession, FriendRequest, User } from '@/types'
+import type {
+  AuthLoginForm,
+  AuthLoginPayload,
+  DMMessage,
+  DMSession,
+  FriendRequest,
+  User,
+} from '@/types'
 
 // #region Auth API
 export const login = ({ username, password }: AuthLoginForm) => {
@@ -16,6 +23,11 @@ export const getProfile = () => {
 // #region DM Session API
 export const getDmSessions = () => {
   return alovaInstance.Get<DMSession[]>('/dm/session')
+}
+
+// #region DM Message API
+export const getDmMessages = (dmSessionId: number, after: number, takeCount: number) => {
+  return alovaInstance.Get<DMMessage[]>('/dm/message', { params: { dmSessionId, after, takeCount } })
 }
 
 // #region Friend Request API
