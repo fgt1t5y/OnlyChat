@@ -29,7 +29,7 @@
 }
 
 .menu-Link.router-link-active {
-  @apply outline-2 outline-primary rounded;
+  @apply outline-2 outline-primary rounded-border;
 }
 
 /*
@@ -68,7 +68,7 @@
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-50 dark:hover:bg-surface-800;
+  @apply flex items-center gap-2 p-2 rounded-border text-base hover:bg-surface-50 dark:hover:bg-surface-800;
 
   &.router-link-active {
     @apply text-primary bg-surface-50 dark:bg-surface-800;
@@ -92,7 +92,7 @@
 }
 
 .list-Item {
-  @apply p-2 rounded hover:bg-surface-200 dark:hover:bg-surface-800;
+  @apply p-2 rounded-border hover:bg-surface-200 dark:hover:bg-surface-800;
 }
 
 .page-Aside {
@@ -100,5 +100,5 @@
 }
 
 .chat-Item {
-  @apply flex gap-2 items-start p-2 rounded hover:bg-surface-200 dark:hover:bg-surface-900;
+  @apply flex gap-2 items-start p-2 rounded-border hover:bg-surface-200 dark:hover:bg-surface-900;
 }

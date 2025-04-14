@@ -11,7 +11,7 @@
           <UserAvatar :user="item.author" mini />
           <div class="flex flex-col">
             <div class="font-bold">{{ item.author.displayName }}</div>
-            <div>{{ item.content }}</div>
+            <div v-html="markedInstance.parse(item.content)"></div>
           </div>
         </li>
       </ul>
@@ -37,6 +37,7 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import { Button, InputText } from 'primevue'
 import { inject, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { markedInstance } from '@/utils'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
