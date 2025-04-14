@@ -4,8 +4,7 @@
     class="mt-6"
     label="Logout"
     icon="ti ti-logout"
-    severity="danger"
-    variant="outlined"
+    severity="secondary"
     fluid
     @click="logout"
   />

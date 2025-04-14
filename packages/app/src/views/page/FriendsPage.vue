@@ -4,7 +4,7 @@
     <div class="flex gap-2 justify-end">
       <InputText class="grow" placeholder="Search friends" />
       <RouterLink :to="{ name: 'friend_add' }">
-        <Button label="Add Friend" icon="ti ti-plus" severity="secondary" />
+        <Button label="Add Friend" icon="ti ti-plus" />
       </RouterLink>
     </div>
     <div v-if="friends.length">
