@@ -2,7 +2,7 @@ import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { DMSessionService } from './dm-session.service';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
-import { CreateDMSessionDto } from './dm.dto';
+import { OpenDMSessionDto } from './dm.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('dm/session')
@@ -11,7 +11,7 @@ export class DMSessionController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getFriends(@CurrentUser() user: JwtPayload) {
+  async getDMSessions(@CurrentUser() user: JwtPayload) {
     return await this.dmSessionService.findAll(user.id);
   }
 
@@ -19,12 +19,22 @@ export class DMSessionController {
   @UseGuards(JwtAuthGuard)
   async openSession(
     @CurrentUser() user: JwtPayload,
-    @Body() { userBId }: CreateDMSessionDto,
+    @Body() { userBId }: OpenDMSessionDto,
   ) {
-    if (await this.dmSessionService.exist(user.id, userBId)) {
-      await this.dmSessionService.updateIsOpen(user.id, userBId, true);
+    const dmSession = await this.dmSessionService.findBy(user.id, userBId);
+
+    if (dmSession) {
+      if (!dmSession.isOpen) {
+        await this.dmSessionService.updateIsOpen(user.id, userBId, true);
+
+        dmSession.isOpen = true;
+      }
+
+      return dmSession;
     } else {
       await this.dmSessionService.create(user.id, userBId);
+
+      return await this.dmSessionService.findBy(user.id, userBId);
     }
   }
 }

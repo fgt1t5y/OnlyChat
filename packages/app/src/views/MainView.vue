@@ -46,6 +46,7 @@ import { computed, provide, ref } from 'vue'
 import type {
   AcceptFriendRequestDto,
   AppGlobalContext,
+  DMSession,
   FriendRequest,
   User,
 } from '@/types'
@@ -60,7 +61,7 @@ const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
 const friends = ref<User[]>(await apis.getFriends())
-const openedDMSessions = ref<User[]>(await apis.getDmSessions())
+const openedDMSessions = ref<DMSession[]>(await apis.getDmSessions())
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
 

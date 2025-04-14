@@ -16,7 +16,7 @@
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <div class="flex gap-2">
-            <RouterLink :to="{ name: 'dm', params: { userId: item.id } }">
+            <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }">
               <Button icon="ti ti-messages" severity="secondary" rounded />
             </RouterLink>
             <Button icon="ti ti-dots" severity="secondary" rounded />
@@ -27,7 +27,7 @@
     <NoFriendPlaceholder v-else />
 
     <template #rightAside>
-      <aside class="w-[360px] p-2 border-l border-surface">
+      <aside class="page-Aside">
         <PageTitle title="Friend Status" icon="ti ti-stars" />
       </aside>
     </template>

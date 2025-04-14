@@ -82,7 +82,7 @@ export interface AppGlobalContext {
   sentFriendRequests: Ref<FriendRequest[]>
   unacceptFriendRequestCount?: ComputedRef<number>
   friends: Ref<User[]>
-  openedDMSessions: Ref<User[]>
+  openedDMSessions: Ref<DMSession[]>
 }
 
 export interface SendFriendRequestDto {

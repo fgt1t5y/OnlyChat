@@ -1,7 +1,10 @@
 <template>
   <header class="page-Title">
     <div class="flex items-center gap-2 text-xl">
-      <i :class="icon"></i>
+      <slot name="icon">
+        <i :class="icon"></i>
+      </slot>
+
       <div>{{ title }}</div>
     </div>
     <slot />
@@ -16,6 +19,6 @@ defineOptions({
 
 const props = defineProps<{
   title: string
-  icon: string
+  icon?: string
 }>()
 </script>

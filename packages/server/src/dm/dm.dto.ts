@@ -1,3 +1,3 @@
-export interface CreateDMSessionDto {
+export interface OpenDMSessionDto {
   userBId: number;
 }

@@ -8,5 +8,6 @@ import { DMMessage, DMSession } from './entities';
   controllers: [DMSessionController],
   imports: [TypeOrmModule.forFeature([DMSession, DMMessage])],
   providers: [DMSessionService],
+  exports: [DMSessionService],
 })
 export class DMModule {}

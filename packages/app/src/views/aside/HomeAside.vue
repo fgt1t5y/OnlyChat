@@ -4,9 +4,9 @@
   <div class="text-base text-muted-color">DM Sessions</div>
   <ul>
     <li v-for="item in openedDMSessions" class="router-Menu">
-      <RouterLink :to="{ name: 'dm', params: { userId: item.id } }" class="router-Menu-Item">
-        <UserAvatar :user="item" mini />
-        <div>{{ item.displayName }}</div>
+      <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }" class="router-Menu-Item">
+        <UserAvatar :user="item.userB" mini />
+        <div>{{ item.userB.displayName }}</div>
       </RouterLink>
     </li>
   </ul>

@@ -50,7 +50,7 @@ const router = createRouter({
           },
         },
         {
-          path: 'dm/:userId(\\d+)',
+          path: 'dm/:dmSessionId(\\d+)',
           name: 'dm',
           components: {
             aside: HomeAside,

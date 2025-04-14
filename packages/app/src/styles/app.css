@@ -56,7 +56,11 @@
  * Components
  */
 #main-Nav {
-  @apply bg-surface-300 dark:bg-surface-900;
+  @apply bg-surface-200 dark:bg-surface-900;
+}
+
+#dm-Chat-Page {
+  @apply bg-surface-50 dark:bg-surface-800 max-h-screen overflow-scroll;
 }
 
 .router-Menu {
@@ -64,10 +68,10 @@
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-200 dark:hover:bg-surface-800;
+  @apply flex items-center gap-2 p-2 rounded text-base hover:bg-surface-50 dark:hover:bg-surface-800;
 
   &.router-link-active {
-    @apply text-primary bg-surface-100 dark:bg-surface-800;
+    @apply text-primary bg-surface-50 dark:bg-surface-800;
   }
 }
 
@@ -84,9 +88,13 @@
 }
 
 .page-Title {
-  @apply flex gap-2 px-2 h-[45px];
+  @apply flex gap-2 px-2 h-[45px] border-b border-surface;
 }
 
 .list-Item {
   @apply p-2 rounded hover:bg-surface-200 dark:hover:bg-surface-800;
+}
+
+.page-Aside {
+  @apply w-[360px] p-2 border-l border-surface bg-surface-200 dark:bg-surface-900;
 }

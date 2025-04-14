@@ -23,6 +23,8 @@ import {
 } from 'src/friend/friend.dto';
 import { UserService } from 'src/user/user.service';
 import { FriendService } from 'src/friend/friend.service';
+import { DMSessionService } from 'src/dm/dm-session.service';
+import { OpenDMSessionDto } from 'src/dm/dm.dto';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -34,6 +36,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly jwtService: JwtService,
+    private readonly dmSessionService: DMSessionService,
     private readonly friendRequestService: FriendRequestService,
     private readonly friendService: FriendService,
     private readonly userService: UserService,
@@ -83,15 +86,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
-  @SubscribeMessage('friend_request.send')
-  async handleCreateFriendRequest(
+  @SubscribeMessage('dm_session.open')
+  async handleOpenDMSession(
     @WsCurrentUser() user: JwtPayload,
-    @MessageBody() sendFriendRequestDto: SendFriendRequestDto,
+    @MessageBody() { userBId }: OpenDMSessionDto,
+  ): Promise<WsResponse> {
+    if (await this.dmSessionService.exist(user.id, userBId)) {
+      await this.dmSessionService.updateIsOpen(user.id, userBId, true);
+    } else {
+      await this.dmSessionService.create(user.id, userBId);
+    }
+
+    return { event: 'dm_session.open.success', data: null };
+  }
+
+  @SubscribeMessage('friend_request.send')
+  async handleSendFriendRequest(
+    @WsCurrentUser() user: JwtPayload,
+    @MessageBody() { receiverId }: SendFriendRequestDto,
     @ConnectedSocket() socket: Socket,
   ): Promise<WsResponse> {
     const friendRequest = await this.friendRequestService.create(
       user.id,
-      sendFriendRequestDto.receiverId,
+      receiverId,
     );
 
     socket
