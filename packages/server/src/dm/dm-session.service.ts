@@ -56,6 +56,25 @@ export class DMSessionService {
     return await this.dmSessionRepository.save(dmSession);
   }
 
+  async updateLastMessageId(
+    userAId: number,
+    userBId: number,
+    lastMessageId: number,
+  ) {
+    await this.dmSessionRepository
+      .createQueryBuilder()
+      .update()
+      .set({
+        lastMessageId,
+      })
+      .where('userAId = :userAId AND userBId = :userBId', { userAId, userBId })
+      .orWhere('userAId = :userBId AND userBId = :userAId', {
+        userAId,
+        userBId,
+      })
+      .execute();
+  }
+
   async updateIsOpen(userAId: number, userBId: number, isOpen: boolean) {
     await this.dmSessionRepository.update({ userAId, userBId }, { isOpen });
   }

@@ -110,13 +110,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     const dmSession = await this.dmSessionService.findById(dmSessionId);
 
-    const { id } = await this.dmMessageService.create(
+    const newDMMessage = await this.dmMessageService.create(
       dmSessionId,
       user.id,
       content,
     );
 
-    const dmMessage = await this.dmMessageService.findById(id);
+    const dmMessage = await this.dmMessageService.findById(newDMMessage.id);
+
+    await this.dmSessionService.updateLastMessageId(
+      user.id,
+      dmSession.userBId,
+      dmMessage.id,
+    );
 
     socket
       .to(this.userSocketsRoom(dmSession.userBId))
