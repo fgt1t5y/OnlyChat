@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import App from './App.vue'
 import router from './router'
@@ -16,6 +17,7 @@ import router from './router'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
+dayjs.extend(LocalizedFormat)
 
 const app = createApp(App)
 

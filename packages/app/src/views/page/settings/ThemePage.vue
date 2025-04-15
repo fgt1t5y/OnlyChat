@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import Page from '@/components/common/Page.vue'
-import PageTitle from '@/components/PageTitle.vue'
+import PageTitle from '@/components/page/PageTitle.vue'
 import { useTheme } from '@/stores/theme'
 import { Fieldset, SelectButton } from 'primevue'
 import { ref } from 'vue'

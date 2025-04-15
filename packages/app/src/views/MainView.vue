@@ -31,13 +31,11 @@
     <RouterView />
   </div>
   <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
-  <DebugBar v-if="isDev" />
 </template>
 
 <script setup lang="ts">
 import apis from '@/apis'
 import UserAvatar from '@/components/UserAvatar.vue'
-import DebugBar from '@/components/DebugBar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'

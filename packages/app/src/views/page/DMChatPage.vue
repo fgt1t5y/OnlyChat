@@ -10,8 +10,13 @@
         <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
           <UserAvatar :user="item.author" mini />
           <div class="flex flex-col">
-            <div class="font-bold">{{ item.author.displayName }}</div>
-            <div v-html="markedInstance.parse(item.content)"></div>
+            <div class="flex gap-2">
+              <div class="font-bold">{{ item.author.displayName }}</div>
+              <div class="text-muted-color">
+                {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+              </div>
+            </div>
+            <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
           </div>
         </li>
       </ul>
@@ -32,8 +37,9 @@
 <script setup lang="ts">
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
-import PageTitle from '@/components/PageTitle.vue'
+import PageTitle from '@/components/page/PageTitle.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import dayjs from 'dayjs'
 import { Button, InputText } from 'primevue'
 import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
@@ -56,7 +62,11 @@ const dmSession = ref<DMSession | undefined>(
 const dmMessageContent = ref<string>('')
 
 if (!dmMessages.value[dmSessionId]) {
-  dmMessages.value[dmSessionId] = await apis.getDmMessages(dmSessionId, dmSession.value!.lastMessageId - 50, 50)
+  dmMessages.value[dmSessionId] = await apis.getDmMessages(
+    dmSessionId,
+    dmSession.value!.lastMessageId - 50,
+    50,
+  )
 }
 
 const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
