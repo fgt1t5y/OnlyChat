@@ -37,11 +37,14 @@ export class DMMessageService {
     return await this.dmMessageRepository
       .createQueryBuilder('dm_message')
       .leftJoinAndSelect('dm_message.author', 'author')
-      .where('dm_message.id > :after AND dm_message.authorId = :userAId', {
-        after,
-        userAId: dmSession.userAId,
-      })
-      .orWhere('dm_message.authorId = :userBId', { userBId: dmSession.userBId })
+      .where(
+        'dm_message.id > :after AND (dm_message.authorId = :userAId OR dm_message.authorId = :userBId)',
+        {
+          after,
+          userAId: dmSession.userAId,
+          userBId: dmSession.userBId,
+        },
+      )
       .orderBy('dm_message.id', 'ASC')
       .limit(takeCount)
       .getMany();

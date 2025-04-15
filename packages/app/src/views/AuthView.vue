@@ -16,6 +16,7 @@
                 :name="field.name"
                 :id="field.name"
                 :model-value="field.state.value"
+                autofocus
                 @input="field.handleChange(($event.target as HTMLInputElement).value)"
                 @blur="field.handleBlur"
               />

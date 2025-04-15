@@ -24,6 +24,7 @@ export interface DMSession {
   isOpen: boolean
   createdAt: string
   updatedAt: string
+  lastMessageId: number
 
   userA: User
   userB: User
@@ -104,8 +105,8 @@ export interface AppGlobalContext {
 }
 
 export interface SendDMMessageDto {
-  dmSessionId: number;
-  content: string;
+  dmSessionId: number
+  content: string
 }
 
 export interface SendFriendRequestDto {

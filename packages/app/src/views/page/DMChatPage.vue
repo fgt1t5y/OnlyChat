@@ -56,7 +56,7 @@ const dmSession = ref<DMSession | undefined>(
 const dmMessageContent = ref<string>('')
 
 if (!dmMessages.value[dmSessionId]) {
-  dmMessages.value[dmSessionId] = await apis.getDmMessages(dmSessionId, 20, 20)
+  dmMessages.value[dmSessionId] = await apis.getDmMessages(dmSessionId, dmSession.value!.lastMessageId - 50, 50)
 }
 
 const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
