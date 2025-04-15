@@ -31,7 +31,7 @@ export interface DMSession {
 
 export interface DMMessage {
   id: number
-  authroId: number
+  authorId: number
   sessionId: number
   content: string
   createdAt: string
@@ -88,13 +88,24 @@ export interface RouterMenuItem {
   badge?: MaybeRef<number | boolean>
 }
 
+export interface DmSessionIdMessagesMap {
+  [dmSessionId: number]: DMMessage[]
+}
+
 export interface AppGlobalContext {
   isDev: boolean
   receivedFriendRequests: Ref<FriendRequest[]>
   sentFriendRequests: Ref<FriendRequest[]>
-  unacceptFriendRequestCount?: ComputedRef<number>
   friends: Ref<User[]>
-  openedDMSessions: Ref<DMSession[]>
+  dmSessions: Ref<DMSession[]>
+  dmMessages: Ref<DmSessionIdMessagesMap>
+
+  unacceptFriendRequestCount?: ComputedRef<number>
+}
+
+export interface SendDMMessageDto {
+  dmSessionId: number;
+  content: string;
 }
 
 export interface SendFriendRequestDto {
@@ -110,6 +121,7 @@ export interface CancelFriendRequestDto {
 }
 
 export interface WsEventBodyMap {
+  'dm_message.send': SendDMMessageDto
   'friend_request.send': SendFriendRequestDto
   'friend_request.accept': AcceptFriendRequestDto
   'friend_request.cancel': CancelFriendRequestDto

@@ -5,9 +5,9 @@
         <UserAvatar :user="dmSession.userB" mini />
       </template>
     </PageTitle>
-    <div class="grow">
+    <div ref="dmChatContainerRef" class="grow overflow-auto">
       <ul>
-        <li v-for="item in dmMessages" class="chat-Item">
+        <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
           <UserAvatar :user="item.author" mini />
           <div class="flex flex-col">
             <div class="font-bold">{{ item.author.displayName }}</div>
@@ -16,10 +16,10 @@
         </li>
       </ul>
     </div>
-    <div class="flex gap-2 py-6">
-      <InputText fluid />
-      <Button label="Send" />
-    </div>
+    <form @submit.prevent.stop="handleSendDMMessage" class="flex gap-2 pb-6">
+      <InputText v-model="dmMessageContent" fluid required />
+      <Button label="Send" type="submit" />
+    </form>
 
     <template #rightAside>
       <aside class="page-Aside">
@@ -35,20 +35,57 @@ import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { Button, InputText } from 'primevue'
-import { inject, ref } from 'vue'
+import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
+import { useSocketIO } from '@/stores/socket'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
-const { openedDMSessions } = inject<AppGlobalContext>('OC')!
+const { dmSessions, dmMessages } = inject<AppGlobalContext>('OC')!
 
 const route = useRoute()
+const ws = useSocketIO()
 
 const dmSessionId = Number(route.params.dmSessionId)
 
+const dmChatContainer = useTemplateRef('dmChatContainerRef')
 const dmSession = ref<DMSession | undefined>(
-  openedDMSessions.value.find((dmSession) => dmSession.id === dmSessionId),
+  dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
-const dmMessages = ref<DMMessage[]>(await apis.getDmMessages(dmSessionId, 0, 10))
+const dmMessageContent = ref<string>('')
+
+if (!dmMessages.value[dmSessionId]) {
+  dmMessages.value[dmSessionId] = await apis.getDmMessages(dmSessionId, 20, 20)
+}
+
+const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
+  setTimeout(() => {
+    const chatItemElement = document.getElementById(`chat-Item-${dmMessage.id}`)
+
+    if (chatItemElement) {
+      chatItemElement.scrollIntoView()
+    }
+  }, 0)
+}
+
+const handleSendDMMessage = () => {
+  ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: dmMessageContent.value })
+
+  dmMessageContent.value = ''
+}
+
+onMounted(() => {
+  dmChatContainer.value?.scrollTo({
+    top: dmChatContainer.value.scrollHeight,
+  })
+
+  ws.socket.on('dm_message.send.success', scrollChatContainerToBottom)
+  ws.socket.on('dm_message.received', scrollChatContainerToBottom)
+})
+
+onUnmounted(() => {
+  ws.socket.off('dm_message.send.success', scrollChatContainerToBottom)
+  ws.socket.off('dm_message.received', scrollChatContainerToBottom)
+})
 </script>

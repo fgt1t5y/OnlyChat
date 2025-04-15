@@ -16,9 +16,12 @@
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <div class="flex gap-2">
-            <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }">
-              <Button icon="ti ti-messages" severity="secondary" rounded />
-            </RouterLink>
+            <Button
+              icon="ti ti-messages"
+              severity="secondary"
+              rounded
+              @click="handleOpenDMSession(item.id)"
+            />
             <Button icon="ti ti-dots" severity="secondary" rounded />
           </div>
         </li>
@@ -41,8 +44,19 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import NoFriendPlaceholder from '@/components/placeholder/NoFriendPlaceholder.vue'
 import { inject } from 'vue'
 import { Button, InputText } from 'primevue'
+import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext } from '@/types'
 
-const { friends } = inject<AppGlobalContext>('OC')!
+const { friends, openedDMSessions } = inject<AppGlobalContext>('OC')!
+
+const router = useRouter()
+
+const handleOpenDMSession = (userBId: number) => {
+  const dmSessionIndex = openedDMSessions.value.findIndex((session) => session.userBId === userBId)
+
+  if (dmSessionIndex !== -1) {
+    router.push({ name: 'dm', params: { dmSessionId: openedDMSessions.value[dmSessionIndex].id } })
+  }
+}
 </script>

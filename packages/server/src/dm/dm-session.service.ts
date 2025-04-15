@@ -10,19 +10,19 @@ export class DMSessionService {
     private readonly dmSessionRepository: Repository<DMSession>,
   ) {}
 
-  async findOne(dmSessionId: number) {
+  async findById(dmSessionId: number) {
     return await this.dmSessionRepository.findOne({
       where: { id: dmSessionId },
     });
   }
 
-  async findAll(userId: number): Promise<DMSession[]> {
+  async findAll(userAId: number): Promise<DMSession[]> {
     return await this.dmSessionRepository.find({
       relations: {
         userB: true,
       },
       where: {
-        userAId: userId,
+        userAId,
       },
       order: {
         updatedAt: 'DESC',

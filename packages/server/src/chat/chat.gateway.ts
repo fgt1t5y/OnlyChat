@@ -24,7 +24,8 @@ import {
 import { UserService } from 'src/user/user.service';
 import { FriendService } from 'src/friend/friend.service';
 import { DMSessionService } from 'src/dm/dm-session.service';
-import { OpenDMSessionDto } from 'src/dm/dm.dto';
+import { CreateDMMessageDto, OpenDMSessionDto } from 'src/dm/dm.dto';
+import { DMMessageService } from 'src/dm/dm-message.service';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -37,6 +38,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly jwtService: JwtService,
     private readonly dmSessionService: DMSessionService,
+    private readonly dmMessageService: DMMessageService,
     private readonly friendRequestService: FriendRequestService,
     private readonly friendService: FriendService,
     private readonly userService: UserService,
@@ -98,6 +100,29 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     return { event: 'dm_session.open.success', data: null };
+  }
+
+  @SubscribeMessage('dm_message.send')
+  async handleSendDMMessage(
+    @WsCurrentUser() user: JwtPayload,
+    @MessageBody() { dmSessionId, content }: CreateDMMessageDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    const dmSession = await this.dmSessionService.findById(dmSessionId);
+
+    const { id } = await this.dmMessageService.create(
+      dmSessionId,
+      user.id,
+      content,
+    );
+
+    const dmMessage = await this.dmMessageService.findById(id);
+
+    socket
+      .to(this.userSocketsRoom(dmSession.userBId))
+      .emit('dm_message.received', dmMessage);
+
+    return { event: 'dm_message.send.success', data: dmMessage };
   }
 
   @SubscribeMessage('friend_request.send')

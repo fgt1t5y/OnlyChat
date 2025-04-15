@@ -49,6 +49,8 @@ import type {
   DMSession,
   FriendRequest,
   User,
+  DmSessionIdMessagesMap,
+  DMMessage,
 } from '@/types'
 
 const auth = useAuth()
@@ -61,7 +63,9 @@ const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
 const friends = ref<User[]>(await apis.getFriends())
-const openedDMSessions = ref<DMSession[]>(await apis.getDmSessions())
+const dmSessions = ref<DMSession[]>(await apis.getDmSessions())
+const dmMessages = ref<DmSessionIdMessagesMap>({})
+
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
 
@@ -79,11 +83,37 @@ provide<AppGlobalContext>('OC', {
   receivedFriendRequests,
   sentFriendRequests,
   friends,
-  openedDMSessions,
+  dmSessions,
+  dmMessages,
+
   unacceptFriendRequestCount,
 })
 
-const onFriendRequestSuccessfullyCreated = (friendRequest: FriendRequest) => {
+const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
+  console.log('You sent this dm message', dmMessage)
+
+  if (dmMessages.value[dmMessage.sessionId]) {
+    dmMessages.value[dmMessage.sessionId].push(dmMessage)
+  }
+}
+
+const onDMMessageReceived = (dmMessage: DMMessage) => {
+  console.log('You received this dm message', dmMessage)
+
+  const dmSessionId = dmSessions.value.findIndex((dmSession) => {
+    console.log(dmSession.userBId, dmMessage.authorId)
+
+    return dmSession.userBId === dmMessage.authorId
+  })
+
+  console.log(dmSessionId, dmMessages.value[dmMessage.sessionId])
+
+  if (dmSessionId !== -1) {
+    dmMessages.value[dmSessions.value[dmSessionId].id].push(dmMessage)
+  }
+}
+
+const onFriendRequestSuccessfullySent = (friendRequest: FriendRequest) => {
   console.log('You sent this friend request', friendRequest)
 
   if (friendRequest) {
@@ -151,7 +181,9 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendReques
   }
 }
 
-ws.socket.on('friend_request.send.success', onFriendRequestSuccessfullyCreated)
+ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
+ws.socket.on('dm_message.received', onDMMessageReceived)
+ws.socket.on('friend_request.send.success', onFriendRequestSuccessfullySent)
 ws.socket.on('friend_request.received', onFriendRequestReceivedByReceiver)
 ws.socket.on('friend_request.accept.success', onFriendRequestSuccessfullyAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)

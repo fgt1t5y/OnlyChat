@@ -7,3 +7,8 @@ export interface GetDMMessageDto {
   after: number;
   takeCount: number;
 }
+
+export interface CreateDMMessageDto {
+  dmSessionId: number;
+  content: string;
+}

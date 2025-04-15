@@ -3,7 +3,7 @@
   <Divider />
   <div class="text-base text-muted-color">DM Sessions</div>
   <ul>
-    <li v-for="item in openedDMSessions" class="router-Menu">
+    <li v-for="item in dmSessions" class="router-Menu">
       <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }" class="router-Menu-Item">
         <UserAvatar :user="item.userB" mini />
         <div>{{ item.userB.displayName }}</div>
@@ -20,7 +20,7 @@ import { Divider } from 'primevue'
 
 import type { AppGlobalContext, RouterMenuItem } from '@/types'
 
-const { unacceptFriendRequestCount, openedDMSessions } = inject<AppGlobalContext>('OC')!
+const { dmSessions, unacceptFriendRequestCount } = inject<AppGlobalContext>('OC')!
 
 const homeAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'Friends', icon: 'ti ti-users', to: { name: 'friends' } },
