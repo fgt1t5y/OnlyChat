@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -41,4 +42,7 @@ export class DMSession {
 
   @OneToOne(() => DMMessage, (dmMessage) => dmMessage.id)
   lastMessage: DMMessage;
+
+  @OneToMany(() => DMMessage, (dmMessage) => dmMessage.sessionId)
+  message: DMMessage[];
 }

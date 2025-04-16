@@ -28,10 +28,10 @@
         />
       </section>
     </nav>
-    <RouterView v-slot="{ Component }">
+    <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
         <Suspense suspensible>
-          <component :is="Component"></component>
+          <component :is="Component" :key="route.fullPath"></component>
         </Suspense>
       </template>
     </RouterView>

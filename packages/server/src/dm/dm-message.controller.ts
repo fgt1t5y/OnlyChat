@@ -19,13 +19,22 @@ export class DMMessageController {
     @CurrentUser() user: JwtPayload,
     @Query() { dmSessionId, after, takeCount }: GetDMMessageDto,
   ) {
-    const dmSession = await this.dmSessionService.findById(dmSessionId);
+    const dmSessionB = await this.dmSessionService.findById(dmSessionId);
+    const dmSessionA = await this.dmSessionService.findBy(
+      dmSessionB.userBId,
+      user.id,
+    );
 
-    if (user.id !== dmSession.userAId) {
+    if (user.id !== dmSessionB.userAId) {
       return [];
     }
 
-    return await this.dmMessageService.findPaging(dmSession, after, takeCount);
+    return await this.dmMessageService.findPaging(
+      dmSessionA,
+      dmSessionB,
+      after,
+      takeCount,
+    );
   }
 
   @Post()

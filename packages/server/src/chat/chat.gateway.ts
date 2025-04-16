@@ -24,7 +24,7 @@ import {
 import { UserService } from 'src/user/user.service';
 import { FriendService } from 'src/friend/friend.service';
 import { DMSessionService } from 'src/dm/dm-session.service';
-import { CreateDMMessageDto, OpenDMSessionDto } from 'src/dm/dm.dto';
+import { CreateDMMessageDto } from 'src/dm/dm.dto';
 import { DMMessageService } from 'src/dm/dm-message.service';
 
 @UseFilters(new WsExceptionFilter())
@@ -86,20 +86,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     this.logger.log(`Client disconnected: ${socket.id}`);
-  }
-
-  @SubscribeMessage('dm_session.open')
-  async handleOpenDMSession(
-    @WsCurrentUser() user: JwtPayload,
-    @MessageBody() { userBId }: OpenDMSessionDto,
-  ): Promise<WsResponse> {
-    if (await this.dmSessionService.exist(user.id, userBId)) {
-      await this.dmSessionService.updateIsOpen(user.id, userBId, true);
-    } else {
-      await this.dmSessionService.create(user.id, userBId);
-    }
-
-    return { event: 'dm_session.open.success', data: null };
   }
 
   @SubscribeMessage('dm_message.send')

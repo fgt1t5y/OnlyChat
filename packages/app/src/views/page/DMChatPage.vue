@@ -1,11 +1,15 @@
 <template>
   <Page v-if="dmSession" id="dm-Chat-Page" right-aside>
     <PageTitle :title="dmSession.userB.displayName">
+      <template #title="{ title }">
+        <div class="text-base">{{ title }}</div>
+      </template>
+
       <template #icon>
-        <UserAvatar :user="dmSession.userB" mini />
+        <UserAvatar :user="dmSession.userB" size="s" />
       </template>
     </PageTitle>
-    <div ref="dmChatContainerRef" class="grow overflow-auto p-2">
+    <div ref="dmChatContainer" class="grow overflow-auto p-2">
       <ul>
         <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
           <UserAvatar :user="item.author" :show-online="false" />
@@ -54,7 +58,7 @@ const ws = useSocketIO()
 
 const dmSessionId = Number(route.params.dmSessionId)
 
-const dmChatContainer = useTemplateRef('dmChatContainerRef')
+const dmChatContainer = useTemplateRef('dmChatContainer')
 const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )

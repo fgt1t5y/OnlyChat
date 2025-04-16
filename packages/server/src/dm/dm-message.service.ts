@@ -30,19 +30,22 @@ export class DMMessageService {
   }
 
   async findPaging(
-    dmSession: DMSession,
+    dmSessionA: DMSession,
+    dmSessionB: DMSession,
     after: number = 0,
     takeCount: number = 10,
   ): Promise<DMMessage[]> {
+    console.log(dmSessionA.id, dmSessionB.id);
+
     return await this.dmMessageRepository
       .createQueryBuilder('dm_message')
       .leftJoinAndSelect('dm_message.author', 'author')
       .where(
-        'dm_message.id > :after AND (dm_message.authorId = :userAId OR dm_message.authorId = :userBId)',
+        'dm_message.id > :after AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
         {
           after,
-          userAId: dmSession.userAId,
-          userBId: dmSession.userBId,
+          sessionAId: dmSessionA.id,
+          sessionBId: dmSessionB.id,
         },
       )
       .orderBy('dm_message.id', 'ASC')

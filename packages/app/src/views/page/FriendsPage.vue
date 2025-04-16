@@ -47,16 +47,25 @@ import { Button, InputText } from 'primevue'
 import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext } from '@/types'
+import apis from '@/apis'
 
 const { friends, dmSessions } = inject<AppGlobalContext>('OC')!
 
 const router = useRouter()
 
-const handleOpenDMSession = (userBId: number) => {
+const handleOpenDMSession = async (userBId: number) => {
   const dmSessionIndex = dmSessions.value.findIndex((session) => session.userBId === userBId)
 
   if (dmSessionIndex !== -1) {
     router.push({ name: 'dm', params: { dmSessionId: dmSessions.value[dmSessionIndex].id } })
+  } else {
+    const dmSession = await apis.openDMSession(userBId)
+
+    if (dmSession) {
+      dmSessions.value.unshift(dmSession)
+    }
+
+    router.push({ name: 'dm', params: { dmSessionId: dmSession.id } })
   }
 }
 </script>

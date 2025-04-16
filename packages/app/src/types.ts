@@ -104,6 +104,10 @@ export interface AppGlobalContext {
   unacceptFriendRequestCount?: ComputedRef<number>
 }
 
+export interface OpenDMSessionDto {
+  userBId: number;
+}
+
 export interface SendDMMessageDto {
   dmSessionId: number
   content: string

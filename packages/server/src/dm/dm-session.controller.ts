@@ -15,7 +15,7 @@ export class DMSessionController {
     return await this.dmSessionService.findAll(user.id);
   }
 
-  @Post('open')
+  @Post()
   @UseGuards(JwtAuthGuard)
   async openDMSession(
     @CurrentUser() user: JwtPayload,
