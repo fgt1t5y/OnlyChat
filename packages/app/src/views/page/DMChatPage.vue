@@ -12,7 +12,7 @@
     </PageTitle>
     <div class="flex overflow-hidden grow">
       <div ref="dmChatContainer" class="flex flex-col justify-end grow">
-        <ul class="min-h-0 overflow-auto">
+        <ul class="min-h-0 overflow-auto pb-2">
           <li class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
             <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
             <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
@@ -22,20 +22,18 @@
               <span class="font-bold">{{ dmSession.userB.displayName }}</span>
             </div>
           </li>
-          <li
-            v-for="item in dmMessages[dmSessionId]"
-            :id="`chat-Item-${item.id}`"
-            class="chat-Item"
-          >
-            <UserAvatar :user="item.author" :show-online="false" />
-            <div class="flex flex-col">
-              <div class="flex gap-2">
-                <div class="font-bold">{{ item.author.displayName }}</div>
-                <div class="text-muted-color">
-                  {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+          <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`">
+            <div class="chat-Item mt-4">
+              <UserAvatar :user="item.author" :show-online="false" />
+              <div class="flex flex-col">
+                <div class="flex gap-2">
+                  <div class="font-bold">{{ item.author.displayName }}</div>
+                  <div class="text-muted-color">
+                    {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+                  </div>
                 </div>
+                <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
               </div>
-              <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
             </div>
           </li>
         </ul>
@@ -120,6 +118,8 @@ onMounted(() => {
   if (dmChatInput.value) {
     dmChatInput.value.input?.focus()
   }
+
+  document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
 })
 
 onUnmounted(() => {
