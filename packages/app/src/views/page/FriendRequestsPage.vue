@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import Page from '@/components/common/Page.vue'
-import PageTitle from '@/components/page/PageTitle.vue'
+import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { inject } from 'vue'
 import { Button } from 'primevue'

@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
-import PageTitle from '@/components/page/PageTitle.vue'
+import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
