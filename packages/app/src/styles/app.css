@@ -128,7 +128,7 @@
 }
 
 .user-Avatar-Empty {
-  @apply h-full flex justify-center items-center rounded-full bg-surface-200 dark:bg-surface-600;
+  @apply h-full flex justify-center items-center rounded-full text-color bg-surface-200 dark:bg-surface-600;
 }
 
 .user-Avatar-Dot {
@@ -136,7 +136,7 @@
 }
 
 .user-Avatar-Online-Dot {
-  @apply bg-green-500!;
+  @apply bg-green-500;
 }
 
 .chat-Input {
