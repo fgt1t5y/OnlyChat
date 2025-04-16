@@ -12,10 +12,10 @@
         </aside>
       </section>
       <section class="flex gap-2 items-center border-t border-surface p-3">
-        <UserAvatar :user="auth.user!" />
+        <UserAvatar :user="auth.user" is-online />
         <div class="flex flex-col justify-center grow">
           <div>{{ auth.user.username }}</div>
-          <div class="text-primary">Online</div>
+          <div class="text-muted-color">@{{ auth.user.username }}</div>
         </div>
         <Button
           icon="ti ti-settings"
@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import apis from '@/apis'
-import UserAvatar from '@/components/UserAvatar.vue'
+import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
 import { Avatar, Button } from 'primevue'

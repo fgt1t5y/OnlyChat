@@ -41,7 +41,7 @@
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/page/PageTitle.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
+import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
 import { Button, InputGroup, InputText } from 'primevue'

@@ -92,7 +92,7 @@
 }
 
 .page-Title {
-  @apply flex shrink-0 gap-2 px-4 h-[45px] border-b border-surface;
+  @apply flex shrink-0 gap-2 px-4 h-[50px] border-b border-surface;
 }
 
 .list-Item {
@@ -105,4 +105,32 @@
 
 .chat-Item {
   @apply flex gap-2 items-start p-2 rounded-border hover:bg-surface-200 dark:hover:bg-surface-900;
+}
+
+.user-Avatar {
+  @apply relative rounded-full;
+}
+
+.user-Avatar-S-Size {
+  @apply h-8 w-8;
+}
+
+.user-Avatar-M-Size {
+  @apply h-10 w-10;
+}
+
+.user-Avatar-L-Size {
+  @apply h-10 w-10;
+}
+
+.user-Avatar-Empty {
+  @apply h-full flex justify-center items-center rounded-full text-xl bg-surface-200 dark:bg-surface-600;
+}
+
+.user-Avatar-Dot {
+  @apply h-3 w-3 absolute right-0 bottom-0 bg-surface-400 rounded-full;
+}
+
+.user-Avatar-Online-Dot {
+  @apply bg-green-500!;
 }

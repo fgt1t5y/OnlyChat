@@ -8,7 +8,7 @@
     <div ref="dmChatContainerRef" class="grow overflow-auto p-2">
       <ul>
         <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
-          <UserAvatar :user="item.author" mini />
+          <UserAvatar :user="item.author" :show-online="false" />
           <div class="flex flex-col">
             <div class="flex gap-2">
               <div class="font-bold">{{ item.author.displayName }}</div>
@@ -21,9 +21,8 @@
         </li>
       </ul>
     </div>
-    <form @submit.prevent.stop="handleSendDMMessage" class="flex gap-2 pb-6">
+    <form @submit.prevent.stop="handleSendDMMessage" class="flex gap-2 px-2 pb-6">
       <InputText v-model="dmMessageContent" fluid required />
-      <Button label="Send" type="submit" />
     </form>
 
     <template #rightAside>
@@ -38,9 +37,9 @@
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/page/PageTitle.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
+import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import dayjs from 'dayjs'
-import { Button, InputText } from 'primevue'
+import { InputText } from 'primevue'
 import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
