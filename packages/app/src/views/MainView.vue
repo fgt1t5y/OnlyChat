@@ -28,7 +28,13 @@
         />
       </section>
     </nav>
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <template v-if="Component">
+        <Suspense suspensible>
+          <component :is="Component"></component>
+        </Suspense>
+      </template>
+    </RouterView>
   </div>
   <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
 </template>

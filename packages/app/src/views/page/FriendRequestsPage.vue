@@ -1,8 +1,8 @@
 <template>
   <Page>
     <PageTitle title="Friend Requests" icon="ti ti-user-plus" />
-    <div v-if="receivedFriendRequests">
-      <div class="text-muted-color px-2">Received - {{ receivedFriendRequests.length }}</div>
+    <div v-if="receivedFriendRequests" class="p-2">
+      <div class="text-muted-color p-2">Received - {{ receivedFriendRequests.length }}</div>
       <ul>
         <li v-for="item in receivedFriendRequests" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item.sender" />
@@ -31,7 +31,7 @@
         </li>
       </ul>
     </div>
-    <div v-if="sentFriendRequests">
+    <div v-if="sentFriendRequests" class="p-2">
       <div class="text-muted-color px-2">Sent - {{ sentFriendRequests.length }}</div>
       <ul>
         <li v-for="item in sentFriendRequests" class="list-Item flex items-center gap-2">

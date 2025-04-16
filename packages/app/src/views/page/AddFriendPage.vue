@@ -1,7 +1,7 @@
 <template>
   <Page>
     <PageTitle title="Add Friend" icon="ti ti-user-search" />
-    <form @submit.prevent.stop="handleSearch">
+    <form @submit.prevent.stop="handleSearch" class="p-2">
       <InputGroup>
         <InputText
           v-model="searchKeyword"
@@ -13,7 +13,7 @@
         <Button label="Search" type="submit" icon="ti ti-search" :loading="finding" />
       </InputGroup>
     </form>
-    <div v-if="foundItems">
+    <div v-if="foundItems" class="p-2">
       <div class="text-muted-color px-2">Hitted {{ foundItems.length }} user(s)</div>
       <ul v-if="foundItems.length">
         <li v-for="item in foundItems" class="list-Item flex items-center gap-2">

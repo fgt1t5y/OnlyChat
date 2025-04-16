@@ -5,7 +5,7 @@
         <UserAvatar :user="dmSession.userB" mini />
       </template>
     </PageTitle>
-    <div ref="dmChatContainerRef" class="grow overflow-auto">
+    <div ref="dmChatContainerRef" class="grow overflow-auto p-2">
       <ul>
         <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
           <UserAvatar :user="item.author" mini />

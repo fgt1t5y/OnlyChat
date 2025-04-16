@@ -1,13 +1,13 @@
 <template>
   <Page right-aside>
     <PageTitle title="All Friends" icon="ti ti-users" />
-    <div class="flex gap-2 justify-end">
+    <div class="flex gap-2 justify-end p-2">
       <InputText class="grow" placeholder="Search friends" />
       <RouterLink :to="{ name: 'friend_add' }">
         <Button label="Add Friend" icon="ti ti-plus" />
       </RouterLink>
     </div>
-    <div v-if="friends.length">
+    <div v-if="friends.length" class="p-2">
       <ul>
         <li v-for="item in friends" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item" />
@@ -48,15 +48,15 @@ import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext } from '@/types'
 
-const { friends, openedDMSessions } = inject<AppGlobalContext>('OC')!
+const { friends, dmSessions } = inject<AppGlobalContext>('OC')!
 
 const router = useRouter()
 
 const handleOpenDMSession = (userBId: number) => {
-  const dmSessionIndex = openedDMSessions.value.findIndex((session) => session.userBId === userBId)
+  const dmSessionIndex = dmSessions.value.findIndex((session) => session.userBId === userBId)
 
   if (dmSessionIndex !== -1) {
-    router.push({ name: 'dm', params: { dmSessionId: openedDMSessions.value[dmSessionIndex].id } })
+    router.push({ name: 'dm', params: { dmSessionId: dmSessions.value[dmSessionIndex].id } })
   }
 }
 </script>

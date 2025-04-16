@@ -1,5 +1,5 @@
 <template>
-  <main :id="id" class="flex flex-col grow gap-2 p-2">
+  <main :id="id" class="page">
     <slot />
   </main>
   <slot v-if="rightAside" name="rightAside" />
