@@ -93,6 +93,10 @@
 
 .page-Title {
   @apply flex shrink-0 justify-between items-center gap-2 px-4 h-[50px] border-b border-surface;
+
+  i {
+    @apply text-2xl;
+  }
 }
 
 .list-Item {
@@ -136,9 +140,17 @@
 }
 
 .chat-Input {
-  @apply flex flex-col p-2 m-2 mb-6 border border-surface bg-surface-300 dark:bg-surface-800 rounded-border;
+  @apply flex flex-col p-2 mb-6 border border-surface bg-surface-300 dark:bg-surface-800 rounded-border;
 
   input {
-    @apply outline-0 text-base
+    @apply outline-0 text-base;
   }
+}
+
+.toggle-Button-On {
+  @apply text-primary;
+}
+
+.toggle-Button-Off {
+  @apply text-muted-color;
 }

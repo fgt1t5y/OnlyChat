@@ -1,6 +1,8 @@
 <template>
-  <Page v-if="dmSession" id="dm-Chat-Page" right-aside>
+  <Page v-if="dmSession" id="dm-Chat-Page">
     <PageTitle :title="dmSession.userB.displayName">
+      <ToggleButton v-model="showUserProfilePanel" icon="ti ti-user-circle" />
+
       <template #title="{ title }">
         <div class="text-base">{{ title }}</div>
       </template>
@@ -8,38 +10,43 @@
         <UserAvatar :user="dmSession.userB" size="s" />
       </template>
     </PageTitle>
-    <div ref="dmChatContainer" class="flex flex-col justify-end grow overflow-auto p-2">
-      <ul class="min-h-0">
-        <li class="flex flex-col gap-2 py-2 mb-2 border-b border-surface">
-          <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
-          <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
-          <div class="text-2xl">{{ dmSession.userB.username }}</div>
-          <div>
-            This is the beginning of your direct message history with
-            <span class="font-bold">{{ dmSession.userB.displayName }}</span>
-          </div>
-        </li>
-        <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
-          <UserAvatar :user="item.author" :show-online="false" />
-          <div class="flex flex-col">
-            <div class="flex gap-2">
-              <div class="font-bold">{{ item.author.displayName }}</div>
-              <div class="text-muted-color">
-                {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
-              </div>
+    <div class="flex overflow-hidden">
+      <div ref="dmChatContainer" class="flex flex-col justify-end grow p-2">
+        <ul class="min-h-0 overflow-auto">
+          <li class="flex flex-col gap-2 py-2 mb-2 border-b border-surface">
+            <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
+            <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
+            <div class="text-2xl">{{ dmSession.userB.username }}</div>
+            <div>
+              This is the beginning of your direct message history with
+              <span class="font-bold">{{ dmSession.userB.displayName }}</span>
             </div>
-            <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
-          </div>
-        </li>
-      </ul>
+          </li>
+          <li
+            v-for="item in dmMessages[dmSessionId]"
+            :id="`chat-Item-${item.id}`"
+            class="chat-Item"
+          >
+            <UserAvatar :user="item.author" :show-online="false" />
+            <div class="flex flex-col">
+              <div class="flex gap-2">
+                <div class="font-bold">{{ item.author.displayName }}</div>
+                <div class="text-muted-color">
+                  {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+                </div>
+              </div>
+              <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
+            </div>
+          </li>
+        </ul>
+        <ChatInput v-model="dmMessageContent" ref="dmChatInput" @submit="handleSendDMMessage" />
+      </div>
+      <div v-if="showUserProfilePanel" class="page-Aside">
+        <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
+        <div class="text-xl font-bold">{{ dmSession.userB.displayName }}</div>
+        <div class="text-base">{{ dmSession.userB.username }}</div>
+      </div>
     </div>
-    <ChatInput v-model="dmMessageContent" ref="dmChatInput" @submit="handleSendDMMessage" />
-
-    <template #rightAside>
-      <aside class="page-Aside">
-        <PageTitle title="Friend Status" icon="ti ti-stars" />
-      </aside>
-    </template>
   </Page>
 </template>
 
@@ -49,6 +56,7 @@ import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/page/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
+import ToggleButton from '@/components/button/ToggleButton.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
 import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
