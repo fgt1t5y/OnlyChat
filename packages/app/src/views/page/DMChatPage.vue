@@ -4,7 +4,6 @@
       <template #title="{ title }">
         <div class="text-base">{{ title }}</div>
       </template>
-
       <template #icon>
         <UserAvatar :user="dmSession.userB" size="s" />
       </template>
@@ -34,9 +33,7 @@
         </li>
       </ul>
     </div>
-    <form @submit.prevent.stop="handleSendDMMessage" class="flex gap-2 px-2 pb-6">
-      <InputText v-model="dmMessageContent" max="1000" fluid required />
-    </form>
+    <ChatInput v-model="dmMessageContent" ref="dmChatInput" @submit="handleSendDMMessage" />
 
     <template #rightAside>
       <aside class="page-Aside">
@@ -51,8 +48,9 @@ import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/page/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
+import ChatInput from '@/components/chat/ChatInput.vue'
 import dayjs from 'dayjs'
-import { InputText } from 'primevue'
+import _ from 'underscore'
 import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
@@ -68,18 +66,12 @@ const ws = useSocketIO()
 const dmSessionId = Number(route.params.dmSessionId)
 
 const dmChatContainer = useTemplateRef('dmChatContainer')
+const dmChatInput = useTemplateRef('dmChatInput')
 const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
 const dmMessageContent = ref<string>('')
-
-if (!dmMessages.value[dmSessionId]) {
-  dmMessages.value[dmSessionId] = await apis.getDmMessages(
-    dmSessionId,
-    dmSession.value!.lastMessageId - 50,
-    50,
-  )
-}
+const showUserProfilePanel = ref<boolean>(true)
 
 const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
   setTimeout(() => {
@@ -101,6 +93,14 @@ const handleSendDMMessage = () => {
   dmMessageContent.value = ''
 }
 
+if (!dmMessages.value[dmSessionId]) {
+  dmMessages.value[dmSessionId] = await apis.getDmMessages(
+    dmSessionId,
+    dmSession.value!.lastMessageId - 50,
+    50,
+  )
+}
+
 onMounted(() => {
   dmChatContainer.value?.scrollTo({
     top: dmChatContainer.value.scrollHeight,
@@ -108,6 +108,10 @@ onMounted(() => {
 
   ws.socket.on('dm_message.send.success', scrollChatContainerToBottom)
   ws.socket.on('dm_message.received', scrollChatContainerToBottom)
+
+  if (dmChatInput.value) {
+    dmChatInput.value.input?.focus()
+  }
 })
 
 onUnmounted(() => {
