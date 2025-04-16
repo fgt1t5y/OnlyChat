@@ -2,8 +2,8 @@
   <RouterMenu :items="homeAsideMenuItems" />
   <Divider />
   <div class="text-base text-muted-color px-2">DM Sessions</div>
-  <ul>
-    <li v-for="item in dmSessions" class="router-Menu">
+  <ul class="router-Menu">
+    <li v-for="item in dmSessions">
       <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }" class="router-Menu-Item">
         <UserAvatar :user="item.userB" size="s" />
         <div>{{ item.userB.displayName }}</div>

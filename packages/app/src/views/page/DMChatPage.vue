@@ -35,7 +35,7 @@
       </ul>
     </div>
     <form @submit.prevent.stop="handleSendDMMessage" class="flex gap-2 px-2 pb-6">
-      <InputText v-model="dmMessageContent" fluid required />
+      <InputText v-model="dmMessageContent" max="1000" fluid required />
     </form>
 
     <template #rightAside>
