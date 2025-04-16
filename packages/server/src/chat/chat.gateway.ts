@@ -94,6 +94,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() { dmSessionId, content }: CreateDMMessageDto,
     @ConnectedSocket() socket: Socket,
   ) {
+    if (!content.trim()) {
+      throw new WsException('Content is required.');
+    }
+
     const dmSession = await this.dmSessionService.findById(dmSessionId);
 
     const newDMMessage = await this.dmMessageService.create(

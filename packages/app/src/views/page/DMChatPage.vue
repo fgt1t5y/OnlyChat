@@ -92,6 +92,10 @@ const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
 }
 
 const handleSendDMMessage = () => {
+  if (!dmMessageContent.value.trim()) {
+    return
+  }
+
   ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: dmMessageContent.value })
 
   dmMessageContent.value = ''

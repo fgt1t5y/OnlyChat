@@ -5,6 +5,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { DMMessageService } from './dm-message.service';
 import { CreateDMMessageDto, GetDMMessageDto } from './dm.dto';
 import { DMSessionService } from './dm-session.service';
+import { WsException } from '@nestjs/websockets';
 
 @Controller('dm/message')
 export class DMMessageController {
@@ -42,6 +43,10 @@ export class DMMessageController {
     @CurrentUser() user: JwtPayload,
     @Body() { dmSessionId, content }: CreateDMMessageDto,
   ) {
+    if (!content.trim()) {
+      throw new WsException('Content is required.');
+    }
+
     return await this.dmMessageService.create(dmSessionId, user.id, content);
   }
 }
