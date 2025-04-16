@@ -9,8 +9,17 @@
         <UserAvatar :user="dmSession.userB" size="s" />
       </template>
     </PageTitle>
-    <div ref="dmChatContainer" class="grow overflow-auto p-2">
-      <ul>
+    <div ref="dmChatContainer" class="flex flex-col justify-end grow overflow-auto p-2">
+      <ul class="min-h-0">
+        <li class="flex flex-col gap-2 py-2 mb-2 border-b border-surface">
+          <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
+          <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
+          <div class="text-2xl">{{ dmSession.userB.username }}</div>
+          <div>
+            This is the beginning of your direct message history with
+            <span class="font-bold">{{ dmSession.userB.displayName }}</span>
+          </div>
+        </li>
         <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`" class="chat-Item">
           <UserAvatar :user="item.author" :show-online="false" />
           <div class="flex flex-col">

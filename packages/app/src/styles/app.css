@@ -108,23 +108,23 @@
 }
 
 .user-Avatar {
-  @apply relative rounded-full;
+  @apply relative rounded-full select-none;
 }
 
 .user-Avatar-S-Size {
-  @apply h-8 w-8;
+  @apply h-8 w-8 text-xl;
 }
 
 .user-Avatar-M-Size {
-  @apply h-10 w-10;
+  @apply h-10 w-10 text-2xl;
 }
 
 .user-Avatar-L-Size {
-  @apply h-10 w-10;
+  @apply h-20 w-20 text-3xl;
 }
 
 .user-Avatar-Empty {
-  @apply h-full flex justify-center items-center rounded-full text-xl bg-surface-200 dark:bg-surface-600;
+  @apply h-full flex justify-center items-center rounded-full bg-surface-200 dark:bg-surface-600;
 }
 
 .user-Avatar-Dot {
