@@ -1,8 +1,17 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { DMSessionService } from './dm-session.service';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
-import { OpenDMSessionDto } from './dm.dto';
+import { CloseDMSessionDto, OpenDMSessionDto } from './dm.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('dm/session')
@@ -35,6 +44,22 @@ export class DMSessionController {
       await this.dmSessionService.create(user.id, userBId);
 
       return await this.dmSessionService.findBy(user.id, userBId);
+    }
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  async closeDMSession(
+    @CurrentUser() user: JwtPayload,
+    @Body() { userBId }: CloseDMSessionDto,
+  ) {
+    const dmSession = await this.dmSessionService.findBy(user.id, userBId);
+
+    if (dmSession) {
+      if (dmSession.isOpen) {
+        await this.dmSessionService.updateIsOpen(user.id, userBId, false);
+      }
     }
   }
 }

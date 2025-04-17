@@ -1,18 +1,25 @@
 <template>
   <RouterMenu :items="homeAsideMenuItems" />
   <Divider />
-  <div class="text-base text-muted-color px-2">DM Sessions</div>
+  <div class="aside-Group-Title">DM Sessions</div>
   <ul class="router-Menu">
-    <li v-for="item in dmSessions">
-      <RouterLink :to="{ name: 'dm', params: { dmSessionId: item.id } }" class="router-Menu-Item">
+    <li v-for="item in dmSessions" class="router-Menu-Item dm-Session-Item">
+      <RouterLink
+        :to="{ name: 'dm', params: { dmSessionId: item.id } }"
+        class="dm-Session-Item-Link"
+      >
         <UserAvatar :user="item.userB" size="s" />
         <div>{{ item.userB.displayName }}</div>
       </RouterLink>
+      <button @click.stop="handleCloseDMSession(item.id, item.userBId)">
+        <i class="ti ti-x"></i>
+      </button>
     </li>
   </ul>
 </template>
 
 <script setup lang="ts">
+import apis from '@/apis'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import RouterMenu from '@/components/common/RouterMenu.vue'
 import { inject, ref } from 'vue'
@@ -32,4 +39,16 @@ const homeAsideMenuItems = ref<RouterMenuItem[]>([
   },
   { label: 'Add Friend', icon: 'ti ti-user-search', to: { name: 'friend_add' } },
 ])
+
+const handleCloseDMSession = (dmSessionId: number, userBId: number) => {
+  apis.closeDMSession(userBId).then(() => {
+    const dmSessionIndex = dmSessions.value.findIndex((session) => session.id === dmSessionId)
+
+    console.log(dmSessionIndex)
+
+    if (dmSessionIndex !== -1) {
+      dmSessions.value.splice(dmSessionIndex, 1)
+    }
+  })
+}
 </script>

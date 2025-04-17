@@ -55,12 +55,42 @@
 /*
  * Components
  */
+#main-View {
+  @apply select-none;
+}
+
 #main-Nav {
   @apply bg-surface-300 dark:bg-surface-900;
 }
 
 #dm-Chat-Page {
   @apply max-h-screen;
+}
+
+.aside-Group-Title {
+  @apply text-muted-color px-2 mb-2;
+}
+
+.dm-Session-Item {
+  @apply flex;
+
+  button {
+    @apply opacity-0 text-color;
+  }
+
+  &:hover {
+    button {
+      @apply opacity-100;
+    }
+  }
+
+  &:has(a.router-link-active) {
+    @apply text-primary bg-surface-50 dark:bg-surface-800;
+  }
+}
+
+.dm-Session-Item-Link {
+  @apply flex gap-2 items-center grow;
 }
 
 .router-Menu {
@@ -72,6 +102,10 @@
 
   &.router-link-active {
     @apply text-primary bg-surface-50 dark:bg-surface-800;
+  }
+
+  a.router-link-active {
+    @apply text-primary;
   }
 }
 
@@ -108,7 +142,7 @@
 }
 
 .chat-Item {
-  @apply flex gap-2 items-start px-2 hover:bg-surface-200 dark:hover:bg-surface-900;
+  @apply flex gap-2 items-start px-2 hover:bg-surface-200 dark:hover:bg-surface-900 select-text;
 }
 
 .user-Avatar {

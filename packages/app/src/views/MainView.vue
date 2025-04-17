@@ -1,5 +1,5 @@
 <template>
-  <div v-if="auth.user" class="flex h-screen">
+  <div v-if="auth.user" id="main-View" class="flex h-screen">
     <nav id="main-Nav" class="flex flex-col min-w-[350px] border-r border-surface">
       <section class="flex grow">
         <menu class="flex flex-col gap-3 p-3 items-center border-r border-surface">

@@ -23,6 +23,7 @@ export class DMSessionService {
       },
       where: {
         userAId,
+        isOpen: true,
       },
       order: {
         updatedAt: 'DESC',

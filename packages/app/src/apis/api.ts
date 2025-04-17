@@ -29,6 +29,10 @@ export const openDMSession = (userBId: number) => {
   return alovaInstance.Post<DMSession>('/dm/session', { userBId })
 }
 
+export const closeDMSession = (userBId: number) => {
+  return alovaInstance.Delete<void>('/dm/session', { userBId })
+}
+
 // #region DM Message API
 export const getDmMessages = (dmSessionId: number, after: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm/message', {

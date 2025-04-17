@@ -15,6 +15,10 @@ export const alovaInstance = createAlova({
   },
   responded: {
     onSuccess: async (response) => {
+      if (response.status === 204) {
+        return
+      }
+
       const json = await response.json()
 
       if (json.statusCode > 400) {
