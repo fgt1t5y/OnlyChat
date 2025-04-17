@@ -12,6 +12,10 @@ import { FriendModule } from './friend/friend.module';
 import { FriendRequest, Friend } from './friend/entity';
 import { DMModule } from './dm/dm.module';
 import { DMMessage, DMSession } from './dm/entities';
+import { ServerModule } from './server/server.module';
+import { ChannelModule } from './channel/channel.module';
+import { Server } from './server/server.entity';
+import { Channel, ChannelGroup } from './channel/entities';
 
 @Module({
   imports: [
@@ -30,6 +34,9 @@ import { DMMessage, DMSession } from './dm/entities';
         Friend,
         DMMessage,
         DMSession,
+        Server,
+        ChannelGroup,
+        Channel,
       ],
       synchronize: true,
     }),
@@ -40,6 +47,8 @@ import { DMMessage, DMSession } from './dm/entities';
     ChatModule,
     FriendModule,
     DMModule,
+    ServerModule,
+    ChannelModule,
   ],
 })
 export class AppModule {}
