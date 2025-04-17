@@ -93,14 +93,6 @@ provide<AppGlobalContext>('OC', {
   unacceptFriendRequestCount,
 })
 
-const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
-  console.log('You sent this dm message', dmMessage)
-
-  if (dmMessages.value[dmMessage.sessionId]) {
-    dmMessages.value[dmMessage.sessionId].push(dmMessage)
-  }
-}
-
 const onDMMessageReceived = (dmMessage: DMMessage) => {
   console.log('You received this dm message', dmMessage)
 
@@ -185,7 +177,6 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendReques
   }
 }
 
-ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 ws.socket.on('dm_message.received', onDMMessageReceived)
 ws.socket.on('friend_request.send.success', onFriendRequestSuccessfullySent)
 ws.socket.on('friend_request.received', onFriendRequestReceivedByReceiver)

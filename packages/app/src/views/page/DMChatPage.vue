@@ -13,7 +13,7 @@
     <div class="flex overflow-hidden grow">
       <div class="flex flex-col justify-end grow">
         <ul ref="dmChatContainer" class="min-h-0 overflow-auto pb-2">
-          <li class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
+          <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
             <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
             <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
             <div class="text-2xl">{{ dmSession.userB.username }}</div>
@@ -61,6 +61,7 @@ import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
 import { useSocketIO } from '@/stores/socket'
+import { MESSAGE_PER_PAGE } from '@/constants'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
@@ -78,6 +79,8 @@ const dmSession = ref<DMSession | undefined>(
 )
 const dmMessageContent = ref<string>('')
 const showUserProfilePanel = ref<boolean>(true)
+const reachedHead = ref<boolean>(false)
+const reachedTail = ref<boolean>(false)
 
 const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
   setTimeout(() => {
@@ -86,7 +89,27 @@ const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
     if (chatItemElement) {
       chatItemElement.scrollIntoView()
     }
-  }, 0)
+  })
+}
+
+const loadInitialMessages = async () => {
+  const messages = await apis.getDmMessages(
+    dmSessionId,
+    dmSession.value!.lastMessageId - MESSAGE_PER_PAGE,
+    MESSAGE_PER_PAGE,
+  )
+
+  if (!messages || !Array.isArray(messages)) {
+    reachedHead.value = reachedTail.value = true
+
+    return
+  }
+
+  if (messages.length < MESSAGE_PER_PAGE) {
+    reachedHead.value = reachedTail.value = true
+  }
+
+  dmMessages.value[dmSessionId] = messages
 }
 
 const handleSendDMMessage = () => {
@@ -99,12 +122,18 @@ const handleSendDMMessage = () => {
   dmMessageContent.value = ''
 }
 
+const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
+  console.log('You sent this dm message', dmMessage)
+
+  if (dmMessages.value[dmMessage.sessionId]) {
+    dmMessages.value[dmMessage.sessionId].push(dmMessage)
+  }
+
+  scrollChatContainerToBottom(dmMessage)
+}
+
 if (!dmMessages.value[dmSessionId]) {
-  dmMessages.value[dmSessionId] = await apis.getDmMessages(
-    dmSessionId,
-    dmSession.value!.lastMessageId - 50,
-    50,
-  )
+  await loadInitialMessages()
 }
 
 onMounted(() => {
@@ -112,7 +141,7 @@ onMounted(() => {
     top: dmChatContainer.value.scrollHeight,
   })
 
-  ws.socket.on('dm_message.send.success', scrollChatContainerToBottom)
+  ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 
   if (dmChatInput.value) {
     dmChatInput.value.input?.focus()
@@ -122,6 +151,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  ws.socket.off('dm_message.send.success', scrollChatContainerToBottom)
+  ws.socket.off('dm_message.send.success', onDMMessageSuccessfullySent)
 })
 </script>
