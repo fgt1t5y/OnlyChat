@@ -11,8 +11,8 @@
       </template>
     </PageTitle>
     <div class="flex overflow-hidden grow">
-      <div ref="dmChatContainer" class="flex flex-col justify-end grow">
-        <ul class="min-h-0 overflow-auto pb-2">
+      <div class="flex flex-col justify-end grow">
+        <ul ref="dmChatContainer" class="min-h-0 overflow-auto pb-2">
           <li class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
             <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
             <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
@@ -113,7 +113,6 @@ onMounted(() => {
   })
 
   ws.socket.on('dm_message.send.success', scrollChatContainerToBottom)
-  ws.socket.on('dm_message.received', scrollChatContainerToBottom)
 
   if (dmChatInput.value) {
     dmChatInput.value.input?.focus()
@@ -124,6 +123,5 @@ onMounted(() => {
 
 onUnmounted(() => {
   ws.socket.off('dm_message.send.success', scrollChatContainerToBottom)
-  ws.socket.off('dm_message.received', scrollChatContainerToBottom)
 })
 </script>
