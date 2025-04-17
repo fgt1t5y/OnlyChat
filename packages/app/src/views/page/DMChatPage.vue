@@ -12,31 +12,46 @@
     </PageTitle>
     <div class="flex overflow-hidden grow">
       <div class="flex flex-col justify-end grow">
-        <ul ref="dmChatContainer" class="min-h-0 overflow-auto pb-2">
-          <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
-            <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
-            <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
-            <div class="text-2xl">{{ dmSession.userB.username }}</div>
-            <div>
-              This is the beginning of your direct message history with
-              <span class="font-bold">{{ dmSession.userB.displayName }}</span>
-            </div>
-          </li>
-          <li v-for="item in dmMessages[dmSessionId]" :id="`chat-Item-${item.id}`">
-            <div class="chat-Item mt-4">
-              <UserAvatar :user="item.author" :show-online="false" />
-              <div class="flex flex-col">
-                <div class="flex gap-2">
-                  <div class="font-bold">{{ item.author.displayName }}</div>
-                  <div class="text-muted-color">
-                    {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
-                  </div>
+        <List
+          ref="dmChatContainer"
+          :items="dmMessages[dmSessionId]"
+          class="min-h-0 overflow-auto pb-2"
+        >
+          <template #head>
+            <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
+              <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
+              <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
+              <div class="text-2xl">{{ dmSession.userB.username }}</div>
+              <div>
+                This is the beginning of your direct message history with
+                <span class="font-bold">{{ dmSession.userB.displayName }}</span>
+              </div>
+            </li>
+          </template>
+
+          <template #default="{ item, newer }">
+            <li :id="`message-Item-${item.id}`">
+              <div v-if="item.authorId !== newer?.authorId" class="message-Item mt-4">
+                <div class="w-12 shrink-0">
+                  <UserAvatar :user="item.author" :show-online="false" />
                 </div>
+                <div class="flex flex-col">
+                  <div class="flex gap-2">
+                    <div class="font-bold">{{ item.author.displayName }}</div>
+                    <div class="text-muted-color">
+                      {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+                    </div>
+                  </div>
+                  <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
+                </div>
+              </div>
+              <div v-else class="message-Item">
+                <div class="w-12"></div>
                 <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </template>
+        </List>
         <ChatInput v-model="dmMessageContent" ref="dmChatInput" @submit="handleSendDMMessage" />
       </div>
       <div v-if="showUserProfilePanel" class="page-Aside">
@@ -51,6 +66,7 @@
 <script setup lang="ts">
 import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
+import List from '@/components/common/List.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
@@ -84,7 +100,7 @@ const reachedTail = ref<boolean>(false)
 
 const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
   setTimeout(() => {
-    const chatItemElement = document.getElementById(`chat-Item-${dmMessage.id}`)
+    const chatItemElement = document.getElementById(`message-Item-${dmMessage.id}`)
 
     if (chatItemElement) {
       chatItemElement.scrollIntoView()
@@ -102,6 +118,7 @@ const loadInitialMessages = async () => {
   if (!messages || !Array.isArray(messages)) {
     reachedHead.value = reachedTail.value = true
 
+    dmMessages.value[dmSessionId] = []
     return
   }
 
@@ -137,8 +154,8 @@ if (!dmMessages.value[dmSessionId]) {
 }
 
 onMounted(() => {
-  dmChatContainer.value?.scrollTo({
-    top: dmChatContainer.value.scrollHeight,
+  dmChatContainer.value?.el?.scrollTo({
+    top: dmChatContainer.value.el.scrollHeight,
   })
 
   ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)

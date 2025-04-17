@@ -141,8 +141,16 @@
   @apply min-w-[360px] p-2 border-l border-surface bg-surface-200 dark:bg-surface-900;
 }
 
-.chat-Item {
+.message-Item {
   @apply flex gap-2 items-start px-2 hover:bg-surface-200 dark:hover:bg-surface-900 select-text;
+
+  a {
+    @apply text-primary;
+  }
+
+  a:hover {
+    @apply underline;
+  }
 }
 
 .user-Avatar {
