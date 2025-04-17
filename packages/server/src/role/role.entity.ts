@@ -14,17 +14,14 @@ export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  serverId: number;
+
   @Column({ unique: true })
   name: string;
 
-  @Column({ nullable: true })
-  description: string;
-
   @Column({ length: 8 })
   color: string;
-
-  @Column({ default: false })
-  canDelete: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

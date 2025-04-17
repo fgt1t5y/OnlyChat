@@ -36,9 +36,6 @@ export class User {
   @Column({ nullable: true })
   avatarUrl: string;
 
-  @Column({ default: 0 })
-  avatarVersion: number;
-
   @Column({ default: false })
   disabled: boolean;
 

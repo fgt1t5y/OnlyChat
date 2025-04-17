@@ -9,14 +9,4 @@ export class RoleService {
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
   ) {}
-
-  create(): Promise<Role> {
-    const role = new Role();
-
-    role.name = 'Admin';
-    role.description = 'A test role.';
-    role.color = '#00ff00';
-
-    return this.roleRepository.save(role);
-  }
 }
