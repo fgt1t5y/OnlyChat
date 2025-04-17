@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -33,4 +34,7 @@ export class Server {
 
   @ManyToOne(() => User, (user) => user.id)
   creator: User;
+
+  @ManyToMany(() => User, (user) => user.id)
+  members: User[];
 }

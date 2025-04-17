@@ -11,6 +11,7 @@ import {
 import { PasswordTransformer } from './password.transformer';
 import { Role } from 'src/role/role.entity';
 import { DMMessage } from 'src/dm/entities';
+import { Server } from 'src/server/server.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -53,6 +54,10 @@ export class User {
   @ManyToMany(() => Role, (role) => role.id)
   @JoinTable()
   roles: Role[];
+
+  @ManyToMany(() => Server, (server) => server.id)
+  @JoinTable({ name: 'server_members' })
+  joinedServers: Server[];
 
   @OneToMany(() => DMMessage, (dmMessage) => dmMessage.authorId)
   dmMessages: DMMessage[];
