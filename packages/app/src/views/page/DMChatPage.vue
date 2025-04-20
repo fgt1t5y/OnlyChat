@@ -13,7 +13,7 @@
     <div class="flex overflow-hidden grow">
       <div class="flex flex-col justify-end grow">
         <List
-          ref="dmChatContainer"
+          ref="messageContainer"
           :items="dmMessages[dmSessionId]"
           class="min-h-0 overflow-auto pb-2"
         >
@@ -52,7 +52,7 @@
             </li>
           </template>
         </List>
-        <ChatInput v-model="dmMessageContent" ref="dmChatInput" @submit="handleSendDMMessage" />
+        <ChatInput v-model="messageContent" ref="chatInput" @submit="handleSendDMMessage" />
       </div>
       <div v-if="showUserProfilePanel" class="page-Aside">
         <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
@@ -96,12 +96,12 @@ const ws = useSocketIO()
 
 const dmSessionId = Number(route.params.dmSessionId)
 
-const dmChatContainer = useTemplateRef('dmChatContainer')
-const dmChatInput = useTemplateRef('dmChatInput')
+const messageContainer = useTemplateRef('messageContainer')
+const chatInput = useTemplateRef('chatInput')
 const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
-const dmMessageContent = ref<string>('')
+const messageContent = ref<string>('')
 const showUserProfilePanel = ref<boolean>(true)
 const reachedHead = ref<boolean>(false)
 const reachedTail = ref<boolean>(false)
@@ -138,13 +138,13 @@ const loadInitialMessages = async () => {
 }
 
 const handleSendDMMessage = () => {
-  if (!dmMessageContent.value.trim()) {
+  if (!messageContent.value.trim()) {
     return
   }
 
-  ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: dmMessageContent.value })
+  ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: messageContent.value })
 
-  dmMessageContent.value = ''
+  messageContent.value = ''
 }
 
 const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
@@ -162,14 +162,14 @@ if (!dmMessages.value[dmSessionId]) {
 }
 
 onActivated(() => {
-  dmChatContainer.value?.el?.scrollTo({
-    top: dmChatContainer.value.el.scrollHeight,
+  messageContainer.value?.el?.scrollTo({
+    top: messageContainer.value.el.scrollHeight,
   })
 
   ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 
-  if (dmChatInput.value) {
-    dmChatInput.value.input?.focus()
+  if (chatInput.value) {
+    chatInput.value.input?.focus()
   }
 
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`

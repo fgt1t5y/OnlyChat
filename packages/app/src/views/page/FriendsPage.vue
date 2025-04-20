@@ -42,7 +42,7 @@ import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import NoFriendPlaceholder from '@/components/placeholder/NoFriendPlaceholder.vue'
-import { inject } from 'vue'
+import { inject, onActivated } from 'vue'
 import { Button, InputText } from 'primevue'
 import { useRouter } from 'vue-router'
 
@@ -68,4 +68,8 @@ const handleOpenDMSession = async (userBId: number) => {
     router.push({ name: 'dm', params: { dmSessionId: dmSession.id } })
   }
 }
+
+onActivated(() => {
+  document.title = `OnlyChat | Friends`
+})
 </script>

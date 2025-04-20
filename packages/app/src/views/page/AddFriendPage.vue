@@ -45,7 +45,7 @@ import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
 import { Button, InputGroup, InputText } from 'primevue'
-import { inject, ref } from 'vue'
+import { inject, onActivated, ref } from 'vue'
 
 import type { AppGlobalContext, User } from '@/types'
 import { useSocketIO } from '@/stores/socket'
@@ -81,4 +81,8 @@ const wasRequested = (receiver: User) => {
 const handleSendFriendRequest = (receiverId: number) => {
   ws.emit('friend_request.send', { receiverId })
 }
+
+onActivated(() => {
+  document.title = 'OnlyChat | Add Friend'
+})
 </script>
