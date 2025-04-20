@@ -30,9 +30,11 @@
     </nav>
     <RouterView v-slot="{ Component, route }">
       <template v-if="Component">
-        <Suspense suspensible>
-          <component :is="Component" :key="route.fullPath"></component>
-        </Suspense>
+        <KeepAlive>
+          <Suspense suspensible>
+            <component :is="Component" :key="route.fullPath"></component>
+          </Suspense>
+        </KeepAlive>
       </template>
     </RouterView>
   </div>

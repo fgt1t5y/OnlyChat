@@ -73,7 +73,15 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
-import { inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import {
+  inject,
+  onActivated,
+  onDeactivated,
+  onMounted,
+  onUnmounted,
+  ref,
+  useTemplateRef,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
 import { useSocketIO } from '@/stores/socket'
@@ -153,7 +161,7 @@ if (!dmMessages.value[dmSessionId]) {
   await loadInitialMessages()
 }
 
-onMounted(() => {
+onActivated(() => {
   dmChatContainer.value?.el?.scrollTo({
     top: dmChatContainer.value.el.scrollHeight,
   })
@@ -167,7 +175,7 @@ onMounted(() => {
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
 })
 
-onUnmounted(() => {
+onDeactivated(() => {
   ws.socket.off('dm_message.send.success', onDMMessageSuccessfullySent)
 })
 </script>
