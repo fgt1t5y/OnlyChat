@@ -52,6 +52,10 @@
   line-height: normal;
 }
 
+.p-divider-content {
+  background-color: transparent !important;
+}
+
 /*
  * Components
  */

@@ -5,8 +5,8 @@
     <slot
       v-for="(item, index) of items"
       :item="item as T"
-      :older="items[index + 1] as T"
-      :newer="items[index - 1] as T"
+      :next="items[index + 1] as T"
+      :prev="items[index - 1] as T"
       :index="index"
       :items="items as T[]"
     />
@@ -23,16 +23,15 @@ defineOptions({
 })
 
 defineSlots<{
-  head: ({}) => void
+  head: () => void
   default: (props: {
-    items: T[]
     item: T
+    next: T
+    prev: T
     index: number
-    active?: boolean
-    older: T
-    newer: T // newer is undefined when index === 0
+    items: T[]
   }) => void
-  tail: ({}) => void
+  tail: () => void
 }>()
 
 const props = defineProps<{

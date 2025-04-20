@@ -29,9 +29,9 @@
             </li>
           </template>
 
-          <template #default="{ item, newer }">
+          <template #default="{ item, prev }">
             <li :id="`message-Item-${item.id}`">
-              <div v-if="item.authorId !== newer?.authorId" class="message-Item mt-4">
+              <div v-if="item.authorId !== prev?.authorId" class="message-Item mt-4">
                 <div class="w-12 shrink-0">
                   <UserAvatar :user="item.author" :show-online="false" />
                 </div>
@@ -77,8 +77,6 @@ import {
   inject,
   onActivated,
   onDeactivated,
-  onMounted,
-  onUnmounted,
   ref,
   useTemplateRef,
 } from 'vue'
