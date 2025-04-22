@@ -24,10 +24,13 @@ import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import RouterMenu from '@/components/common/RouterMenu.vue'
 import { inject, ref } from 'vue'
 import { Divider } from 'primevue'
+import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext, RouterMenuItem } from '@/types'
 
 const { dmSessions, unacceptFriendRequestCount } = inject<AppGlobalContext>('OC')!
+
+const router = useRouter()
 
 const homeAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'Friends', icon: 'ti ti-users', to: { name: 'friends' } },
@@ -44,7 +47,7 @@ const handleCloseDMSession = (dmSessionId: number, userBId: number) => {
   apis.closeDMSession(userBId).then(() => {
     const dmSessionIndex = dmSessions.value.findIndex((session) => session.id === dmSessionId)
 
-    console.log(dmSessionIndex)
+    router.replace({ name: 'friends' })
 
     if (dmSessionIndex !== -1) {
       dmSessions.value.splice(dmSessionIndex, 1)
