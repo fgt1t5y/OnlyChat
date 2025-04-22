@@ -1,42 +1,47 @@
 <template>
-  <div v-if="auth.user" id="main-View" class="flex h-screen">
-    <nav id="main-Nav" class="flex flex-col min-w-[350px] border-r border-surface">
-      <section class="flex grow">
-        <menu class="flex flex-col gap-3 p-3 items-center border-r border-surface">
-          <RouterLink class="menu-Link" :to="{ name: 'home' }">
-            <Avatar icon="ti ti-home" size="large" />
-          </RouterLink>
-        </menu>
-        <aside class="grow p-2">
-          <RouterView name="aside" />
-        </aside>
-      </section>
-      <section class="flex gap-2 items-center border-t border-surface p-3">
-        <UserAvatar :user="auth.user" is-online />
-        <div class="flex flex-col justify-center grow">
-          <div>{{ auth.user.username }}</div>
-          <div class="text-muted-color">@{{ auth.user.username }}</div>
-        </div>
-        <Button
-          icon="ti ti-settings"
-          size="large"
-          severity="secondary"
-          rounded
-          title="Settings"
-          aria-label="Settings"
-          @click="$router.push({ name: 'settings' })"
-        />
-      </section>
-    </nav>
-    <RouterView v-slot="{ Component, route }">
-      <template v-if="Component">
-        <KeepAlive>
-          <Suspense suspensible>
-            <component :is="Component" :key="route.fullPath"></component>
-          </Suspense>
-        </KeepAlive>
-      </template>
-    </RouterView>
+  <div v-if="auth.user" class="flex flex-col h-screen">
+    <div id="main-Title">
+      <div class="text-primary font-bold">OnlyChat</div>
+    </div>
+    <div id="main-View" class="flex grow">
+      <nav id="main-Nav" class="flex flex-col min-w-[350px] border-r border-surface">
+        <section class="flex grow">
+          <menu class="flex flex-col gap-3 p-3 items-center border-r border-surface">
+            <RouterLink class="menu-Link" :to="{ name: 'home' }">
+              <Avatar icon="ti ti-home" size="large" />
+            </RouterLink>
+          </menu>
+          <aside class="grow p-2">
+            <RouterView name="aside" />
+          </aside>
+        </section>
+        <section class="flex gap-2 items-center border-t border-surface p-3">
+          <UserAvatar :user="auth.user" is-online />
+          <div class="flex flex-col justify-center grow">
+            <div>{{ auth.user.username }}</div>
+            <div class="text-muted-color">@{{ auth.user.username }}</div>
+          </div>
+          <Button
+            icon="ti ti-settings"
+            size="large"
+            severity="secondary"
+            rounded
+            title="Settings"
+            aria-label="Settings"
+            @click="$router.push({ name: 'settings' })"
+          />
+        </section>
+      </nav>
+      <RouterView v-slot="{ Component, route }">
+        <template v-if="Component">
+          <KeepAlive>
+            <Suspense suspensible>
+              <component :is="Component" :key="route.fullPath"></component>
+            </Suspense>
+          </KeepAlive>
+        </template>
+      </RouterView>
+    </div>
   </div>
   <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
 </template>

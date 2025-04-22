@@ -59,6 +59,10 @@
 /*
  * Components
  */
+#main-Title {
+  @apply min-h-[36px] flex items-center justify-center bg-surface-950 border-b border-surface;
+}
+
 #main-View {
   @apply select-none;
 }
