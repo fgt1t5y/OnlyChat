@@ -28,8 +28,8 @@
   }
 }
 
-.menu-Link.router-link-active {
-  @apply outline-2 outline-primary rounded-border;
+:root {
+  --main-title-height: 36px;
 }
 
 /*
@@ -64,6 +64,8 @@
 }
 
 #main-View {
+  max-height: calc(100vh - var(--main-title-height));
+
   @apply select-none;
 }
 
@@ -71,8 +73,8 @@
   @apply bg-surface-300 dark:bg-surface-900;
 }
 
-#dm-Chat-Page {
-  @apply max-h-screen;
+.menu-Link.router-link-active {
+  @apply outline-2 outline-primary rounded-border;
 }
 
 .aside-Group-Title {

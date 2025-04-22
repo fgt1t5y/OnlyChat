@@ -1,5 +1,5 @@
 <template>
-  <Page v-if="dmSession" id="dm-Chat-Page">
+  <Page v-if="dmSession">
     <PageTitle :title="dmSession.userB.displayName">
       <ToggleButton v-model="showUserProfilePanel" icon="ti ti-user-circle" />
 
