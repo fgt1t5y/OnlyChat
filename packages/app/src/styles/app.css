@@ -10,6 +10,10 @@
   @apply text-red-600;
 }
 
+@utility border-content {
+  @apply border-surface-300 dark:border-surface-700;
+}
+
 @utility bg-content {
   @apply bg-surface-50 dark:bg-surface-950;
 }
@@ -79,11 +83,11 @@
 }
 
 #main-Nav {
-  @apply relative flex flex-col min-w-[350px] border-r border-surface;
+  @apply relative flex flex-col min-w-[350px] bg-surface-200 dark:bg-surface-900;
 }
 
 #main-Nav-User {
-  @apply absolute rounded-border bottom-2 left-2 right-2 flex gap-2 items-center p-2 bg-surface-300 dark:bg-surface-800;
+  @apply absolute rounded-border bottom-2 left-2 right-2 flex gap-2 items-center p-2 bg-surface-100 dark:bg-surface-800;
 }
 
 .menu-Link.router-link-active {
@@ -123,11 +127,11 @@
 }
 
 .page {
-  @apply flex flex-col grow border-t border-surface;
+  @apply flex flex-col grow border-t border-content;
 }
 
 .page-Title {
-  @apply flex shrink-0 justify-between items-center gap-2 px-4 h-[48px] bg-surface-200 dark:bg-surface-900 border-b border-surface;
+  @apply flex shrink-0 justify-between items-center gap-2 px-4 h-[48px] border-b border-content;
 
   i {
     @apply text-xl;
@@ -135,7 +139,7 @@
 }
 
 .page-Aside {
-  @apply min-w-[360px] bg-surface-200 dark:bg-surface-900 border-l border-surface;
+  @apply min-w-[360px] bg-transparent dark:bg-surface-900 border-l border-content;
 }
 
 .list-Item {
@@ -183,7 +187,7 @@
 }
 
 .chat-Input {
-  @apply flex flex-col p-2 mx-2 mb-6 border border-surface-300 dark:border-surface-600 bg-transparent dark:bg-surface-900 rounded-border;
+  @apply flex flex-col p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
 
   input {
     @apply outline-0 text-base;

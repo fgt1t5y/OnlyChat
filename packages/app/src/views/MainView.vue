@@ -5,13 +5,13 @@
     </div>
     <div id="main-View" class="flex grow">
       <nav id="main-Nav">
-        <section class="flex grow bg-surface-300 dark:bg-surface-900">
+        <section class="flex grow">
           <menu class="flex flex-col gap-3 p-3 items-center">
             <RouterLink class="menu-Link" :to="{ name: 'home' }">
               <Avatar icon="ti ti-home" size="large" />
             </RouterLink>
           </menu>
-          <aside class="grow p-2 rounded-tl-xl border-l border-t border-surface">
+          <aside class="grow p-2 rounded-tl-xl border-l border-t border-content">
             <RouterView name="aside" />
           </aside>
         </section>
