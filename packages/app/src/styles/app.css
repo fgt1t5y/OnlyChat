@@ -60,7 +60,7 @@
  * Components
  */
 #main-Title {
-  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-900 border-b border-surface;
+  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-900;
 }
 
 #main-View {
@@ -70,7 +70,11 @@
 }
 
 #main-Nav {
-  @apply bg-surface-200 dark:bg-surface-900;
+  @apply relative flex flex-col min-w-[350px] border-r border-surface;
+}
+
+#main-Nav-User {
+  @apply absolute rounded-border bottom-2 left-2 right-2 flex gap-2 items-center p-2 bg-surface-300 dark:bg-surface-800;
 }
 
 .menu-Link.router-link-active {
@@ -80,7 +84,6 @@
 .aside-Group-Title {
   @apply text-muted-color px-2 mb-2;
 }
-
 
 .router-Menu {
   @apply flex flex-col gap-1;
@@ -111,23 +114,23 @@
 }
 
 .page {
-  @apply flex flex-col grow;
+  @apply flex flex-col grow border-t border-surface;
 }
 
 .page-Title {
-  @apply flex shrink-0 justify-between items-center gap-2 px-4 h-[50px] border-b border-surface;
+  @apply flex shrink-0 justify-between items-center gap-2 px-4 h-[48px] bg-surface-200 dark:bg-surface-900 border-b border-surface;
 
   i {
     @apply text-2xl;
   }
 }
 
-.list-Item {
-  @apply p-2 rounded-border hover:bg-surface-200 dark:hover:bg-surface-800;
+.page-Aside {
+  @apply min-w-[360px] bg-surface-200 dark:bg-surface-900;
 }
 
-.page-Aside {
-  @apply min-w-[360px] p-2 border-l border-surface bg-surface-200 dark:bg-surface-900;
+.list-Item {
+  @apply p-2 rounded-border hover:bg-surface-200 dark:hover:bg-surface-800;
 }
 
 .message-Item {

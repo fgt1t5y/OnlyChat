@@ -4,18 +4,18 @@
       <div class="text-primary font-bold">OnlyChat</div>
     </div>
     <div id="main-View" class="flex grow">
-      <nav id="main-Nav" class="flex flex-col min-w-[350px] border-r border-surface">
-        <section class="flex grow">
-          <menu class="flex flex-col gap-3 p-3 items-center border-r border-surface">
+      <nav id="main-Nav">
+        <section class="flex grow bg-surface-300 dark:bg-surface-900">
+          <menu class="flex flex-col gap-3 p-3 items-center">
             <RouterLink class="menu-Link" :to="{ name: 'home' }">
               <Avatar icon="ti ti-home" size="large" />
             </RouterLink>
           </menu>
-          <aside class="grow p-2">
+          <aside class="grow p-2 rounded-tl-xl border-l border-t border-surface">
             <RouterView name="aside" />
           </aside>
         </section>
-        <section class="flex gap-2 items-center border-t border-surface p-3">
+        <section id="main-Nav-User">
           <UserAvatar :user="auth.user" is-online />
           <div class="flex flex-col justify-center grow">
             <div>{{ auth.user.username }}</div>
