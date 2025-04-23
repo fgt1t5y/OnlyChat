@@ -84,7 +84,7 @@ export interface User {
 
 export interface RouterMenuItem {
   label: string
-  icon: string
+  icon?: string
   to: RouteLocationAsRelativeGeneric
   badge?: MaybeRef<number | boolean>
 }

@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <PageTitle title="All Friends" icon="ti ti-users" />
+    <PageTitle title="Friends" icon="ti ti-users" />
     <div class="flex overflow-hidden grow">
       <div class="p-2 grow">
         <div class="flex gap-2 justify-end mb-2">

@@ -32,8 +32,9 @@ const logout = async () => {
 }
 
 const settingsAsideMenuItems = ref<RouterMenuItem[]>([
-  { label: 'User Profile', icon: 'ti ti-user', to: { name: 'settings_profile' } },
-  { label: 'Avatar', icon: 'ti ti-user-circle', to: { name: 'settings_avatar' } },
-  { label: 'Theme', icon: 'ti ti-shirt', to: { name: 'settings_theme' } },
+  { label: 'My Account', to: { name: 'settings_my_account' } },
+  { label: 'Profiles', to: { name: 'settings_profile' } },
+  { label: 'Avatar', to: { name: 'settings_avatar' } },
+  { label: 'Theme', to: { name: 'settings_theme' } },
 ])
 </script>

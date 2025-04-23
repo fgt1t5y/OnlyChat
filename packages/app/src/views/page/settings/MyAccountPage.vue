@@ -1,7 +1,7 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <h1>Avatar</h1>
+      <h1>My Account</h1>
     </div>
   </Page>
 </template>

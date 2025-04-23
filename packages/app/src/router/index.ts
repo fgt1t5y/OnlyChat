@@ -5,11 +5,12 @@ import HomeAside from '@/views/aside/HomeAside.vue'
 import FriendsPage from '@/views/page/FriendsPage.vue'
 import AddFriendPage from '@/views/page/AddFriendPage.vue'
 import SettingsAside from '@/views/aside/SettingsAside.vue'
-import ProfilePage from '@/views/page/settings/ProfilePage.vue'
+import ProfilesPage from '@/views/page/settings/ProfilesPage.vue'
 import AvatarPage from '@/views/page/settings/AvatarPage.vue'
 import ThemePage from '@/views/page/settings/ThemePage.vue'
 import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
 import DMChatPage from '@/views/page/DMChatPage.vue'
+import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,7 +68,15 @@ const router = createRouter({
           path: '',
           name: 'settings',
           redirect() {
-            return { name: 'settings_profile' }
+            return { name: 'settings_my_account' }
+          },
+        },
+        {
+          path: 'my_account',
+          name: 'settings_my_account',
+          components: {
+            aside: SettingsAside,
+            default: MyAccountPage,
           },
         },
         {
@@ -75,7 +84,7 @@ const router = createRouter({
           name: 'settings_profile',
           components: {
             aside: SettingsAside,
-            default: ProfilePage,
+            default: ProfilesPage,
           },
         },
         {

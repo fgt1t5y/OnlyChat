@@ -1,8 +1,8 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <PageTitle title="User Profile" icon="ti ti-user" />
-      <Fieldset legend="My Profile">
+      <h1>Profiles</h1>
+      <Fieldset legend="My Profiles">
         <div class="flex flex-col gap-2">
           <label class="flex flex-col text-muted-color">
             <span>Display Name</span>

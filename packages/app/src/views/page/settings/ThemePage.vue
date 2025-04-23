@@ -1,7 +1,7 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <PageTitle title="Theme" icon="ti ti-shirt" />
+      <h1>Theme</h1>
       <Fieldset legend="Theme Mode">
         <SelectButton
           option-label="label"

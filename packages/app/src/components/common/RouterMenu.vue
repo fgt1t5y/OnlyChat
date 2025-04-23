@@ -1,7 +1,7 @@
 <template>
   <div :class="routerMenuClass">
     <RouterLink v-for="item in items" :to="item.to" class="router-Menu-Item">
-      <i :class="item.icon"></i>
+      <i v-if="item.icon" :class="item.icon"></i>
       <div class="router-Menu-Item-Text">{{ item.label }}</div>
       <div v-if="item.badge === true" class="router-Menu-Item-DotBadge"></div>
       <div
