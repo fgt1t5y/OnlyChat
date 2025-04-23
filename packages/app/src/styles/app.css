@@ -60,7 +60,7 @@
  * Components
  */
 #main-Title {
-  @apply min-h-[36px] flex items-center justify-center bg-surface-950 border-b border-surface;
+  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-900 border-b border-surface;
 }
 
 #main-View {
@@ -70,7 +70,7 @@
 }
 
 #main-Nav {
-  @apply bg-surface-300 dark:bg-surface-900;
+  @apply bg-surface-200 dark:bg-surface-900;
 }
 
 .menu-Link.router-link-active {
@@ -81,27 +81,6 @@
   @apply text-muted-color px-2 mb-2;
 }
 
-.dm-Session-Item {
-  @apply flex;
-
-  button {
-    @apply opacity-0 text-color;
-  }
-
-  &:hover {
-    button {
-      @apply opacity-100;
-    }
-  }
-
-  &:has(a.router-link-active) {
-    @apply text-primary bg-surface-50 dark:bg-surface-800;
-  }
-}
-
-.dm-Session-Item-Link {
-  @apply flex gap-2 items-center grow;
-}
 
 .router-Menu {
   @apply flex flex-col gap-1;
@@ -205,4 +184,26 @@
 
 .toggle-Button-Off {
   @apply text-muted-color;
+}
+
+.dm-Session-Item {
+  @apply flex;
+
+  button {
+    @apply opacity-0 text-color;
+  }
+
+  &:hover {
+    button {
+      @apply opacity-100;
+    }
+  }
+
+  &:has(a.router-link-active) {
+    @apply text-primary bg-surface-50 dark:bg-surface-800;
+  }
+}
+
+.dm-Session-Item-Link {
+  @apply flex gap-2 items-center grow;
 }
