@@ -80,8 +80,8 @@ const router = createRouter({
           },
         },
         {
-          path: 'profile',
-          name: 'settings_profile',
+          path: 'profiles',
+          name: 'settings_profiles',
           components: {
             aside: SettingsAside,
             default: ProfilesPage,

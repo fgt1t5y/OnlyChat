@@ -34,6 +34,12 @@ export class User {
   @Column({ nullable: true })
   avatarUrl: string;
 
+  @Column({ nullable: true })
+  bannerImageUrl: string;
+
+  @Column({ default: '42B883', length: 6 })
+  bannerColor: string;
+
   @Column({ default: false })
   disabled: boolean;
 

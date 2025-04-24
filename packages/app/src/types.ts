@@ -74,11 +74,14 @@ export interface User {
   email?: string
   introduction?: string
   avatarUrl?: string
+  bannerImageUrl?: string
+  bannerColor: string
   avatarVersion: number
   disabled: boolean
   isOnline: boolean
   createdAt: string
   updatedAt: string
+
   roles?: number[]
 }
 
@@ -105,7 +108,7 @@ export interface AppGlobalContext {
 }
 
 export interface OpenDMSessionDto {
-  userBId: number;
+  userBId: number
 }
 
 export interface SendDMMessageDto {

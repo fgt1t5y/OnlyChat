@@ -18,6 +18,10 @@
   @apply bg-surface-50 dark:bg-surface-950;
 }
 
+@utility h-banner {
+  @apply h-[100px] w-full;
+}
+
 @utility w-setting-page {
   @apply w-[600px];
 }
@@ -31,13 +35,23 @@
     @apply cursor-pointer;
   }
 
+  p {
+    margin-block: 1em;
+  }
+
   h1 {
     font-size: 2em;
     margin-block: 0.67em;
   }
 
   h2 {
-    font-size: var(--text-xl);
+    font-size: 1.5em;
+    margin-block: 0.83em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+    margin-block: 1em;
   }
 }
 
@@ -164,25 +178,43 @@
 
 .user-Avatar-S-Size {
   @apply h-8 w-8 text-xl;
+
+  .user-Avatar-Dot {
+    @apply h-3 w-3 absolute right-0 bottom-0 bg-surface-400 rounded-full;
+  }
 }
 
 .user-Avatar-M-Size {
   @apply h-10 w-10 text-2xl;
+
+  .user-Avatar-Dot {
+    @apply h-3 w-3 absolute right-0 bottom-0 bg-surface-400 rounded-full;
+  }
 }
 
 .user-Avatar-L-Size {
   @apply h-20 w-20 text-3xl;
+
+  .user-Avatar-Dot {
+    @apply h-4 w-4 absolute right-1 bottom-1 bg-surface-400 rounded-full;
+  }
+}
+
+.user-Avatar-Image {
+  @apply rounded-full aspect-square;
 }
 
 .user-Avatar-Empty {
   @apply h-full flex justify-center items-center rounded-full text-color bg-surface-200 dark:bg-surface-600;
 }
 
-.user-Avatar-Dot {
-  @apply h-3 w-3 absolute right-0 bottom-0 bg-surface-400 rounded-full;
+.user-Avatar-Bordered {
+  .user-Avatar-Image {
+    @apply outline-5 outline-surface-100 dark:outline-surface-900;
+  }
 }
 
-.user-Avatar-Online-Dot {
+.user-Avatar-Is-Online .user-Avatar-Dot {
   @apply bg-green-500;
 }
 

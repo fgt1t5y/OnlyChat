@@ -3,7 +3,7 @@
     <img
       v-if="user.avatarUrl"
       :src="`/api/content/avatars/${user.avatarUrl}`"
-      class="rounded-full"
+      class="user-Avatar-Image"
       alt="My Avatar"
     />
     <div v-else class="user-Avatar-Empty">
@@ -28,10 +28,12 @@ const props = withDefaults(
     size?: 'l' | 'm' | 's'
     isOnline?: boolean
     showOnline?: boolean
+    bordered?: boolean
   }>(),
   {
     size: 'm',
     showOnline: true,
+    bordered: false,
   },
 )
 
@@ -41,13 +43,14 @@ const userAvatarClass = computed(() => {
     'user-Avatar-S-Size': props.size === 's',
     'user-Avatar-M-Size': props.size === 'm',
     'user-Avatar-L-Size': props.size === 'l',
+    'user-Avatar-Is-Online': props.isOnline || props.user.isOnline,
+    'user-Avatar-Bordered': props.bordered,
   }
 })
 
 const userAvatarDotClass = computed(() => {
   return {
     'user-Avatar-Dot': true,
-    'user-Avatar-Online-Dot': props.isOnline || props.user.isOnline,
   }
 })
 </script>
