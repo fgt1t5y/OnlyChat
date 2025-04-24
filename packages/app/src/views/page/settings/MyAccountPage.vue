@@ -13,7 +13,7 @@
             <Button label="Edit User Profile" />
           </RouterLink>
         </div>
-        <div class="flex flex-col gap-2 m-5 p-2 bg-surface-50 dark:bg-surface-950">
+        <div class="rounded-border flex flex-col gap-2 m-5 p-2 bg-surface-50 dark:bg-surface-950">
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
               <div class="text-base">Display Name</div>

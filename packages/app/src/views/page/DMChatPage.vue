@@ -60,9 +60,38 @@
         <ChatInput v-model="messageContent" ref="chatInput" @submit="handleSendDMMessage" />
       </div>
       <div v-if="showUserProfilePanel" class="page-Aside">
-        <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
-        <div class="text-xl font-bold">{{ dmSession.userB.displayName }}</div>
-        <div class="text-base">{{ dmSession.userB.username }}</div>
+        <div class="overflow-hidden relative">
+          <div
+            :style="{ backgroundColor: `#${dmSession.userB.bannerColor}` }"
+            class="h-banner"
+          ></div>
+          <div class="absolute left-5 top-15">
+            <UserAvatar
+              size="l"
+              :user="dmSession.userB"
+              :is-online="dmSession.userB.isOnline"
+              bordered
+            />
+          </div>
+          <div class="mx-5 mt-12">
+            <div class="text-xl font-bold">{{ dmSession.userB.displayName }}</div>
+            <div class="text-muted-color">{{ dmSession.userB.username }}</div>
+          </div>
+          <div class="rounded-border mx-5 mt-2 p-2 bg-surface-50 dark:bg-surface-950">
+            <div v-if="dmSession.userB.introduction" class="flex flex-col">
+              <div class="text-muted-color">Introduction</div>
+              <div class="text-base">
+                {{ dmSession.userB.introduction }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-muted-color">Member Since</div>
+              <div class="text-base">
+                {{ dayjs.utc(dmSession.userB.createdAt).tz('Asia/Shanghai').format('LL') }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </Page>
