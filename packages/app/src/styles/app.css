@@ -161,7 +161,7 @@
 }
 
 .message-Item {
-  @apply flex gap-2 items-start px-2 hover:bg-surface-200 dark:hover:bg-surface-900 select-text;
+  @apply flex gap-2 items-center px-2 hover:bg-surface-200 dark:hover:bg-surface-900 select-text;
 
   a {
     @apply text-primary;
@@ -169,6 +169,26 @@
 
   a:hover {
     @apply underline;
+  }
+
+  p {
+    margin-block: unset;
+  }
+}
+
+.message-Item-Head {
+  @apply items-start;
+}
+
+.message-Item-Tail {
+  time {
+    opacity: 0;
+  }
+
+  &:hover {
+    time {
+      opacity: 1;
+    }
   }
 }
 

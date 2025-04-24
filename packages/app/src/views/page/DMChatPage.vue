@@ -31,22 +31,27 @@
 
           <template #default="{ item, prev }">
             <li :id="`message-Item-${item.id}`">
-              <div v-if="item.authorId !== prev?.authorId" class="message-Item mt-4">
-                <div class="w-12 shrink-0">
+              <div
+                v-if="item.authorId !== prev?.authorId"
+                class="message-Item message-Item-Head mt-4"
+              >
+                <div class="flex justify-center w-15 shrink-0">
                   <UserAvatar :user="item.author" :show-online="false" />
                 </div>
                 <div class="flex flex-col">
                   <div class="flex gap-2">
                     <div class="font-bold">{{ item.author.displayName }}</div>
-                    <div class="text-muted-color">
+                    <time class="text-[12px] text-muted-color">
                       {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
-                    </div>
+                    </time>
                   </div>
                   <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
                 </div>
               </div>
-              <div v-else class="message-Item">
-                <div class="w-12"></div>
+              <div v-else class="message-Item message-Item-Tail">
+                <time class="flex justify-center w-15 text-[12px] text-muted-color">
+                  {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
+                </time>
                 <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
               </div>
             </li>
@@ -73,13 +78,7 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
-import {
-  inject,
-  onActivated,
-  onDeactivated,
-  ref,
-  useTemplateRef,
-} from 'vue'
+import { inject, onActivated, onDeactivated, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
 import { useSocketIO } from '@/stores/socket'
