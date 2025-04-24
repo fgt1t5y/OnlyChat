@@ -1,5 +1,9 @@
 <template>
-  <RouterMenu :items="settingsAsideMenuItems" />
+  <div class="aside-Group-Title">User Settings</div>
+  <RouterMenu :items="userSettingsAsideMenuItems" />
+  <Divider />
+  <div class="aside-Group-Title">App Settings</div>
+  <RouterMenu :items="appSettingsAsideMenuItems" />
   <Button
     class="mt-6"
     label="Logout"
@@ -11,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import RouterMenu from '@/components/common/RouterMenu.vue'
-import { Button } from 'primevue'
+import { ref } from 'vue'
+import { Button, Divider } from 'primevue'
 import { useAuth } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { useSocketIO } from '@/stores/socket'
@@ -31,10 +35,13 @@ const logout = async () => {
   location.reload()
 }
 
-const settingsAsideMenuItems = ref<RouterMenuItem[]>([
+const userSettingsAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'My Account', to: { name: 'settings_my_account' } },
   { label: 'Profiles', to: { name: 'settings_profiles' } },
   { label: 'Avatar', to: { name: 'settings_avatar' } },
-  { label: 'Theme', to: { name: 'settings_theme' } },
+])
+
+const appSettingsAsideMenuItems = ref<RouterMenuItem[]>([
+  { label: 'Appearance', to: { name: 'settings_appearance' } },
 ])
 </script>

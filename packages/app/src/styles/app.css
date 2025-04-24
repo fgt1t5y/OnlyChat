@@ -109,11 +109,11 @@
 }
 
 .aside-Group-Title {
-  @apply text-muted-color px-2 mb-2;
+  @apply text-muted-color px-2 mb-1;
 }
 
 .router-Menu {
-  @apply flex flex-col gap-1;
+  @apply flex flex-col;
 }
 
 .router-Menu-Item {

@@ -7,10 +7,10 @@ import AddFriendPage from '@/views/page/AddFriendPage.vue'
 import SettingsAside from '@/views/aside/SettingsAside.vue'
 import ProfilesPage from '@/views/page/settings/ProfilesPage.vue'
 import AvatarPage from '@/views/page/settings/AvatarPage.vue'
-import ThemePage from '@/views/page/settings/ThemePage.vue'
 import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
 import DMChatPage from '@/views/page/DMChatPage.vue'
 import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
+import AppearancePage from '@/views/page/settings/AppearancePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -96,11 +96,11 @@ const router = createRouter({
           },
         },
         {
-          path: 'theme',
-          name: 'settings_theme',
+          path: 'appearance',
+          name: 'settings_appearance',
           components: {
             aside: SettingsAside,
-            default: ThemePage,
+            default: AppearancePage,
           },
         },
       ],
