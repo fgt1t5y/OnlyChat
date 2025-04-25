@@ -9,7 +9,7 @@
     <div v-else class="user-Avatar-Empty">
       <span>{{ user.displayName.slice(0, 1) }}</span>
     </div>
-    <div v-if="showOnline" :class="userAvatarDotClass"></div>
+    <div v-if="showOnline" class="user-Avatar-Dot"></div>
   </div>
 </template>
 
@@ -45,12 +45,6 @@ const userAvatarClass = computed(() => {
     'user-Avatar-L-Size': props.size === 'l',
     'user-Avatar-Is-Online': props.isOnline || props.user.isOnline,
     'user-Avatar-Bordered': props.bordered,
-  }
-})
-
-const userAvatarDotClass = computed(() => {
-  return {
-    'user-Avatar-Dot': true,
   }
 })
 </script>

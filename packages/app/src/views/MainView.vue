@@ -10,6 +10,9 @@
             <RouterLink class="menu-Link" :to="{ name: 'home' }">
               <Avatar icon="ti ti-home" size="large" />
             </RouterLink>
+            <button v-for="server in joinedServers">
+              <ServerAvatar class="menu-Link" :server="server" />
+            </button>
             <button class="menu-Link">
               <Avatar icon="ti ti-plus" size="large" />
             </button>
@@ -51,6 +54,7 @@
 
 <script setup lang="ts">
 import apis from '@/apis'
+import ServerAvatar from '@/components/avatar/ServerAvatar.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket'
@@ -62,6 +66,7 @@ import type {
   AppGlobalContext,
   DMSession,
   FriendRequest,
+  Server,
   User,
   DmSessionIdMessagesMap,
   DMMessage,
@@ -77,6 +82,7 @@ const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
 const friends = ref<User[]>(await apis.getFriends())
+const joinedServers = ref<Server[]>(auth.user?.joinedServers || [])
 const dmSessions = ref<DMSession[]>(await apis.getDmSessions())
 const dmMessages = ref<DmSessionIdMessagesMap>({})
 
@@ -97,6 +103,7 @@ provide<AppGlobalContext>('OC', {
   receivedFriendRequests,
   sentFriendRequests,
   friends,
+  joinedServers,
   dmSessions,
   dmMessages,
 

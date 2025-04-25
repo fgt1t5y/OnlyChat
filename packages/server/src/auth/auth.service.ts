@@ -76,6 +76,9 @@ export class AuthService {
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
     const user = await this.userRepository.findOne({
+      relations: {
+        joinedServers: true,
+      },
       where: {
         id: userId,
       },

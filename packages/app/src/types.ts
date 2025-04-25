@@ -67,6 +67,16 @@ export interface Friend {
   userB: User
 }
 
+export interface Server {
+  id: number
+  name: string
+  avatarUrl?: string
+  avatarClass?: string
+  creatorId: number
+  createdAt: string
+  updatedAt: string
+}
+
 export interface User {
   id: number
   displayName: string
@@ -82,6 +92,7 @@ export interface User {
   createdAt: string
   updatedAt: string
 
+  joinedServers: Server[]
   roles?: number[]
 }
 
@@ -101,6 +112,7 @@ export interface AppGlobalContext {
   receivedFriendRequests: Ref<FriendRequest[]>
   sentFriendRequests: Ref<FriendRequest[]>
   friends: Ref<User[]>
+  joinedServers: Ref<Server[]>
   dmSessions: Ref<DMSession[]>
   dmMessages: Ref<DmSessionIdMessagesMap>
 

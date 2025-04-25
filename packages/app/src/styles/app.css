@@ -173,7 +173,7 @@
 }
 
 .message-Item {
-  @apply flex gap-2 items-center px-2 hover:bg-surface-200 dark:hover:bg-surface-900 select-text;
+  @apply flex gap-2 items-center px-2 hover:bg-surface-200 dark:hover:bg-surface-800 select-text;
 
   a {
     @apply text-primary;
@@ -201,6 +201,37 @@
     time {
       opacity: 1;
     }
+  }
+}
+
+.server-Avatar {
+  @apply relative rounded-border shrink-0;
+}
+
+.server-Avatar-S-Size {
+  @apply h-8 w-8 text-xl;
+}
+
+.server-Avatar-M-Size {
+  @apply h-12 w-12 text-2xl;
+}
+
+.server-Avatar-L-Size {
+  @apply h-20 w-20 text-3xl;
+}
+
+.server-Avatar-Image {
+  @apply rounded-border aspect-square;
+}
+
+.server-Avatar-Empty {
+  @apply h-full flex justify-center items-center rounded-border text-color bg-surface-300 dark:bg-surface-600;
+}
+
+.server-Avatar-Bordered {
+  .server-Avatar-Empty,
+  .server-Avatar-Image {
+    @apply outline-5 outline-surface-100 dark:outline-surface-950;
   }
 }
 
