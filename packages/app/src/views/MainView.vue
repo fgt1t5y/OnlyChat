@@ -10,9 +10,13 @@
             <RouterLink class="menu-Link" :to="{ name: 'home' }">
               <Avatar icon="ti ti-home" size="large" />
             </RouterLink>
-            <button v-for="server in joinedServers">
-              <ServerAvatar class="menu-Link" :server="server" />
-            </button>
+            <RouterLink
+              v-for="server in joinedServers"
+              class="menu-Link"
+              :to="{ name: 'server', params: { serverId: server.id } }"
+            >
+              <ServerAvatar :server="server" />
+            </RouterLink>
             <button class="menu-Link">
               <Avatar icon="ti ti-plus" size="large" />
             </button>

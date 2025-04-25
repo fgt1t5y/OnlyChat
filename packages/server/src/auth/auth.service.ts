@@ -77,7 +77,9 @@ export class AuthService {
     const userId = request.user.id as number;
     const user = await this.userRepository.findOne({
       relations: {
-        joinedServers: true,
+        joinedServers: {
+          creator: true,
+        },
       },
       where: {
         id: userId,

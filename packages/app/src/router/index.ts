@@ -11,6 +11,8 @@ import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
 import DMChatPage from '@/views/page/DMChatPage.vue'
 import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 import AppearancePage from '@/views/page/settings/AppearancePage.vue'
+import ServerChannelsAside from '@/views/aside/ServerChannelsAside.vue'
+import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +58,27 @@ const router = createRouter({
           components: {
             aside: HomeAside,
             default: DMChatPage,
+          },
+        },
+      ],
+    },
+    {
+      path: '/server/:serverId(\\d+)',
+      component: MainView,
+      children: [
+        {
+          path: '',
+          name: 'server',
+          redirect() {
+            return { name: 'server_channels' }
+          },
+        },
+        {
+          path: 'channels',
+          name: 'server_channels',
+          components: {
+            aside: ServerChannelsAside,
+            default: ServerChannelsPage,
           },
         },
       ],
