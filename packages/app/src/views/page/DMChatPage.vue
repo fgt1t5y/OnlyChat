@@ -77,7 +77,7 @@
             <div class="text-xl font-bold">{{ dmSession.userB.displayName }}</div>
             <div class="text-muted-color">{{ dmSession.userB.username }}</div>
           </div>
-          <div class="rounded-border mx-5 mt-2 p-2 bg-surface-50 dark:bg-surface-950">
+          <div class="rounded-border border border-content mx-5 mt-2 p-2 bg-surface-50 dark:bg-surface-700">
             <div v-if="dmSession.userB.introduction" class="flex flex-col">
               <div class="text-muted-color">Introduction</div>
               <div class="text-base">

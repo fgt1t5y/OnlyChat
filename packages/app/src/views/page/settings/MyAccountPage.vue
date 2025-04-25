@@ -2,7 +2,7 @@
   <Page>
     <div class="w-setting-page mx-auto">
       <h1>My Account</h1>
-      <div class="rounded-border bg-surface-200 dark:bg-surface-900 overflow-hidden relative">
+      <div class="rounded-border bg-surface-200 dark:bg-surface-950 overflow-hidden relative">
         <div :style="{ backgroundColor: `#${auth.user!.bannerColor}` }" class="h-banner"></div>
         <div style="padding: 16px 16px 0 120px" class="flex justify-between">
           <div class="absolute left-5 top-20">
@@ -13,7 +13,7 @@
             <Button label="Edit User Profile" />
           </RouterLink>
         </div>
-        <div class="rounded-border flex flex-col gap-2 m-5 p-2 bg-surface-50 dark:bg-surface-950">
+        <div class="rounded-border flex flex-col gap-2 m-5 p-2 bg-surface-50 dark:bg-surface-900">
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
               <div class="text-base">Display Name</div>

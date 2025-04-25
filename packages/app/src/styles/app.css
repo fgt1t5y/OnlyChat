@@ -87,7 +87,7 @@
  * Components
  */
 #main-Title {
-  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-900;
+  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-950;
 }
 
 #main-View {
@@ -97,15 +97,27 @@
 }
 
 #main-Nav {
-  @apply relative flex flex-col min-w-[350px] bg-surface-200 dark:bg-surface-900;
+  @apply relative flex flex-col min-w-[350px] bg-surface-200 dark:bg-surface-950;
 }
 
 #main-Nav-User {
   @apply absolute rounded-border bottom-2 left-2 right-2 flex gap-2 items-center p-2 bg-surface-100 dark:bg-surface-800;
 }
 
-.menu-Link.router-link-active {
-  @apply outline-2 outline-primary rounded-border;
+.menu-Link {
+  @apply outline-2 outline-transparent rounded-border;
+
+  &:hover {
+    @apply outline-2 outline-primary;
+  }
+
+  &.router-link-active {
+    @apply outline-2 outline-primary;
+  }
+
+  .p-avatar {
+    @apply bg-white dark:bg-surface-900;
+  }
 }
 
 .aside-Group-Title {
@@ -141,7 +153,7 @@
 }
 
 .page {
-  @apply flex flex-col grow border-t border-content;
+  @apply flex flex-col grow border-t border-content bg-surface-100 dark:bg-surface-900;
 }
 
 .page-Title {
@@ -153,7 +165,7 @@
 }
 
 .page-Aside {
-  @apply min-w-[360px] bg-transparent dark:bg-surface-900 border-l border-content;
+  @apply min-w-[360px] bg-surface-50 dark:bg-surface-800 border-l border-content;
 }
 
 .list-Item {

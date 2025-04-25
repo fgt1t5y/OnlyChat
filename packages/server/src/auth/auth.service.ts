@@ -4,6 +4,7 @@ import {
   BadRequestException,
   ForbiddenException,
   UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -74,11 +75,16 @@ export class AuthService {
 
   async profile(@Request() request: any) {
     const userId = request.user.id as number;
-
-    return await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: {
         id: userId,
       },
     });
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
   }
 }

@@ -17,7 +17,7 @@ export class Server {
   @Column({ length: 64 })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatarUrl: string;
 
   @Column({ nullable: true })

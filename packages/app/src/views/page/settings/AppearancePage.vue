@@ -27,7 +27,7 @@
         <div class="flex flex-col gap-2 items-center">
           <label
             for="darkRadio"
-            class="h-15 w-15 bg-surface-900 rounded-full cursor-pointer"
+            class="h-15 w-15 bg-surface-950 rounded-full cursor-pointer"
           ></label>
           <RadioButton v-model="currentThemeMode" inputId="darkRadio" value="dark" />
         </div>

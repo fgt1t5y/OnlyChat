@@ -10,6 +10,9 @@
             <RouterLink class="menu-Link" :to="{ name: 'home' }">
               <Avatar icon="ti ti-home" size="large" />
             </RouterLink>
+            <button class="menu-Link">
+              <Avatar icon="ti ti-plus" size="large" />
+            </button>
           </menu>
           <aside class="grow p-2 rounded-tl-xl border-l border-t border-content">
             <RouterView name="aside" />
