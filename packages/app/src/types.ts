@@ -69,12 +69,42 @@ export interface Friend {
 
 export interface Server {
   id: number
+  creatorId: number
   name: string
   avatarUrl?: string
   avatarClass?: string
-  creatorId: number
   createdAt: string
   updatedAt: string
+
+  creator: User
+}
+
+export interface ChannelGroup {
+  id: number
+  serverId: number
+  creatorId: number
+  name: string
+  createdAt: Date
+  updatedAt: Date
+
+  server: Server
+  creator: User
+}
+
+export interface Channel {
+  id: number;
+  serverId: number;
+  groupId: number;
+  creatorId: number;
+  name: string;
+  description: string;
+  iconClass: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  server: Server;
+  group: ChannelGroup;
+  creator: User;
 }
 
 export interface User {
@@ -105,6 +135,10 @@ export interface RouterMenuItem {
 
 export interface DmSessionIdMessagesMap {
   [dmSessionId: number]: DMMessage[]
+}
+
+export interface ServerChannelsMap {
+  // [serverId: number]: Channel
 }
 
 export interface AppGlobalContext {
