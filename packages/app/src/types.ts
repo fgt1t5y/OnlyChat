@@ -77,13 +77,19 @@ export interface Server {
   updatedAt: string
 
   creator: User
+  channels: Channel[]
 }
 
-export interface ChannelGroup {
+export interface Channel {
   id: number
+  rootChannelId?: number;
+  position: number
   serverId: number
+  groupId: number
   creatorId: number
   name: string
+  description: string
+  iconClass: string
   createdAt: Date
   updatedAt: Date
 
@@ -91,21 +97,7 @@ export interface ChannelGroup {
   creator: User
 }
 
-export interface Channel {
-  id: number;
-  serverId: number;
-  groupId: number;
-  creatorId: number;
-  name: string;
-  description: string;
-  iconClass: string;
-  createdAt: Date;
-  updatedAt: Date;
-
-  server: Server;
-  group: ChannelGroup;
-  creator: User;
-}
+export type ChannelTree = Channel & { children: Channel[] }
 
 export interface User {
   id: number

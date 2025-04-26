@@ -1,7 +1,7 @@
 <template>
   <RouterMenu :items="homeAsideMenuItems" />
   <Divider />
-  <div class="aside-Group-Title">DM Sessions</div>
+  <div class="aside-Group-Title">Direct Messages</div>
   <ul class="router-Menu">
     <li v-for="item in dmSessions" class="router-Menu-Item dm-Session-Item">
       <RouterLink

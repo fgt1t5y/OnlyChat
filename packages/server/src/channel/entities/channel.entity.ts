@@ -14,6 +14,9 @@ export class Channel {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: true })
+  rootChannelId: number;
+
   @Column()
   position: number;
 
@@ -26,14 +29,11 @@ export class Channel {
   @Column({ length: 64 })
   name: string;
 
-  @Column({ length: 200 })
+  @Column({ default: '', length: 200, nullable: true })
   description: string;
 
   @Column({ nullable: true })
   iconClass: string;
-
-  @Column({ default: false })
-  isGroup: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -41,7 +41,7 @@ export class Channel {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Server, (server) => server.id)
+  @ManyToOne(() => Server, (server) => server.channels)
   server: Server;
 
   @ManyToOne(() => User, (user) => user.id)

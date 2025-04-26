@@ -85,6 +85,13 @@ export class AuthService {
       where: {
         id: userId,
       },
+      order: {
+        joinedServers: {
+          channels: {
+            position: 'ASC',
+          },
+        },
+      },
     });
 
     if (!user) {
