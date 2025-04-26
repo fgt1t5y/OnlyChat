@@ -15,7 +15,7 @@ import { DMMessage, DMSession } from './dm/entities';
 import { ServerModule } from './server/server.module';
 import { ChannelModule } from './channel/channel.module';
 import { Server } from './server/server.entity';
-import { Channel, ChannelGroup } from './channel/entities';
+import { Channel } from './channel/entities';
 
 @Module({
   imports: [
@@ -35,7 +35,6 @@ import { Channel, ChannelGroup } from './channel/entities';
         DMMessage,
         DMSession,
         Server,
-        ChannelGroup,
         Channel,
       ],
       synchronize: true,

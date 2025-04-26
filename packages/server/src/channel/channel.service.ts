@@ -12,9 +12,6 @@ export class ChannelService {
 
   async findAllByServerId(serverId: number): Promise<Channel[]> {
     return this.channelRepository.find({
-      relations: {
-        group: true,
-      },
       where: {
         serverId,
       },

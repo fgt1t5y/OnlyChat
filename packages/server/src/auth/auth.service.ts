@@ -79,6 +79,7 @@ export class AuthService {
       relations: {
         joinedServers: {
           creator: true,
+          channels: true,
         },
       },
       where: {

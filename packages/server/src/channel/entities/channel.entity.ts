@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ChannelGroup } from './channel-group.entity';
 
 @Entity({ name: 'channels' })
 export class Channel {
@@ -16,10 +15,10 @@ export class Channel {
   id: number;
 
   @Column()
-  serverId: number;
+  position: number;
 
-  @Column({ nullable: true })
-  groupId: number;
+  @Column()
+  serverId: number;
 
   @Column()
   creatorId: number;
@@ -33,6 +32,9 @@ export class Channel {
   @Column({ nullable: true })
   iconClass: string;
 
+  @Column({ default: false })
+  isGroup: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -41,9 +43,6 @@ export class Channel {
 
   @ManyToOne(() => Server, (server) => server.id)
   server: Server;
-
-  @ManyToOne(() => ChannelGroup, (channelGroup) => channelGroup.id)
-  group: ChannelGroup;
 
   @ManyToOne(() => User, (user) => user.id)
   creator: User;

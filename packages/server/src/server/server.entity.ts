@@ -1,3 +1,4 @@
+import { Channel } from 'src/channel/entities';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -37,4 +39,7 @@ export class Server {
 
   @ManyToMany(() => User, (user) => user.id)
   members: User[];
+
+  @OneToMany(() => Channel, (channel) => channel.server)
+  channels: Channel[];
 }
