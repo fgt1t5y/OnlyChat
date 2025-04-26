@@ -125,11 +125,11 @@
 }
 
 .router-Menu {
-  @apply flex flex-col;
+  @apply flex flex-col gap-1;
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded-border text-base hover:bg-surface-50 dark:hover:bg-surface-800;
+  @apply flex items-center gap-2 p-2 rounded-border text-base/4 hover:bg-surface-50 dark:hover:bg-surface-800;
 
   i {
     @apply text-[18px];

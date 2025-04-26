@@ -2,15 +2,15 @@
   <RouterMenu :items="serverAsideMenuItems" />
   <Divider />
   <div v-for="channel in resolvedChannels" class="mb-4">
-    <div v-if="channel.children.length">
-      <div class="text-muted-color mx-2 mb-1">{{ channel.name }}</div>
+    <div v-if="channel.children.length" class="router-Menu">
+      <div class="text-muted-color mx-2">{{ channel.name }}</div>
       <RouterLink
         v-for="subChannel in channel.children"
         class="router-Menu-Item"
         :to="{ name: 'server_channel_chat', params: { channelId: subChannel.id } }"
       >
         <i class="ti ti-hash"></i>
-        <div>{{ subChannel.name }}</div>
+        <div class="router-Menu-Item-Text">{{ subChannel.name }}</div>
       </RouterLink>
     </div>
     <RouterLink
@@ -19,7 +19,7 @@
       :to="{ name: 'server_channel_chat', params: { channelId: channel.id } }"
     >
       <i class="ti ti-hash"></i>
-      <div>{{ channel.name }}</div>
+      <div class="router-Menu-Item-Text">{{ channel.name }}</div>
     </RouterLink>
   </div>
 </template>
