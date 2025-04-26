@@ -5,7 +5,7 @@
   <ul class="router-Menu">
     <li v-for="item in dmSessions" class="router-Menu-Item dm-Session-Item">
       <RouterLink
-        :to="{ name: 'dm', params: { dmSessionId: item.id } }"
+        :to="{ name: 'dm_chat', params: { dmSessionId: item.id } }"
         class="dm-Session-Item-Link"
       >
         <UserAvatar :user="item.userB" size="s" />

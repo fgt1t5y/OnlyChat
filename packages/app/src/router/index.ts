@@ -13,6 +13,7 @@ import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 import AppearancePage from '@/views/page/settings/AppearancePage.vue'
 import ServerAside from '@/views/aside/ServerAside.vue'
 import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
+import ServerChannelChatPage from '@/views/page/ServerChannelChatPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,7 +55,7 @@ const router = createRouter({
         },
         {
           path: 'dm/:dmSessionId(\\d+)',
-          name: 'dm',
+          name: 'dm_chat',
           components: {
             aside: HomeAside,
             default: DMChatPage,
@@ -79,6 +80,14 @@ const router = createRouter({
           components: {
             aside: ServerAside,
             default: ServerChannelsPage,
+          },
+        },
+        {
+          path: ':channelId(\\d+)',
+          name: 'server_channel_chat',
+          components: {
+            aside: ServerAside,
+            default: ServerChannelChatPage,
           },
         },
       ],

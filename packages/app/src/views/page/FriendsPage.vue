@@ -56,7 +56,7 @@ const handleOpenDMSession = async (userBId: number) => {
   const dmSessionIndex = dmSessions.value.findIndex((session) => session.userBId === userBId)
 
   if (dmSessionIndex !== -1) {
-    router.push({ name: 'dm', params: { dmSessionId: dmSessions.value[dmSessionIndex].id } })
+    router.push({ name: 'dm_chat', params: { dmSessionId: dmSessions.value[dmSessionIndex].id } })
   } else {
     const dmSession = await apis.openDMSession(userBId)
 
@@ -64,7 +64,7 @@ const handleOpenDMSession = async (userBId: number) => {
       dmSessions.value.unshift(dmSession)
     }
 
-    router.push({ name: 'dm', params: { dmSessionId: dmSession.id } })
+    router.push({ name: 'dm_chat', params: { dmSessionId: dmSession.id } })
   }
 }
 

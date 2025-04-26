@@ -123,8 +123,6 @@ const onDMMessageReceived = (dmMessage: DMMessage) => {
     return dmSession.userBId === dmMessage.authorId
   })
 
-  console.log(dmSessionId, dmMessages.value[dmMessage.sessionId])
-
   if (dmSessionId !== -1) {
     dmMessages.value[dmSessions.value[dmSessionId].id].push(dmMessage)
   }

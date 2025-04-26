@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Channel } from './channel.entity';
 
 @Entity({ name: 'channel_groups' })
 export class ChannelGroup {
@@ -34,4 +36,7 @@ export class ChannelGroup {
 
   @ManyToOne(() => User, (user) => user.id)
   creator: User;
+
+  @OneToMany(() => Channel, (channel) => channel.groupId)
+  channels: Channel[];
 }

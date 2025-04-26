@@ -14,6 +14,9 @@ export class Server {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  creatorId: number;
+
   @Column({ length: 64 })
   name: string;
 
@@ -22,9 +25,6 @@ export class Server {
 
   @Column({ nullable: true })
   avatarClass: string;
-
-  @Column()
-  creatorId: number;
 
   @CreateDateColumn()
   createdAt: Date;
