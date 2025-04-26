@@ -11,7 +11,7 @@ import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
 import DMChatPage from '@/views/page/DMChatPage.vue'
 import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 import AppearancePage from '@/views/page/settings/AppearancePage.vue'
-import ServerChannelsAside from '@/views/aside/ServerChannelsAside.vue'
+import ServerAside from '@/views/aside/ServerAside.vue'
 import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
 
 const router = createRouter({
@@ -77,7 +77,7 @@ const router = createRouter({
           path: 'channels',
           name: 'server_channels',
           components: {
-            aside: ServerChannelsAside,
+            aside: ServerAside,
             default: ServerChannelsPage,
           },
         },

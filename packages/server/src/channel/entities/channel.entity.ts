@@ -1,3 +1,4 @@
+import { Server } from 'src/server/server.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -7,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ChannelGroup } from './channel-group.entity';
 
 @Entity({ name: 'channels' })
 export class Channel {
@@ -22,9 +24,6 @@ export class Channel {
   @Column()
   creatorId: number;
 
-  @Column()
-  nextChannelId: number;
-
   @Column({ length: 64 })
   name: string;
 
@@ -39,6 +38,12 @@ export class Channel {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Server, (server) => server.id)
+  server: Server;
+
+  @ManyToOne(() => ChannelGroup, (channelGroup) => channelGroup.id)
+  group: ChannelGroup;
 
   @ManyToOne(() => User, (user) => user.id)
   creator: User;

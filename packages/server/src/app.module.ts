@@ -9,7 +9,7 @@ import { PermissionModule } from './permission/permission.module';
 import { Permission } from './permission/permission.entity';
 import { ChatModule } from './chat/chat.module';
 import { FriendModule } from './friend/friend.module';
-import { FriendRequest, Friend } from './friend/entity';
+import { FriendRequest, Friend } from './friend/entities';
 import { DMModule } from './dm/dm.module';
 import { DMMessage, DMSession } from './dm/entities';
 import { ServerModule } from './server/server.module';

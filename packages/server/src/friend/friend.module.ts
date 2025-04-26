@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FriendRequestController } from './friend-request.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Friend, FriendRequest } from './entity';
+import { Friend, FriendRequest } from './entities';
 import { FriendRequestService } from './friend-request.service';
 import { FriendController } from './friend.controller';
 import { FriendService } from './friend.service';

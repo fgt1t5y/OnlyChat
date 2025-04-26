@@ -1,3 +1,4 @@
+import { Server } from 'src/server/server.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -19,9 +20,6 @@ export class ChannelGroup {
   @Column()
   creatorId: number;
 
-  @Column({ nullable: true })
-  nextGroupId: number;
-
   @Column({ length: 64, nullable: true })
   name: string;
 
@@ -30,6 +28,9 @@ export class ChannelGroup {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Server, (server) => server.id)
+  server: Server;
 
   @ManyToOne(() => User, (user) => user.id)
   creator: User;

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FriendRequest } from './entity/friend-request.entity';
+import { FriendRequest } from './entities/friend-request.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WsException } from '@nestjs/websockets';

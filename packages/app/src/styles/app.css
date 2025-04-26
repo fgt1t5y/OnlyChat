@@ -131,6 +131,10 @@
 .router-Menu-Item {
   @apply flex items-center gap-2 p-2 rounded-border text-base hover:bg-surface-50 dark:hover:bg-surface-800;
 
+  i {
+    @apply text-[18px];
+  }
+
   &.router-link-active {
     @apply text-primary bg-surface-50 dark:bg-surface-800;
   }
@@ -225,7 +229,7 @@
 }
 
 .server-Avatar-Empty {
-  @apply h-full flex justify-center items-center rounded-border text-color bg-surface-300 dark:bg-surface-600;
+  @apply h-full flex justify-center items-center rounded-border text-color bg-surface-300 dark:bg-surface-700;
 }
 
 .server-Avatar-Bordered {
