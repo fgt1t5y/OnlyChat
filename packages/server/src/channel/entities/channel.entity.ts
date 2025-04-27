@@ -35,6 +35,9 @@ export class Channel {
   @Column({ nullable: true })
   iconClass: string;
 
+  @Column({ default: false })
+  isCategory: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

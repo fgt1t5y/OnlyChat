@@ -32,7 +32,7 @@
     <template #item="{ item, props }">
       <a class="flex items-center justify-between" v-bind="props.action">
         <div>{{ item.label }}</div>
-        <i style="font-size: 1.25rem;" :class="item.icon"></i>
+        <i style="font-size: 1.25rem" :class="item.icon"></i>
         <i v-if="item.items" class="pi pi-angle-right ml-auto"></i>
       </a>
     </template>
@@ -78,8 +78,8 @@ const resolvedChannels = computed<ChannelTree[]>(() => {
 
   server.value.channels.forEach((channel) => {
     if (channel.rootChannelId) {
-      // 如果有父节点，将当前频道添加到父节点的 `children` 中
       const parent = channelMap.get(channel.rootChannelId)
+
       if (parent) {
         parent.children.push(channelMap.get(channel.id)!)
       }

@@ -82,7 +82,7 @@ export interface Server {
 
 export interface Channel {
   id: number
-  rootChannelId?: number;
+  rootChannelId?: number
   position: number
   serverId: number
   groupId: number
@@ -90,6 +90,7 @@ export interface Channel {
   name: string
   description: string
   iconClass: string
+  isCategory: boolean
   createdAt: Date
   updatedAt: Date
 
