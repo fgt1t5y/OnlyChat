@@ -1,21 +1,25 @@
 import Aura from '@primeuix/themes/aura'
 import { definePreset } from '@primeuix/themes'
 
-const OnlyChat = definePreset(Aura, {
-  semantic: {
-    colorScheme: {
-      light: {
-        content: {
-          borderColor: '{surface.300}',
-        },
+import type { AuraBaseTokenSections } from '@primeuix/themes/aura/base'
+
+const semantic: AuraBaseTokenSections.Semantic = {
+  colorScheme: {
+    light: {
+      content: {
+        borderColor: '{surface.300}',
       },
-      dark: {
-        content: {
-          borderColor: '{surface.700}',
-        },
+    },
+    dark: {
+      content: {
+        borderColor: '{surface.700}',
       },
     },
   },
+}
+
+const OnlyChat = definePreset(Aura, {
+  semantic: semantic,
 })
 
 export default OnlyChat

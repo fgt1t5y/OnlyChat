@@ -330,4 +330,8 @@
 
 .server-Menu-Button {
   @apply flex items-center p-2 justify-between w-full h-[48px] border-b border-content hoverable;
+
+  &:focus {
+    @apply outline-0 bg-surface-50 dark:bg-surface-800;
+  }
 }
