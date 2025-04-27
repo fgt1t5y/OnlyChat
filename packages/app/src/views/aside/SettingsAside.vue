@@ -1,17 +1,19 @@
 <template>
-  <div class="aside-Group-Title">User Settings</div>
-  <RouterMenu :items="userSettingsAsideMenuItems" />
-  <Divider />
-  <div class="aside-Group-Title">App Settings</div>
-  <RouterMenu :items="appSettingsAsideMenuItems" />
-  <Button
-    class="mt-6"
-    label="Logout"
-    icon="ti ti-logout"
-    severity="secondary"
-    fluid
-    @click="logout"
-  />
+  <div class="p-2">
+    <div class="aside-Group-Title">User Settings</div>
+    <RouterMenu :items="userSettingsAsideMenuItems" />
+    <Divider />
+    <div class="aside-Group-Title">App Settings</div>
+    <RouterMenu :items="appSettingsAsideMenuItems" />
+    <Button
+      class="mt-6"
+      label="Logout"
+      icon="ti ti-logout"
+      severity="secondary"
+      fluid
+      @click="logout"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -21,7 +21,7 @@
               <Avatar icon="ti ti-plus" size="large" />
             </button>
           </menu>
-          <aside class="grow p-2 rounded-tl-xl border-l border-t border-content">
+          <aside class="grow rounded-tl-xl border-l border-t border-content overflow-auto">
             <RouterView name="aside" />
           </aside>
         </section>

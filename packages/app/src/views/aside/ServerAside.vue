@@ -1,35 +1,51 @@
 <template>
-  <RouterMenu :items="serverAsideMenuItems" />
-  <Divider />
-  <div v-for="channel in resolvedChannels" class="mb-4">
-    <div v-if="channel.children.length" class="router-Menu">
-      <div class="text-muted-color mx-2">{{ channel.name }}</div>
+  <button class="server-Menu-Button" title="Server Main Menu" @click="serverMainMenu?.toggle">
+    <div class="font-bold">{{ server?.name }}</div>
+    <i class="ti ti-chevron-down"></i>
+  </button>
+  <div class="p-2">
+    <RouterMenu :items="serverAsideMenuItems" />
+    <Divider />
+    <div v-for="channel in resolvedChannels" class="mb-4">
+      <div v-if="channel.children.length" class="router-Menu">
+        <div class="text-muted-color mx-2">{{ channel.name }}</div>
+        <RouterLink
+          v-for="subChannel in channel.children"
+          class="router-Menu-Item"
+          :to="{ name: 'server_channel_chat', params: { channelId: subChannel.id } }"
+        >
+          <i class="ti ti-hash"></i>
+          <div class="router-Menu-Item-Text">{{ subChannel.name }}</div>
+        </RouterLink>
+      </div>
       <RouterLink
-        v-for="subChannel in channel.children"
+        v-else
         class="router-Menu-Item"
-        :to="{ name: 'server_channel_chat', params: { channelId: subChannel.id } }"
+        :to="{ name: 'server_channel_chat', params: { channelId: channel.id } }"
       >
         <i class="ti ti-hash"></i>
-        <div class="router-Menu-Item-Text">{{ subChannel.name }}</div>
+        <div class="router-Menu-Item-Text">{{ channel.name }}</div>
       </RouterLink>
     </div>
-    <RouterLink
-      v-else
-      class="router-Menu-Item"
-      :to="{ name: 'server_channel_chat', params: { channelId: channel.id } }"
-    >
-      <i class="ti ti-hash"></i>
-      <div class="router-Menu-Item-Text">{{ channel.name }}</div>
-    </RouterLink>
   </div>
+  <ContextMenu ref="serverMainMenu" :model="serverMainMenuItems">
+    <template #item="{ item, props }">
+      <a class="flex items-center justify-between" v-bind="props.action">
+        <div>{{ item.label }}</div>
+        <i style="font-size: 1.25rem;" :class="item.icon"></i>
+        <i v-if="item.items" class="pi pi-angle-right ml-auto"></i>
+      </a>
+    </template>
+  </ContextMenu>
 </template>
 
 <script setup lang="ts">
 import RouterMenu from '@/components/common/RouterMenu.vue'
-import { computed, inject, ref } from 'vue'
+import { computed, inject, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
-import { Divider } from 'primevue'
+import { ContextMenu, Divider } from 'primevue'
 
+import type { MenuItem } from 'primevue/menuitem'
 import type { Server, AppGlobalContext, RouterMenuItem, ChannelTree } from '@/types'
 
 const { joinedServers } = inject<AppGlobalContext>('OC')!
@@ -38,6 +54,7 @@ const route = useRoute()
 
 const serverId = Number(route.params.serverId)
 
+const serverMainMenu = useTemplateRef('serverMainMenu')
 const server = ref<Server | undefined>(joinedServers.value.find((server) => server.id === serverId))
 const serverAsideMenuItems = ref<RouterMenuItem[]>([
   {
@@ -52,15 +69,13 @@ const resolvedChannels = computed<ChannelTree[]>(() => {
     return []
   }
 
-  const channelMap = new Map<number, ChannelTree>() // 用于快速查找频道
-  const tree: ChannelTree[] = [] // 存储最终的树结构
+  const channelMap = new Map<number, ChannelTree>()
+  const tree: ChannelTree[] = []
 
-  // 初始化每个频道，并添加 `children` 属性
   server.value.channels.forEach((channel) => {
     channelMap.set(channel.id, { ...channel, children: [] })
   })
 
-  // 构建树结构
   server.value.channels.forEach((channel) => {
     if (channel.rootChannelId) {
       // 如果有父节点，将当前频道添加到父节点的 `children` 中
@@ -69,7 +84,6 @@ const resolvedChannels = computed<ChannelTree[]>(() => {
         parent.children.push(channelMap.get(channel.id)!)
       }
     } else {
-      // 如果没有父节点，说明是顶级节点，直接添加到树中
       tree.push(channelMap.get(channel.id)!)
     }
   })
@@ -77,5 +91,11 @@ const resolvedChannels = computed<ChannelTree[]>(() => {
   return tree
 })
 
-console.log(resolvedChannels.value)
+const serverMainMenuItems = computed<MenuItem[]>(() => {
+  return [
+    { label: 'Server Settings', icon: 'ti ti-settings' },
+    { label: 'Create Channel', icon: 'ti ti-circle-plus' },
+    { label: 'Create Category', icon: 'ti ti-folder-plus' },
+  ]
+})
 </script>

@@ -1,21 +1,23 @@
 <template>
-  <RouterMenu :items="homeAsideMenuItems" />
-  <Divider />
-  <div class="aside-Group-Title">Direct Messages</div>
-  <ul class="router-Menu">
-    <li v-for="item in dmSessions" class="router-Menu-Item dm-Session-Item">
-      <RouterLink
-        :to="{ name: 'dm_chat', params: { dmSessionId: item.id } }"
-        class="dm-Session-Item-Link"
-      >
-        <UserAvatar :user="item.userB" size="s" />
-        <div>{{ item.userB.displayName }}</div>
-      </RouterLink>
-      <button @click.stop="handleCloseDMSession(item.id, item.userBId)">
-        <i class="ti ti-x"></i>
-      </button>
-    </li>
-  </ul>
+  <div class="p-2">
+    <RouterMenu :items="homeAsideMenuItems" />
+    <Divider />
+    <div class="aside-Group-Title">Direct Messages</div>
+    <ul class="router-Menu">
+      <li v-for="item in dmSessions" class="router-Menu-Item dm-Session-Item">
+        <RouterLink
+          :to="{ name: 'dm_chat', params: { dmSessionId: item.id } }"
+          class="dm-Session-Item-Link"
+        >
+          <UserAvatar :user="item.userB" size="s" />
+          <div>{{ item.userB.displayName }}</div>
+        </RouterLink>
+        <button @click.stop="handleCloseDMSession(item.id, item.userBId)">
+          <i class="ti ti-x"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup lang="ts">

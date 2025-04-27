@@ -26,6 +26,10 @@
   @apply w-[600px];
 }
 
+@utility hoverable {
+  @apply hover:bg-surface-50 dark:hover:bg-surface-800;
+}
+
 @layer base {
   body {
     @apply text-color text-sm bg-content;
@@ -129,7 +133,7 @@
 }
 
 .router-Menu-Item {
-  @apply flex items-center gap-2 p-2 rounded-border text-base/4 hover:bg-surface-50 dark:hover:bg-surface-800;
+  @apply flex items-center gap-2 p-2 rounded-border text-base/4 hoverable;
 
   i {
     @apply text-[18px];
@@ -322,4 +326,8 @@
 
 .dm-Session-Item-Link {
   @apply flex gap-2 items-center grow;
+}
+
+.server-Menu-Button {
+  @apply flex items-center p-2 justify-between w-full h-[48px] border-b border-content hoverable;
 }
