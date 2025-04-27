@@ -4,12 +4,12 @@ import '@/styles/tabler-icons.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/aura'
+import OnlyChat from './theme'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
-import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 
 import App from './App.vue'
 import router from './router'
@@ -25,7 +25,7 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: OnlyChat,
     options: {
       darkModeSelector: '.dark',
     },

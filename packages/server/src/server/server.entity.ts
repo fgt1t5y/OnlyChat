@@ -28,6 +28,9 @@ export class Server {
   @Column({ nullable: true })
   avatarClass: string;
 
+  @Column({ default: 0 })
+  memberCount: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
