@@ -50,8 +50,11 @@
   }
 
   textarea {
-    resize: none;
-    caret-color: var(--p-text-color);
+    @apply resize-none text-base;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   p {
@@ -306,9 +309,9 @@
 }
 
 .chat-Input {
-  @apply flex p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
+  @apply flex items-center p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
 
-  input {
+  textarea {
     @apply outline-0 text-base grow;
   }
 }
@@ -350,18 +353,4 @@
   &:focus {
     @apply outline-0 bg-surface-50 dark:bg-surface-800;
   }
-}
-
-.highlight-Result {
-  margin-bottom: calc(1rem + 4px);
-
-  @apply font-mono text-base;
-}
-
-.shiki {
-  @apply p-2 min-h-[4em] bg-transparent! whitespace-pre;
-}
-
-.highlight-Textarea {
-  @apply p-2 font-mono absolute top-0 left-0 w-full h-full z-0 min-h-[4em] text-transparent text-base whitespace-pre;
 }

@@ -1,8 +1,7 @@
 <template>
   <form @submit.prevent.stop="emits('submit')" class="chat-Input">
-    <input v-model="content" ref="input" type="text" />
+    <textarea v-model="content" ref="textarea" @input="resizeTextarea" rows="1"></textarea>
     <Button
-      label="Send"
       type="submit"
       icon="ti ti-send"
       severity="primary"
@@ -14,8 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import { Button } from 'primevue'
+import { useResizeObserver } from '@vueuse/core'
 
 defineOptions({
   name: 'ChatInput',
@@ -27,7 +27,40 @@ const emits = defineEmits<{
 
 const content = defineModel<string>({ default: '' })
 
-const input = useTemplateRef('input')
+const textarea = useTemplateRef('textarea')
 
-defineExpose({ input })
+const { stop } = useResizeObserver(textarea, () => {
+  resizeTextarea()
+})
+
+const resizeTextarea = () => {
+  if (!textarea.value) {
+    return
+  }
+
+  if (content.value === '' || textarea.value.value === '') {
+    textarea.value.style.setProperty('height', 'auto')
+    return
+  }
+
+  textarea.value.style.setProperty('height', 'auto')
+  textarea.value.style.setProperty('height', `${textarea.value.scrollHeight}px`)
+}
+
+watch(
+  () => content.value,
+  () => {
+    resizeTextarea()
+  },
+)
+
+onMounted(() => {
+  resizeTextarea()
+})
+
+onUnmounted(() => {
+  stop()
+})
+
+defineExpose({ textarea })
 </script>
