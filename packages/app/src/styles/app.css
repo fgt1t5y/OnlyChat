@@ -291,10 +291,10 @@
 }
 
 .chat-Input {
-  @apply flex flex-col p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
+  @apply flex p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
 
   input {
-    @apply outline-0 text-base;
+    @apply outline-0 text-base grow;
   }
 }
 
