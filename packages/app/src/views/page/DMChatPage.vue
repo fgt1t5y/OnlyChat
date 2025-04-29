@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div v-else class="message-Item message-Item-Tail">
-                <time class="flex justify-center w-15 text-[12px] text-muted-color">
+                <time class="flex justify-center w-15 text-[12px] text-muted-color shrink-0">
                   {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
                 </time>
                 <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
