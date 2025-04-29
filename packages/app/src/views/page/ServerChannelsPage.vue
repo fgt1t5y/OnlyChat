@@ -13,7 +13,10 @@
         <RouterLink
           v-for="channel in uncategorizedChannels"
           class="router-Menu-Item"
-          :to="{ name: 'server_channel_chat', params: { channelId: channel.id } }"
+          :to="{
+            name: 'server_channel_chat',
+            params: { serverId: serverId, channelId: channel.id },
+          }"
         >
           <i class="ti ti-hash"></i>
           <div class="router-Menu-Item-Text">{{ channel.name }}</div>
@@ -25,7 +28,10 @@
           <RouterLink
             v-for="subChannel in channel.children"
             class="router-Menu-Item"
-            :to="{ name: 'server_channel_chat', params: { channelId: subChannel.id } }"
+            :to="{
+              name: 'server_channel_chat',
+              params: { serverId: serverId, channelId: subChannel.id },
+            }"
           >
             <i class="ti ti-hash"></i>
             <div class="router-Menu-Item-Text">{{ subChannel.name }}</div>
