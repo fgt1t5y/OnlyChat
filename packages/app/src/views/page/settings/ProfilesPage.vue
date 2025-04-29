@@ -49,7 +49,7 @@
         </div>
         <div style="max-width: 348px" class="w-full">
           <div>Preview</div>
-          <div class="relative rounded-border overflow-hidden dark:bg-surface-800">
+          <div class="relative rounded-border overflow-hidden bg-surface-200 dark:bg-surface-800">
             <div :style="{ backgroundColor: `#${auth.user!.bannerColor}` }" class="h-banner"></div>
             <div class="absolute left-3 top-15">
               <UserAvatar size="l" :user="auth.user!" :is-online="auth.user!.isOnline" bordered />
