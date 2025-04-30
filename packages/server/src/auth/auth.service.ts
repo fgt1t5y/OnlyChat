@@ -1,10 +1,8 @@
 import {
   Injectable,
-  Request,
   BadRequestException,
   ForbiddenException,
   UnauthorizedException,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -73,9 +71,10 @@ export class AuthService {
     return await this.userRepository.save(user);
   }
 
-  async profile(@Request() request: any) {
+  async getProfile(request: any) {
     const userId = request.user.id as number;
-    const user = await this.userRepository.findOne({
+
+    return await this.userRepository.findOne({
       relations: {
         joinedServers: {
           creator: true,
@@ -93,11 +92,21 @@ export class AuthService {
         },
       },
     });
+  }
 
-    if (!user) {
-      throw new NotFoundException('User not found.');
+  async updateProfile(userId: number, patchedUser: Partial<User>) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (patchedUser.displayName) {
+      user.displayName = patchedUser.displayName;
     }
 
-    return user;
+    await this.userRepository.save(user);
+
+    return;
   }
 }

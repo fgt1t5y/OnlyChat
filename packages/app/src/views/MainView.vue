@@ -28,7 +28,7 @@
         <section id="main-Nav-User">
           <UserAvatar :user="auth.user" is-online />
           <div class="flex flex-col justify-center grow">
-            <div>{{ auth.user.username }}</div>
+            <div>{{ auth.user.displayName }}</div>
             <div class="text-muted-color">@{{ auth.user.username }}</div>
           </div>
           <Button

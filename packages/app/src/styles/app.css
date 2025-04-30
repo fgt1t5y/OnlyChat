@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Utility
+ * MARK: Utility
  */
 @utility text-danger {
   @apply text-red-600;
@@ -28,6 +28,10 @@
 
 @utility hoverable {
   @apply hover:bg-surface-50 dark:hover:bg-surface-800;
+}
+
+@utility shadow-full {
+  box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.3);
 }
 
 @layer base {
@@ -82,7 +86,7 @@
 }
 
 /*
- * Override
+ * MARK: Override
  */
 .p-button .p-button-icon {
   font-size: 1.25rem !important;
@@ -106,7 +110,7 @@
 }
 
 /*
- * Components
+ * MARK: Components
  */
 #main-Title {
   @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-950;
@@ -353,4 +357,20 @@
   &:focus {
     @apply outline-0 bg-surface-50 dark:bg-surface-800;
   }
+}
+
+.cropper {
+  @apply flex flex-col gap-2;
+}
+
+.cropper-Area {
+  @apply relative cursor-move select-none;
+}
+
+.cropper-Mask-Wrapper {
+  @apply absolute overflow-hidden z-0 top-0 w-full h-full;
+}
+
+.cropper-Mask {
+  @apply z-10 rounded-full shadow-full absolute border border-white border-dashed box-border inset-0 touch-none;
 }

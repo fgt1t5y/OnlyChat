@@ -7,7 +7,7 @@ export class ChannelController {
   constructor(private readonly channelService: ChannelService) {}
 
   @Get()
-  async getChannels(@Query() data: GetServerChannelsDto) {
-    return this.channelService.findAllByServerId(data.serverId);
+  async getChannels(@Query() query: GetServerChannelsDto) {
+    return this.channelService.findAllByServerId(query.serverId);
   }
 }

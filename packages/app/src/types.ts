@@ -106,7 +106,7 @@ export interface User {
   username: string
   email?: string
   introduction?: string
-  avatarUrl?: string
+  avatarUrl: string | null
   bannerImageUrl?: string
   bannerColor: string
   avatarVersion: number

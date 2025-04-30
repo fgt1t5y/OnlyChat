@@ -1,5 +1,5 @@
 import apis from '@/apis'
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 
 import type { User } from '@/types'
 
@@ -7,6 +7,7 @@ export const useAuth = defineStore('account', {
   state: () => ({
     accessToken: localStorage.getItem('token'),
     user: null as User | null,
+    userShadow: null as User | null,
   }),
   getters: {
     hasToken: (state) => !!state.accessToken,
@@ -14,7 +15,10 @@ export const useAuth = defineStore('account', {
   actions: {
     async getUserProfile() {
       try {
-        this.user = await apis.getProfile()
+        const user = await apis.getProfile()
+
+        this.user = user
+        this.userShadow = structuredClone(user)
       } catch {
         this.logout()
       }
@@ -33,3 +37,7 @@ export const useAuth = defineStore('account', {
     },
   },
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAuth, import.meta.hot))
+}

@@ -1,11 +1,6 @@
 <template>
   <div :class="userAvatarClass">
-    <img
-      v-if="user.avatarUrl"
-      :src="`/api/content/avatars/${user.avatarUrl}`"
-      class="user-Avatar-Image"
-      alt="My Avatar"
-    />
+    <img v-if="user.avatarUrl" :src="imageUrl" class="user-Avatar-Image" alt="My Avatar" />
     <div v-else class="user-Avatar-Empty">
       <span>{{ user.displayName.slice(0, 1) }}</span>
     </div>
@@ -45,6 +40,18 @@ const userAvatarClass = computed(() => {
     'user-Avatar-L-Size': props.size === 'l',
     'user-Avatar-Is-Online': props.isOnline || props.user.isOnline,
     'user-Avatar-Bordered': props.bordered,
+  }
+})
+
+const imageUrl = computed(() => {
+  if (props.user.avatarUrl) {
+    if (props.user.avatarUrl.startsWith('blob:')) {
+      return props.user.avatarUrl
+    } else {
+      return `/api/content/avatars/${props.user.avatarUrl}`
+    }
+  } else {
+    return ''
   }
 })
 </script>
