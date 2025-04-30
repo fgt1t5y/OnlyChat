@@ -7,14 +7,27 @@
           <div class="flex flex-col gap-2">
             <label class="flex flex-col gap-2">
               <div>Display Name</div>
-              <InputText v-model="auth.userShadow.displayName" name="displayName" />
+              <InputText
+                v-model="auth.userShadow.displayName"
+                name="displayName"
+                :placeholder="auth.userShadow.username"
+              />
             </label>
             <Divider />
             <div class="flex flex-col gap-2">
               <div>Avatar</div>
               <div class="flex gap-2">
-                <Button label="Change Avatar" @click="showChangeAvatarModel = true" />
-                <Button label="Remove Avatar" variant="text" @click="removeAvatar" />
+                <Button
+                  label="Change Avatar"
+                  :disabled="avatarUploading"
+                  @click="showChangeAvatarModel = true"
+                />
+                <Button
+                  label="Remove Avatar"
+                  :disabled="avatarUploading"
+                  variant="text"
+                  @click="removeAvatar"
+                />
               </div>
             </div>
             <Divider />
@@ -51,7 +64,9 @@
               />
             </div>
             <div class="mx-3 mt-12">
-              <div class="text-xl font-bold">{{ auth.userShadow.displayName }}</div>
+              <div class="text-xl font-bold">
+                {{ auth.userShadow.displayName || auth.userShadow.username }}
+              </div>
               <div>{{ auth.userShadow.username }}</div>
             </div>
             <div v-if="auth.userShadow.introduction" class="m-3">
@@ -66,7 +81,12 @@
       <Divider />
       <div class="flex gap-2 justify-end">
         <Button label="Reset" variant="text" :disabled="!hasChange" @click="resetChanges" />
-        <Button label="Save Changes" :disabled="!hasChange" />
+        <Button
+          label="Save Changes"
+          :disabled="!hasChange"
+          :loading="avatarUploading || profileUpdating"
+          @click="saveChanges"
+        />
       </div>
     </div>
   </Page>
@@ -122,6 +142,7 @@
 </template>
 
 <script setup lang="ts">
+import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import Cropper from '@/components/image/Cropper.vue'
@@ -130,8 +151,11 @@ import { Button, Divider, Dialog, Textarea, InputText, ColorPicker, ProgressBar 
 import { markedInstance } from '@/utils'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useDropZone } from '@vueuse/core'
+import { useToast } from 'primevue/usetoast'
+import { useRequest } from 'alova/client'
 
 const auth = useAuth()
+const toast = useToast()
 
 const imageCropper = useTemplateRef('imageCropper')
 const avatarFileDropZone = useTemplateRef('avatarFileDropZone')
@@ -139,6 +163,15 @@ const avatarFileInput = useTemplateRef('avatarFileInput')
 const showChangeAvatarModel = ref<boolean>(false)
 const imageCropperReady = ref<boolean>(false)
 const avatarFile = ref<File | null>(null)
+const cropoedAvatarFileBlob = ref<Blob | null>(null)
+
+const { send: uploadAvatar, loading: avatarUploading } = useRequest(apis.uploadAvatar, {
+  immediate: false,
+})
+
+const { send: updateProfiles, loading: profileUpdating } = useRequest(apis.updateProfile, {
+  immediate: false,
+})
 
 const onAvatarFileDropped = (file: File | null) => {
   if (!file) {
@@ -179,7 +212,7 @@ const onImageCropperCancel = () => {
   avatarFile.value = null
   imageCropperReady.value = false
 
-  if (avatarFileInput.value && avatarFile.value !== '') {
+  if (avatarFileInput.value) {
     avatarFileInput.value.value = ''
   }
 }
@@ -191,6 +224,7 @@ const onAvatarApplied = async () => {
     return
   }
 
+  cropoedAvatarFileBlob.value = blob
   auth.userShadow!.avatarUrl = window.URL.createObjectURL(blob)
 
   imageCropper.value?.destroyCropper()
@@ -198,7 +232,7 @@ const onAvatarApplied = async () => {
   avatarFile.value = null
   imageCropperReady.value = false
 
-  if (avatarFileInput.value && avatarFile.value !== '') {
+  if (avatarFileInput.value) {
     avatarFileInput.value.value = ''
   }
 
@@ -218,11 +252,58 @@ const resetChanges = () => {
 
   if (auth.userShadow.avatarUrl !== auth.user.avatarUrl) {
     URL.revokeObjectURL(auth.userShadow.avatarUrl!)
+
     auth.userShadow.avatarUrl = auth.user.avatarUrl
+    cropoedAvatarFileBlob.value = null
   }
 
   auth.userShadow.bannerColor = auth.user.bannerColor
   auth.userShadow.introduction = auth.user.introduction
+}
+
+const saveChanges = async () => {
+  if (!hasChange.value) {
+    return
+  }
+
+  if (cropoedAvatarFileBlob.value) {
+    try {
+      const uploadResult = await apis.uploadAvatar(cropoedAvatarFileBlob.value)
+
+      if (uploadResult && uploadResult.avatarUrl) {
+        URL.revokeObjectURL(auth.userShadow!.avatarUrl!)
+
+        cropoedAvatarFileBlob.value = null
+        auth.userShadow!.avatarUrl = uploadResult.avatarUrl
+      }
+    } catch {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to upload avatar',
+      })
+    }
+  }
+
+  try {
+    await updateProfiles({
+      displayName: auth.userShadow!.displayName,
+      avatarUrl: auth.userShadow!.avatarUrl,
+      bannerColor: auth.userShadow!.bannerColor,
+      introduction: auth.userShadow!.introduction,
+    })
+
+    auth.user!.displayName = auth.userShadow!.displayName
+    auth.user!.avatarUrl = auth.userShadow!.avatarUrl
+    auth.user!.bannerColor = auth.userShadow!.bannerColor
+    auth.user!.introduction = auth.userShadow!.introduction
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Failed to update profile',
+    })
+  }
 }
 
 const hasChange = computed(() => {
@@ -255,7 +336,7 @@ watch(
 
       avatarFile.value = null
 
-      if (avatarFileInput.value && avatarFile.value !== '') {
+      if (avatarFileInput.value) {
         avatarFileInput.value.value = ''
       }
     }

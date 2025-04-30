@@ -1,4 +1,3 @@
-import type { IResponse } from '@/types'
 import { createAlova } from 'alova'
 import adapterFetch from 'alova/fetch'
 import VueHook from 'alova/vue'
@@ -21,8 +20,8 @@ export const alovaInstance = createAlova({
 
       const json = await response.json()
 
-      if (json.statusCode > 400) {
-        console.error(json.message)
+      if (json.statusCode >= 400) {
+        console.error('[OC]', json.message)
 
         throw new Error(json.message)
       }

@@ -24,31 +24,12 @@ export class UserService {
   }
 
   async updateAvatar(userId: number, avatarUrl: string | null) {
-    const qr = this.dataSource.createQueryRunner();
-
-    await qr.connect();
-    await qr.startTransaction();
-
-    try {
-      await qr.manager.update(User, { id: userId }, { avatarUrl });
-
-      if (avatarUrl) {
-        await qr.manager.increment(User, { id: userId }, 'avatarVersion', 1);
-      }
-
-      await qr.commitTransaction();
-    } catch {
-      await qr.rollbackTransaction();
-    } finally {
-      await qr.release();
-    }
+    await this.userRepository.update({ id: userId }, { avatarUrl });
   }
 
-  async updateIsOnline(userId: number, isOnline: boolean): Promise<boolean> {
+  async updateIsOnline(userId: number, isOnline: boolean) {
     await this.userRepository.update(userId, {
       isOnline,
     });
-
-    return isOnline;
   }
 }

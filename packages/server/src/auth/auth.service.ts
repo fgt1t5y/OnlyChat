@@ -105,8 +105,23 @@ export class AuthService {
       user.displayName = patchedUser.displayName;
     }
 
+    if (patchedUser.avatarUrl) {
+      user.avatarUrl = patchedUser.avatarUrl;
+    }
+
+    if (
+      patchedUser.bannerColor &&
+      /^([0-9a-f]{6}|[0-9a-f]{3})$/i.test(patchedUser.bannerColor)
+    ) {
+      user.bannerColor = patchedUser.bannerColor;
+    }
+
+    if (patchedUser.introduction !== null) {
+      user.introduction = patchedUser.introduction;
+    }
+
     await this.userRepository.save(user);
 
-    return;
+    return patchedUser;
   }
 }

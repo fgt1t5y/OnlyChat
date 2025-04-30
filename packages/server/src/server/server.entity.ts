@@ -23,7 +23,7 @@ export class Server {
   name: string;
 
   @Column({ nullable: true })
-  avatarUrl: string;
+  avatarUrl: string | null;
 
   @Column({ nullable: true })
   avatarClass: string;

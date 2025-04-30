@@ -71,7 +71,7 @@ export interface Server {
   id: number
   creatorId: number
   name: string
-  avatarUrl?: string
+  avatarUrl: string | null
   avatarClass?: string
   createdAt: string
   updatedAt: string
@@ -107,7 +107,7 @@ export interface User {
   email?: string
   introduction?: string
   avatarUrl: string | null
-  bannerImageUrl?: string
+  bannerImageUrl: string | null
   bannerColor: string
   avatarVersion: number
   disabled: boolean

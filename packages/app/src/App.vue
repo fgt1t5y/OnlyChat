@@ -10,10 +10,12 @@
       </Suspense>
     </template>
   </RouterView>
+  <Toast />
 </template>
 
 <script setup lang="ts">
 import AppSplash from './components/AppSplash.vue'
+import Toast from 'primevue/toast'
 import { useRouter } from 'vue-router'
 import { useAuth } from './stores/auth'
 import { useTheme } from './stores/theme'

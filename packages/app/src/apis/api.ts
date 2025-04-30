@@ -20,6 +20,18 @@ export const getProfile = () => {
   })
 }
 
+export const updateProfile = (patchedUser: Partial<User>) => {
+  return alovaInstance.Post<Partial<User>>('/auth/profile', patchedUser)
+}
+
+export const uploadAvatar = (blob: Blob) => {
+  const formData = new FormData()
+
+  formData.append('avatar', blob)
+
+  return alovaInstance.Post<Partial<User>>('/auth/avatar', formData)
+}
+
 // #region DM Session API
 export const getDmSessions = () => {
   return alovaInstance.Get<DMSession[]>('/dm/session')

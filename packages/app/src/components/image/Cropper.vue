@@ -15,7 +15,7 @@
         @error="onImageError"
         @load="checkImage"
       />
-      <canvas ref="canvasRef" :width="width" :height="height"></canvas>
+      <canvas ref="canvas" :width="width" :height="height"></canvas>
       <div class="cropper-Mask-Wrapper">
         <div class="cropper-Mask"></div>
       </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, useTemplateRef } from 'vue'
 
 defineOptions({
   name: 'Cropper',
@@ -52,13 +52,15 @@ const props = withDefaults(defineProps<CropperProps>(), {
   image: undefined,
   imageTypes: () => ['image/jpeg', 'image/png'],
 })
+
 const emits = defineEmits<{
   (e: 'load'): void
   (e: 'error', message: string): void
 }>()
+
+const imageSrc = useTemplateRef('imageSrc')
+const canvas = useTemplateRef('canvas')
 const imageURL = ref<string>('')
-const imageSrc = ref<HTMLImageElement>()
-const canvasRef = ref<HTMLCanvasElement>()
 const renderStatus = {
   isDraging: false,
   startX: 0,
@@ -68,11 +70,12 @@ const renderStatus = {
   deltaX: 0,
   deltaY: 0,
 }
-let minScale = 0
 const scale = ref<number>(0.5)
 const hasFile = ref<boolean>(!!props.image)
 const imageException = ref<boolean>(false)
 const ratioException = ref<boolean>(false)
+
+let minScale = 0
 let ctx: CanvasRenderingContext2D | null = null
 
 const displayScale = (n: number) => {
@@ -193,7 +196,7 @@ const destroyCropper = () => {
 
 const getBlobAsync = (): Promise<Blob | null> => {
   return new Promise(function (resolve, reject) {
-    canvasRef.value!.toBlob(
+    canvas.value!.toBlob(
       function (blob) {
         if (!blob) {
           emits('error', 'message.crop_image_fail')
@@ -243,7 +246,7 @@ const onMouseupOutside = () => {
 }
 
 onMounted(() => {
-  ctx = canvasRef.value!.getContext('2d')
+  ctx = canvas.value!.getContext('2d')
   window.addEventListener('mouseup', onMouseupOutside)
   updateImage(props.image)
 })

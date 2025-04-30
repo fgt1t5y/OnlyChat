@@ -32,10 +32,10 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  avatarUrl: string;
+  avatarUrl: string | null;
 
   @Column({ nullable: true })
-  bannerImageUrl: string;
+  bannerImageUrl: string | null;
 
   @Column({ default: '42B883', length: 6 })
   bannerColor: string;

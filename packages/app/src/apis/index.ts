@@ -1,6 +1,8 @@
 import {
   login,
   getProfile,
+  updateProfile,
+  uploadAvatar,
   getDmSessions,
   openDMSession,
   closeDMSession,
@@ -15,6 +17,8 @@ import {
 const apis = {
   login,
   getProfile,
+  updateProfile,
+  uploadAvatar,
   getDmSessions,
   openDMSession,
   closeDMSession,
