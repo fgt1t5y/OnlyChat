@@ -120,15 +120,15 @@
       </div>
     </div>
     <div v-show="!avatarFile" class="flex flex-col gap-2">
-      <div class="flex flex-col">
-        <Button label="Select an Image" @click="avatarFileInput?.click()" />
-      </div>
-      <div class="text-center text-muted-color">OR</div>
       <div
         ref="avatarFileDropZone"
         class="flex items-center justify-center h-[120px] border border-dashed border-content rounded-border"
       >
         <div class="text-muted-color">Drop a image here</div>
+      </div>
+      <div class="text-center text-muted-color">OR</div>
+      <div class="flex flex-col">
+        <Button label="Select an Image" @click="avatarFileInput?.click()" />
       </div>
       <input
         ref="avatarFileInput"
@@ -268,7 +268,7 @@ const saveChanges = async () => {
 
   if (cropoedAvatarFileBlob.value) {
     try {
-      const uploadResult = await apis.uploadAvatar(cropoedAvatarFileBlob.value)
+      const uploadResult = await uploadAvatar(cropoedAvatarFileBlob.value)
 
       if (uploadResult && uploadResult.avatarUrl) {
         URL.revokeObjectURL(auth.userShadow!.avatarUrl!)
