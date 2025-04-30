@@ -147,7 +147,7 @@ const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
 const loadInitialMessages = async () => {
   const messages = await apis.getDmMessages(
     dmSessionId,
-    dmSession.value!.lastMessageId - MESSAGE_PER_PAGE,
+    dmSession.value!.lastMessageId,
     MESSAGE_PER_PAGE,
   )
 
@@ -162,7 +162,7 @@ const loadInitialMessages = async () => {
     reachedHead.value = reachedTail.value = true
   }
 
-  dmMessages.value[dmSessionId] = messages
+  dmMessages.value[dmSessionId] = messages.reverse()
 }
 
 const handleSendDMMessage = () => {

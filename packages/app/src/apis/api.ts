@@ -46,9 +46,9 @@ export const closeDMSession = (userBId: number) => {
 }
 
 // #region DM Message API
-export const getDmMessages = (dmSessionId: number, after: number, takeCount: number) => {
+export const getDmMessages = (dmSessionId: number, before: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm/message', {
-    params: { dmSessionId, after, takeCount },
+    params: { dmSessionId, before, takeCount },
   })
 }
 

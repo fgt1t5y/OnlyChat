@@ -32,7 +32,7 @@ export class DMMessageService {
   async findPaging(
     dmSessionA: DMSession,
     dmSessionB: DMSession,
-    after: number = 0,
+    before: number = 0,
     takeCount: number = 10,
   ): Promise<DMMessage[]> {
     if (dmSessionA && dmSessionB) {
@@ -40,14 +40,14 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id > :after AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
+          'dm_message.id < :before AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
           {
-            after,
+            before,
             sessionAId: dmSessionA.id,
             sessionBId: dmSessionB.id,
           },
         )
-        .orderBy('dm_message.id', 'ASC')
+        .orderBy('dm_message.id', 'DESC')
         .limit(takeCount)
         .getMany();
     } else if (dmSessionA) {
@@ -55,9 +55,9 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id > :after AND dm_message.sessionId = :sessionAId',
+          'dm_message.id > :before AND dm_message.sessionId = :sessionAId',
           {
-            after,
+            before,
             sessionAId: dmSessionA.id,
           },
         )
@@ -69,9 +69,9 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id > :after AND dm_message.sessionId = :sessionBId',
+          'dm_message.id > :before AND dm_message.sessionId = :sessionBId',
           {
-            after,
+            before,
             sessionBId: dmSessionB.id,
           },
         )

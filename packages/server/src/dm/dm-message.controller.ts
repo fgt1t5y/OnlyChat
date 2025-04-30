@@ -18,7 +18,7 @@ export class DMMessageController {
   @UseGuards(JwtAuthGuard)
   async getSomeDMMessage(
     @CurrentUser() user: JwtPayload,
-    @Query() { dmSessionId, after, takeCount }: GetDMMessageDto,
+    @Query() { dmSessionId, before, takeCount }: GetDMMessageDto,
   ) {
     const dmSessionB = await this.dmSessionService.findById(dmSessionId);
     const dmSessionA = await this.dmSessionService.findBy(
@@ -33,7 +33,7 @@ export class DMMessageController {
     return await this.dmMessageService.findPaging(
       dmSessionA,
       dmSessionB,
-      after,
+      before,
       takeCount,
     );
   }
