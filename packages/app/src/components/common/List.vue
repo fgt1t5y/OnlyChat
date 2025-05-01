@@ -1,5 +1,5 @@
 <template>
-  <ul ref="el">
+  <ul ref="el" @scroll="emits('scroll', $event)">
     <slot name="head" />
 
     <slot
@@ -24,13 +24,7 @@ defineOptions({
 
 defineSlots<{
   head: () => void
-  default: (props: {
-    item: T
-    next: T
-    prev: T
-    index: number
-    items: T[]
-  }) => void
+  default: (props: { item: T; next: T; prev: T; index: number; items: T[] }) => void
   tail: () => void
 }>()
 
@@ -38,7 +32,31 @@ const props = defineProps<{
   items: T[]
 }>()
 
+const emits = defineEmits<{
+  (e: 'scroll', event: Event): void
+}>()
+
 const el = useTemplateRef('el')
 
-defineExpose({ el })
+const scrollTo = (top: number) => {
+  if (el.value) {
+    window.requestAnimationFrame(() => {
+      el.value!.scrollTo({
+        top: top,
+      })
+    })
+  }
+}
+
+const scrollToBottom = () => {
+  if (el.value) {
+    window.requestAnimationFrame(() => {
+      el.value!.scrollTo({
+        top: el.value!.scrollHeight,
+      })
+    })
+  }
+}
+
+defineExpose({ el, scrollTo, scrollToBottom })
 </script>

@@ -61,7 +61,7 @@ export class DMMessageService {
             sessionAId: dmSessionA.id,
           },
         )
-        .orderBy('dm_message.id', 'ASC')
+        .orderBy('dm_message.id', 'DESC')
         .limit(takeCount)
         .getMany();
     } else {
@@ -75,7 +75,7 @@ export class DMMessageService {
             sessionBId: dmSessionB.id,
           },
         )
-        .orderBy('dm_message.id', 'ASC')
+        .orderBy('dm_message.id', 'DESC')
         .limit(takeCount)
         .getMany();
     }

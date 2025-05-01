@@ -14,8 +14,9 @@
       <div class="flex flex-col justify-end grow">
         <List
           ref="messageContainer"
+          class="min-h-0 overflow-auto pb-2 relative"
           :items="dmMessages[dmSessionId]"
-          class="min-h-0 overflow-auto pb-2"
+          @scroll="onMessageContainerScroll"
         >
           <template #head>
             <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
@@ -101,11 +102,21 @@ import DMMessageItem from '@/components/item/DMMessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
-import { computed, inject, onActivated, onDeactivated, ref, useTemplateRef } from 'vue'
+import {
+  computed,
+  inject,
+  onActivated,
+  onDeactivated,
+  ref,
+  useTemplateRef,
+  nextTick,
+  onMounted,
+} from 'vue'
 import { useRoute } from 'vue-router'
-import { markedInstance } from '@/utils'
+import { markedInstance } from '@/libs/marked'
 import { useSocketIO } from '@/stores/socket'
 import { MESSAGE_PER_PAGE } from '@/constants'
+import { useStorage } from '@vueuse/core'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
@@ -122,19 +133,10 @@ const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
 const messageContent = ref<string>('')
-const showUserProfilePanel = ref<boolean>(true)
+const showUserProfilePanel = useStorage('showUserProfilePanel', true)
 const reachedHead = ref<boolean>(false)
 const reachedTail = ref<boolean>(false)
-
-const scrollChatContainerToBottom = (dmMessage: DMMessage) => {
-  setTimeout(() => {
-    const chatItemElement = document.getElementById(`message-Item-${dmMessage.id}`)
-
-    if (chatItemElement) {
-      chatItemElement.scrollIntoView()
-    }
-  })
-}
+const messageContainerTopOffset = ref<number>(0)
 
 const loadInitialMessages = async () => {
   const messages = await apis.getDmMessages(
@@ -163,12 +165,6 @@ const handleSendDMMessage = () => {
   }
 
   ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: messageContent.value })
-
-  messageContent.value = ''
-
-  if (chatInput.value) {
-    chatInput.value.textarea?.focus()
-  }
 }
 
 const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
@@ -178,7 +174,17 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
     dmMessages.value[dmMessage.sessionId].push(dmMessage)
   }
 
-  scrollChatContainerToBottom(dmMessage)
+  messageContent.value = ''
+
+  if (chatInput.value) {
+    chatInput.value.textarea?.focus()
+  }
+
+  messageContainer.value?.scrollToBottom()
+}
+
+const onMessageContainerScroll = () => {
+  messageContainerTopOffset.value = messageContainer.value!.el!.scrollTop || 0
 }
 
 const dayFirstMessageIdDateMap = computed(() => {
@@ -203,9 +209,13 @@ const chatInputPlaceholder = computed(() => {
   return `Message @${dmSession.value?.userB.displayName}`
 })
 
+onMounted(() => {
+  messageContainerTopOffset.value = messageContainer.value!.el!.scrollHeight || 0
+})
+
 onActivated(() => {
-  messageContainer.value?.el?.scrollTo({
-    top: messageContainer.value.el.scrollHeight,
+  nextTick(() => {
+    messageContainer.value?.scrollTo(messageContainerTopOffset.value)
   })
 
   ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)

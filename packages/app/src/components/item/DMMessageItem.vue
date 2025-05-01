@@ -11,22 +11,26 @@
             {{ dayjs.utc(item.createdAt).tz().format('LT') }}
           </time>
         </div>
-        <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
+        <article class="text-base">
+          <MarkdownRenderer :text="item.content" />
+        </article>
       </div>
     </div>
     <div v-else class="message-Item message-Item-Tail">
       <time class="flex justify-center w-15 text-[12px] text-muted-color shrink-0">
         {{ dayjs.utc(item.createdAt).tz().format('LT') }}
       </time>
-      <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
+      <article class="text-base">
+        <MarkdownRenderer :text="item.content" />
+      </article>
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import UserAvatar from '../avatar/UserAvatar.vue';
+import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
+import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import dayjs from 'dayjs'
-import { markedInstance } from '@/utils'
 
 import type { DMMessage } from '@/types'
 
