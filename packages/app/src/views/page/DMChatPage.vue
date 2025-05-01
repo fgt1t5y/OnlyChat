@@ -57,7 +57,12 @@
             </li>
           </template>
         </List>
-        <ChatInput v-model="messageContent" ref="chatInput" @submit="handleSendDMMessage" />
+        <ChatInput
+          v-model="messageContent"
+          ref="chatInput"
+          :placeholder="chatInputPlaceholder"
+          @submit="handleSendDMMessage"
+        />
       </div>
       <div v-if="showUserProfilePanel" class="page-Aside">
         <div class="overflow-hidden relative">
@@ -109,7 +114,7 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
-import { inject, onActivated, onDeactivated, ref, useTemplateRef } from 'vue'
+import { computed, inject, onActivated, onDeactivated, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { markedInstance } from '@/utils'
 import { useSocketIO } from '@/stores/socket'
@@ -192,6 +197,10 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
 if (!dmMessages.value[dmSessionId]) {
   await loadInitialMessages()
 }
+
+const chatInputPlaceholder = computed(() => {
+  return `Message @${dmSession.value?.userB.displayName}`
+})
 
 onActivated(() => {
   messageContainer.value?.el?.scrollTo({

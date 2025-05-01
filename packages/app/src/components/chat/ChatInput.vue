@@ -1,14 +1,23 @@
 <template>
   <form @submit.prevent.stop="emits('submit')" class="chat-Input">
-    <textarea v-model="content" ref="textarea" @input="resizeTextarea" rows="1"></textarea>
-    <Button
-      type="submit"
-      icon="ti ti-send"
-      severity="primary"
-      size="small"
-      variant="text"
-      :disabled="content.length === 0"
-    />
+    <textarea
+      v-model="content"
+      ref="textarea"
+      rows="1"
+      :placeholder="placeholder"
+      @input="onTextareaInput"
+      @keydown="onTextareaKeydown"
+    ></textarea>
+    <div class="flex items-end h-full">
+      <Button
+        type="submit"
+        icon="ti ti-send"
+        severity="secondary"
+        size="small"
+        variant="text"
+        :disabled="content.length === 0"
+      />
+    </div>
   </form>
 </template>
 
@@ -20,6 +29,10 @@ import { useResizeObserver } from '@vueuse/core'
 defineOptions({
   name: 'ChatInput',
 })
+
+const props = defineProps<{
+  placeholder?: string
+}>()
 
 const emits = defineEmits<{
   (e: 'submit'): void
@@ -45,6 +58,17 @@ const resizeTextarea = () => {
 
   textarea.value.style.setProperty('height', 'auto')
   textarea.value.style.setProperty('height', `${textarea.value.scrollHeight}px`)
+}
+
+const onTextareaInput = () => {
+  resizeTextarea()
+}
+
+const onTextareaKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault()
+    emits('submit')
+  }
 }
 
 watch(
