@@ -386,3 +386,11 @@
 .cropper-Mask {
   @apply z-10 rounded-full shadow-full absolute border border-white border-dashed box-border inset-0 touch-none;
 }
+
+.text-Divider {
+  @apply flex items-center justify-center border-t border-content mb-2 mt-6 mx-2 relative;
+}
+
+.text-Divider-Text {
+  @apply absolute text-muted-color px-2 bg-surface-100 dark:bg-surface-900;
+}

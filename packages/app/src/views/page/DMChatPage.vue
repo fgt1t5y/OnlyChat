@@ -30,31 +30,15 @@
           </template>
 
           <template #default="{ item, prev }">
-            <li :id="`message-Item-${item.id}`">
-              <div
-                v-if="item.authorId !== prev?.authorId"
-                class="message-Item message-Item-Head mt-4"
-              >
-                <div class="flex justify-center w-15 shrink-0">
-                  <UserAvatar :user="item.author" :show-online="false" />
-                </div>
-                <div class="flex flex-col">
-                  <div class="flex gap-2">
-                    <div class="font-bold">{{ item.author.displayName }}</div>
-                    <time class="text-[12px] text-muted-color">
-                      {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
-                    </time>
-                  </div>
-                  <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
-                </div>
-              </div>
-              <div v-else class="message-Item message-Item-Tail">
-                <time class="flex justify-center w-15 text-[12px] text-muted-color shrink-0">
-                  {{ dayjs.utc(item.createdAt).tz('Asia/Shanghai').format('LT') }}
-                </time>
-                <div v-html="markedInstance.parse(item.content)" class="text-base"></div>
-              </div>
-            </li>
+            <TextDivider
+              v-if="dayFirstMessageIdDateMap.has(item.id)"
+              :text="dayFirstMessageIdDateMap.get(item.id)!"
+            />
+            <DMMessageItem
+              :item="item"
+              :is-head="item.authorId !== prev?.authorId || dayFirstMessageIdDateMap.has(item.id)"
+              :key="item.id"
+            />
           </template>
         </List>
         <ChatInput
@@ -87,14 +71,15 @@
           >
             <div v-if="dmSession.userB.introduction" class="flex flex-col">
               <div class="text-muted-color">Introduction</div>
-              <div class="text-base">
-                {{ dmSession.userB.introduction }}
-              </div>
+              <div
+                v-html="markedInstance.parse(dmSession.userB.introduction)"
+                class="text-base"
+              ></div>
             </div>
             <div class="flex flex-col">
               <div class="text-muted-color">Member Since</div>
               <div class="text-base">
-                {{ dayjs.utc(dmSession.userB.createdAt).tz('Asia/Shanghai').format('LL') }}
+                {{ dayjs.utc(dmSession.userB.createdAt).tz().format('LL') }}
               </div>
             </div>
           </div>
@@ -112,6 +97,8 @@ import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
+import DMMessageItem from '@/components/item/DMMessageItem.vue'
+import TextDivider from '@/components/common/TextDivider.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
 import { computed, inject, onActivated, onDeactivated, ref, useTemplateRef } from 'vue'
@@ -193,6 +180,20 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
 
   scrollChatContainerToBottom(dmMessage)
 }
+
+const dayFirstMessageIdDateMap = computed(() => {
+  const messages = dmMessages.value[dmSessionId]
+  const map = new Map<number, string>()
+
+  messages.forEach((message, index) => {
+    if (dayjs.utc(message.createdAt).isSame(dayjs.utc(messages[index - 1]?.createdAt), 'day')) {
+      return
+    }
+    map.set(message.id, dayjs.utc(message.createdAt).tz().format('LL'))
+  })
+
+  return map
+})
 
 if (!dmMessages.value[dmSessionId]) {
   await loadInitialMessages()

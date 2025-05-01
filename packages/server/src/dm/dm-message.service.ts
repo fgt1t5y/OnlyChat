@@ -40,7 +40,7 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id < :before AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
+          'dm_message.id <= :before AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
           {
             before,
             sessionAId: dmSessionA.id,
@@ -55,7 +55,7 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id > :before AND dm_message.sessionId = :sessionAId',
+          'dm_message.id <= :before AND dm_message.sessionId = :sessionAId',
           {
             before,
             sessionAId: dmSessionA.id,
@@ -69,7 +69,7 @@ export class DMMessageService {
         .createQueryBuilder('dm_message')
         .leftJoinAndSelect('dm_message.author', 'author')
         .where(
-          'dm_message.id > :before AND dm_message.sessionId = :sessionBId',
+          'dm_message.id <= :before AND dm_message.sessionId = :sessionBId',
           {
             before,
             sessionBId: dmSessionB.id,
