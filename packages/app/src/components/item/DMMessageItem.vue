@@ -12,7 +12,7 @@
           </time>
         </div>
         <article class="text-base">
-          <MarkdownRenderer :text="item.content" />
+          <MarkdownBlock :text="item.content" />
         </article>
       </div>
     </div>
@@ -21,14 +21,14 @@
         {{ dayjs.utc(item.createdAt).tz().format('LT') }}
       </time>
       <article class="text-base">
-        <MarkdownRenderer :text="item.content" />
+        <MarkdownBlock :text="item.content" />
       </article>
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue'
+import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import dayjs from 'dayjs'
 

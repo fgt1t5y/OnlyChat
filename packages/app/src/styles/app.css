@@ -87,8 +87,8 @@
     @apply border-l-4 border-surface-300 dark:border-surface-700 pl-2 mt-1;
   }
 
-  pre:has(code) {
-    @apply border border-content p-1 font-mono mt-1 rounded-border;
+  pre {
+    @apply border border-content p-2 font-mono mt-1 rounded-border relative;
   }
 }
 
@@ -392,4 +392,19 @@
 
 .text-Divider-Text {
   @apply absolute text-muted-color px-2 bg-surface-100 dark:bg-surface-900;
+}
+
+.code-Block {
+  @apply relative;
+
+  &:hover,
+  &:focus-within {
+    .code-Block-Button {
+      @apply opacity-100;
+    }
+  }
+}
+
+.code-Block-Button {
+  @apply absolute top-2 right-2 opacity-0;
 }

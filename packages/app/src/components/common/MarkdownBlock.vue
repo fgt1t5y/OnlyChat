@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import Highlighter from '@/components/common/Highlighter.vue'
+import CodeBlock from '@/components/common/CodeBlock.vue'
 import { computed, Fragment, h } from 'vue'
 import { markedInstance } from '@/libs/marked'
 import { parse, TEXT_NODE } from '@/libs/ultrahtml'
@@ -38,7 +38,7 @@ const nodeToVNode = (node: Node): VNode | string | null => {
       const splitted = lang.split('-')
       lang = splitted[splitted.length - 1]
 
-      return h(Highlighter, { code: node.children[0].children[0].value, lang: lang })
+      return h(CodeBlock, { code: node.children[0].children[0].value, lang: lang })
     }
   }
 
@@ -67,8 +67,6 @@ const vnode = computed(() => {
   }
 
   const parsed = markedInstance.parse(text, { async: false })
-
-  console.log(parsed)
 
   return contentToVNode(parsed)
 })

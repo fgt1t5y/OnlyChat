@@ -101,7 +101,7 @@ import ToggleButton from '@/components/button/ToggleButton.vue'
 import DMMessageItem from '@/components/item/DMMessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import dayjs from 'dayjs'
-import _ from 'underscore'
+import _, { map } from 'underscore'
 import {
   computed,
   inject,
@@ -192,9 +192,20 @@ const dayFirstMessageIdDateMap = computed(() => {
   const map = new Map<number, string>()
 
   messages.forEach((message, index) => {
-    if (dayjs.utc(message.createdAt).isSame(dayjs.utc(messages[index - 1]?.createdAt), 'day')) {
+    if (!messages[index - 1]) {
+      map.set(message.id, dayjs.utc(message.createdAt).tz().format('LL'))
       return
     }
+
+    if (
+      dayjs
+        .utc(message.createdAt)
+        .tz()
+        .isSame(dayjs.utc(messages[index - 1].createdAt).tz(), 'day')
+    ) {
+      return
+    }
+
     map.set(message.id, dayjs.utc(message.createdAt).tz().format('LL'))
   })
 
