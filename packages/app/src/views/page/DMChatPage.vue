@@ -72,10 +72,7 @@
           >
             <div v-if="dmSession.userB.introduction" class="flex flex-col">
               <div class="text-muted-color">Introduction</div>
-              <div
-                v-html="markedInstance.parse(dmSession.userB.introduction)"
-                class="text-base"
-              ></div>
+              <MarkdownBlock :text="dmSession.userB.introduction" inline />
             </div>
             <div class="flex flex-col">
               <div class="text-muted-color">Member Since</div>
@@ -100,8 +97,9 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
 import DMMessageItem from '@/components/item/DMMessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
+import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import dayjs from 'dayjs'
-import _, { map } from 'underscore'
+import _ from 'underscore'
 import {
   computed,
   inject,
@@ -113,7 +111,6 @@ import {
   onMounted,
 } from 'vue'
 import { useRoute } from 'vue-router'
-import { markedInstance } from '@/libs/marked'
 import { useSocketIO } from '@/stores/socket'
 import { MESSAGE_PER_PAGE } from '@/constants'
 import { useStorage } from '@vueuse/core'

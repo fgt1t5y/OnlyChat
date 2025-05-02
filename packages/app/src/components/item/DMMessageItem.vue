@@ -4,14 +4,14 @@
       <div class="flex justify-center w-15 shrink-0">
         <UserAvatar :user="item.author" :show-online="false" />
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col grow">
         <div class="flex gap-2">
           <div class="font-bold">{{ item.author.displayName }}</div>
           <time class="text-[12px] text-muted-color">
             {{ dayjs.utc(item.createdAt).tz().format('LT') }}
           </time>
         </div>
-        <article class="text-base">
+        <article class="text-base grow">
           <MarkdownBlock :text="item.content" />
         </article>
       </div>
@@ -20,7 +20,7 @@
       <time class="flex justify-center w-15 text-[12px] text-muted-color shrink-0">
         {{ dayjs.utc(item.createdAt).tz().format('LT') }}
       </time>
-      <article class="text-base">
+      <article class="text-base grow">
         <MarkdownBlock :text="item.content" />
       </article>
     </div>

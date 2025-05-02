@@ -88,7 +88,7 @@
   }
 
   pre {
-    @apply border border-content p-2 font-mono mt-1 rounded-border relative;
+    @apply border border-content p-2 font-mono mt-1 rounded-border relative overflow-auto;
   }
 }
 
@@ -395,7 +395,7 @@
 }
 
 .code-Block {
-  @apply relative;
+  @apply relative w-fit max-w-[80%];
 
   &:hover,
   &:focus-within {

@@ -11,8 +11,9 @@ import { parse, TEXT_NODE } from '@/libs/ultrahtml'
 import type { VNode } from 'vue'
 import type { Node } from '@/libs/ultrahtml'
 
-const { text } = defineProps<{
+const props = defineProps<{
   text: string
+  inline?: boolean
 }>()
 
 const treeToVNode = (input: Node): VNode | string | null => {
@@ -62,11 +63,13 @@ const contentToVNode = (html: string): VNode => {
 }
 
 const vnode = computed(() => {
-  if (!text) {
+  if (!props.text) {
     return null
   }
 
-  const parsed = markedInstance.parse(text, { async: false })
+  const parsed = props.inline
+    ? markedInstance.parseInline(props.text, { async: false })
+    : markedInstance.parse(props.text, { async: false })
 
   return contentToVNode(parsed)
 })

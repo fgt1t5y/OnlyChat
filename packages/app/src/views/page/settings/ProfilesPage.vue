@@ -70,7 +70,7 @@
               <div>{{ auth.userShadow.username }}</div>
             </div>
             <div v-if="auth.userShadow.introduction" class="m-3">
-              <div v-html="markedInstance.parse(auth.userShadow.introduction)"></div>
+              <MarkdownBlock :text="auth.userShadow.introduction" inline />
             </div>
             <div class="flex flex-col m-3">
               <Button label="Example Button" severity="secondary" variant="outlined" />
@@ -146,9 +146,9 @@ import apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import Cropper from '@/components/image/Cropper.vue'
+import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import { useAuth } from '@/stores/auth'
 import { Button, Divider, Dialog, Textarea, InputText, ColorPicker, ProgressBar } from 'primevue'
-import { markedInstance } from '@/libs/marked'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useDropZone } from '@vueuse/core'
 import { useToast } from 'primevue/usetoast'
