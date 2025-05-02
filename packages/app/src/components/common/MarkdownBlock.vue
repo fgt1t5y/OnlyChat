@@ -67,10 +67,10 @@ const vnode = computed(() => {
     return null
   }
 
-  const parsed = props.inline
-    ? markedInstance.parseInline(props.text, { async: false })
-    : markedInstance.parse(props.text, { async: false })
-
-  return contentToVNode(parsed)
+  return contentToVNode(
+    props.inline
+      ? markedInstance.parseInline(props.text, { async: false })
+      : markedInstance.parse(props.text, { async: false }),
+  )
 })
 </script>

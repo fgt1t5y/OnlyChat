@@ -206,7 +206,7 @@
 }
 
 .page-Aside {
-  @apply min-w-[360px] bg-surface-50 dark:bg-surface-800 border-l border-content;
+  @apply min-w-[340px] bg-surface-50 dark:bg-surface-800 border-l border-content;
 }
 
 .list-Item {

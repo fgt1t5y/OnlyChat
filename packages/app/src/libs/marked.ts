@@ -9,7 +9,6 @@ renderer.code = ({ lang, text }) => {
 const _markedInstance = new Marked()
 
 _markedInstance.use({
-  breaks: true,
   renderer,
 })
 

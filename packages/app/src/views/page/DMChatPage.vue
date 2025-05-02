@@ -19,7 +19,7 @@
           @scroll="onMessageContainerScroll"
         >
           <template #head>
-            <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2 border-b border-surface">
+            <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2">
               <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
               <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
               <div class="text-2xl">{{ dmSession.userB.username }}</div>
@@ -72,7 +72,9 @@
           >
             <div v-if="dmSession.userB.introduction" class="flex flex-col">
               <div class="text-muted-color">Introduction</div>
-              <MarkdownBlock :text="dmSession.userB.introduction" inline />
+              <div>
+                <MarkdownBlock :text="dmSession.userB.introduction" inline />
+              </div>
             </div>
             <div class="flex flex-col">
               <div class="text-muted-color">Member Since</div>
