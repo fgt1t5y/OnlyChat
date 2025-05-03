@@ -26,6 +26,14 @@ const nodeToVNode = (element: Element): VNode | null => {
     }
   }
 
+  // if (element.nodeName === 'ESCAPED') {
+  //   return h(EscapedBlock, { text: element.textContent || '' })
+  // }
+
+  if (element.children.length) {
+    return h(element.nodeName.toLowerCase(), Array.from(element.children).map(treeToVNode))
+  }
+
   return h(element.nodeName.toLowerCase(), element.textContent!)
 }
 
