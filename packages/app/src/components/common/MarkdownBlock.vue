@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import CodeBlock from '@/components/common/CodeBlock.vue'
-import EscapedBlock from '@/components/common/EscapedBlock.vue'
 import { computed, Fragment, h } from 'vue'
 import { markedInstance } from '@/libs/marked'
 
@@ -25,10 +24,6 @@ const nodeToVNode = (element: Element): VNode | null => {
       return h(CodeBlock, { code: code.textContent || '', lang: lang || 'text' })
     }
   }
-
-  // if (element.nodeName === 'ESCAPED') {
-  //   return h(EscapedBlock, { text: element.textContent || '' })
-  // }
 
   if (element.children.length) {
     return h(element.nodeName.toLowerCase(), Array.from(element.children).map(treeToVNode))
