@@ -8,10 +8,6 @@ const ESCAPE_CHARS: Record<string, string> = {
 
 const renderer = new Renderer()
 
-renderer.code = function ({ lang, text }) {
-  return `<pre><code class="language-${lang}">${text}</code></pre>`
-}
-
 renderer.html = function ({ text }) {
   return `<span>${text.replace(/[&<>]/g, (c) => ESCAPE_CHARS[c] || c)}</span>`
 }
