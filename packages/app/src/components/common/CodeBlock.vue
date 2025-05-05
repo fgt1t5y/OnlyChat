@@ -2,7 +2,7 @@
   <div class="code-Block">
     <div v-html="highlightedText"></div>
     <div class="code-Block-Button">
-      <Button severity="secondary" title="Copy" aria-label="Copy" @click="copy()">
+      <Button severity="secondary" size=small title="Copy" aria-label="Copy" @click="copy()">
         <template #icon>
           <i v-if="!copied" class="ti ti-copy"></i>
           <i v-else class="ti ti-check"></i>
