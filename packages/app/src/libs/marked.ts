@@ -12,7 +12,7 @@ const renderer = new Renderer()
 renderer.html = function ({ text }) {
   const escaped = text.replace(/[&<>]/g, (c) => ESCAPE_CHARS[c] || c)
 
-  return `<span>${markedInstance.parseInline(escaped)}</span>`
+  return `<span>${_markedInstance.parseInline(escaped)}</span>`
 }
 
 renderer.text = function ({ text }) {
@@ -23,4 +23,8 @@ _markedInstance.use({
   renderer,
 })
 
-export const markedInstance = _markedInstance
+export const markdownToHTML = (markdown: string, inline: boolean = false) => {
+  return inline
+    ? _markedInstance.parseInline(markdown, { async: false })
+    : _markedInstance.parse(markdown, { async: false })
+}

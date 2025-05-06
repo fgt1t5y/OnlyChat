@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import CodeBlock from '@/components/common/CodeBlock.vue'
 import { computed, Fragment, h } from 'vue'
-import { markedInstance } from '@/libs/marked'
+import { markdownToHTML } from '@/libs/marked'
 
 import type { VNode } from 'vue'
 
@@ -53,10 +53,6 @@ const vnode = computed(() => {
     return null
   }
 
-  return contentToVNode(
-    props.inline
-      ? markedInstance.parseInline(props.text, { async: false })
-      : markedInstance.parse(props.text, { async: false }),
-  )
+  return contentToVNode(markdownToHTML(props.text, props.inline))
 })
 </script>
