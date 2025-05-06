@@ -406,5 +406,5 @@
 }
 
 .code-Block-Button {
-  @apply absolute top-2 right-2 opacity-0;
+  @apply absolute top-0 right-0 opacity-0;
 }
