@@ -324,11 +324,11 @@
 }
 
 .chat-Input {
-  @apply flex items-center p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
+  @apply flex items-center gap-2 p-2 mx-2 mb-6 border border-content bg-transparent dark:bg-surface-900 rounded-border;
+}
 
-  textarea {
-    @apply outline-0 text-base grow;
-  }
+.chat-Input-Textarea {
+  @apply outline-0 text-base grow;
 }
 
 .toggle-Button-On {
