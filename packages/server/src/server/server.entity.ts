@@ -40,9 +40,9 @@ export class Server {
   @ManyToOne(() => User, (user) => user.id)
   creator: User;
 
-  @ManyToMany(() => User, (user) => user.id)
-  members: User[];
-
   @OneToMany(() => Channel, (channel) => channel.server)
   channels: Channel[];
+
+  @ManyToMany(() => User, (user) => user.id)
+  members: User[];
 }
