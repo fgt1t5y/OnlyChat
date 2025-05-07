@@ -10,7 +10,7 @@
         <UserAvatar :user="dmSession.userB" size="s" />
       </template>
     </PageTitle>
-    <div class="flex overflow-hidden grow">
+    <div class="flex overflow-hidden grow relative">
       <div class="flex flex-col justify-end grow">
         <List
           ref="messageContainer"

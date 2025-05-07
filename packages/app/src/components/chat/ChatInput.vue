@@ -1,35 +1,28 @@
 <template>
-  <form @submit.prevent.stop="emits('submit')" class="chat-Input">
-    <div class="flex items-end h-full">
-      <Button
-        type="submit"
-        icon="ti ti-circle-plus-filled"
-        severity="secondary"
-        size="small"
-        variant="text"
-        :disabled="content.length === 0"
-      />
-    </div>
-    <textarea
-      v-model="content"
-      class="chat-Input-Textarea"
-      ref="textarea"
-      rows="1"
-      :placeholder="placeholder"
-      @input="onTextareaInput"
-      @keydown="onTextareaKeydown"
-    ></textarea>
-    <div class="flex items-end h-full">
-      <Button
-        type="submit"
-        icon="ti ti-send"
-        severity="secondary"
-        size="small"
-        variant="text"
-        :disabled="content.length === 0"
-      />
-    </div>
-  </form>
+  <div class="chat-Input">
+    <div v-if="false" class="chat-Input-Attachment-List">1</div>
+    <form @submit.prevent.stop="emits('submit')" class="chat-Input-Main">
+      <textarea
+        v-model="content"
+        class="chat-Input-Textarea"
+        ref="textarea"
+        rows="1"
+        :placeholder="placeholder"
+        @input="onTextareaInput"
+        @keydown="onTextareaKeydown"
+      ></textarea>
+      <div class="flex items-start h-full">
+        <Button
+          type="submit"
+          icon="ti ti-send"
+          severity="secondary"
+          size="small"
+          variant="text"
+          :disabled="content.length === 0"
+        />
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup lang="ts">
