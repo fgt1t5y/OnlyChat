@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { DMMessage } from './dm-message.entity';
 
-@Entity({ name: 'dm_session' })
+@Entity({ name: 'dm_sessions' })
 export class DMSession {
   @PrimaryGeneratedColumn()
   id: number;

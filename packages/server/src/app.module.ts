@@ -16,6 +16,8 @@ import { ServerModule } from './server/server.module';
 import { ChannelModule } from './channel/channel.module';
 import { Server } from './server/server.entity';
 import { Channel, ChannelMessage } from './channel/entities';
+import { AttachmentModule } from './attachment/attachment.module';
+import { Attachment } from './attachment/attachment.entity';
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { Channel, ChannelMessage } from './channel/entities';
         Server,
         Channel,
         ChannelMessage,
+        Attachment,
       ],
       synchronize: true,
     }),
@@ -49,6 +52,7 @@ import { Channel, ChannelMessage } from './channel/entities';
     DMModule,
     ServerModule,
     ChannelModule,
+    AttachmentModule,
   ],
 })
 export class AppModule {}

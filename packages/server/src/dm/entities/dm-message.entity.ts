@@ -2,14 +2,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { DMSession } from './dm-session.entity';
 import { User } from 'src/user/user.entity';
+import { Attachment } from 'src/attachment/attachment.entity';
 
-@Entity({ name: 'dm_message' })
+@Entity({ name: 'dm_messages' })
 export class DMMessage {
   @PrimaryGeneratedColumn()
   id: number;
@@ -34,4 +37,8 @@ export class DMMessage {
 
   @ManyToOne(() => DMSession, (dmSession) => dmSession.id)
   session: DMSession;
+
+  @ManyToMany(() => Attachment, (attachment) => attachment.id)
+  @JoinTable({ name: 'dm_message_attachments' })
+  attachments: Attachment[];
 }
