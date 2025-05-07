@@ -53,7 +53,7 @@ export class User {
   updatedAt: Date;
 
   @ManyToMany(() => Role, (role) => role.id)
-  @JoinTable()
+  @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
   @ManyToMany(() => Server, (server) => server.id)
