@@ -245,6 +245,10 @@
   }
 }
 
+.message-Highlighted {
+  @apply bg-primary-100 dark:bg-primary-900;
+}
+
 .server-Avatar {
   @apply relative rounded-border shrink-0;
 }

@@ -61,6 +61,13 @@ const router = createRouter({
             default: DMChatPage,
           },
         },
+        {
+          path: 'dm/:dmSessionId(\\d+)/:dmMessageId(\\d+)',
+          components: {
+            aside: HomeAside,
+            default: DMChatPage,
+          },
+        },
       ],
     },
     {

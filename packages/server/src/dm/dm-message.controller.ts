@@ -16,9 +16,9 @@ export class DMMessageController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getSomeDMMessage(
+  async getDMMessages(
     @CurrentUser() user: JwtPayload,
-    @Query() { dmSessionId, before, takeCount }: GetDMMessageDto,
+    @Query() { dmSessionId, around, before, takeCount }: GetDMMessageDto,
   ) {
     const dmSessionB = await this.dmSessionService.findById(dmSessionId);
     const dmSessionA = await this.dmSessionService.findBy(
@@ -30,12 +30,25 @@ export class DMMessageController {
       return [];
     }
 
-    return await this.dmMessageService.findPaging(
-      dmSessionA,
-      dmSessionB,
-      before,
-      takeCount,
-    );
+    if (around) {
+      return await this.dmMessageService.findAround(
+        dmSessionA,
+        dmSessionB,
+        around,
+        takeCount,
+      );
+    }
+
+    if (before) {
+      return await this.dmMessageService.findBefore(
+        dmSessionA,
+        dmSessionB,
+        before,
+        takeCount,
+      );
+    }
+
+    return [];
   }
 
   @Post()

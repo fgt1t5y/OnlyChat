@@ -8,6 +8,7 @@ export interface CloseDMSessionDto {
 
 export interface GetDMMessageDto {
   dmSessionId: number;
+  around: number;
   before: number;
   takeCount: number;
 }

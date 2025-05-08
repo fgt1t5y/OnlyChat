@@ -28,6 +28,10 @@
                 <span class="font-bold">{{ dmSession.userB.displayName }}</span>
               </div>
             </li>
+            <li v-else>
+              <TextDivider text="" />
+              <MessageSkeleton />
+            </li>
           </template>
 
           <template #default="{ item, prev }">
@@ -40,6 +44,13 @@
               :is-head="item.authorId !== prev?.authorId || dayFirstMessageIdDateMap.has(item.id)"
               :key="item.id"
             />
+          </template>
+
+          <template #tail>
+            <li v-if="!reachedTail">
+              <TextDivider text="" />
+              <MessageSkeleton />
+            </li>
           </template>
         </List>
         <ChatInput
@@ -100,6 +111,7 @@ import ToggleButton from '@/components/button/ToggleButton.vue'
 import DMMessageItem from '@/components/item/DMMessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
+import MessageSkeleton from '@/components/skeleton/MessageSkeleton.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
 import {
@@ -125,6 +137,7 @@ const route = useRoute()
 const ws = useSocketIO()
 
 const dmSessionId = Number(route.params.dmSessionId)
+const dmMessageId = Number(route.params.dmMessageId)
 
 const messageContainer = useTemplateRef('messageContainer')
 const chatInput = useTemplateRef('chatInput')
@@ -137,25 +150,52 @@ const reachedHead = ref<boolean>(false)
 const reachedTail = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
 
-const loadInitialMessages = async () => {
-  const messages = await apis.getDmMessages(
+const jumpToSpecificMessage = (messageId: number) => {
+  const messageElement = document.getElementById(`message-Item-${messageId}`)
+
+  if (messageElement) {
+    messageContainer.value?.scrollTo(messageElement.offsetTop)
+
+    messageElement.classList.add('message-Highlighted')
+  } else {
+    messageContainer.value?.scrollTo(messageContainerTopOffset.value)
+  }
+}
+
+const fetchInitialMessages = async () => {
+  if (dmMessageId) {
+    return await apis.getDmMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
+  }
+
+  return await apis.getDmMessagesBefore(
     dmSessionId,
     dmSession.value!.lastMessageId,
     MESSAGE_PER_PAGE,
   )
+}
 
-  if (!messages || !Array.isArray(messages)) {
+const loadInitialMessages = async () => {
+  let messages = await fetchInitialMessages()
+
+  // When message list is empty.
+  if (!messages || !Array.isArray(messages) || !messages.length) {
     reachedHead.value = reachedTail.value = true
-
     dmMessages.value[dmSessionId] = []
+
     return
   }
+
+  messages.reverse()
 
   if (messages.length < MESSAGE_PER_PAGE) {
     reachedHead.value = reachedTail.value = true
   }
 
-  dmMessages.value[dmSessionId] = messages.reverse()
+  if (messages[messages.length - 1].id === dmSession.value?.lastMessageId) {
+    reachedTail.value = true
+  }
+
+  dmMessages.value[dmSessionId] = messages
 }
 
 const handleSendDMMessage = () => {
@@ -175,9 +215,7 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
 
   messageContent.value = ''
 
-  if (chatInput.value) {
-    chatInput.value.textarea?.focus()
-  }
+  chatInput.value?.textarea?.focus()
 
   messageContainer.value?.scrollToBottom()
 }
@@ -197,15 +235,13 @@ const dayFirstMessageIdDateMap = computed(() => {
     }
 
     if (
-      dayjs
+      !dayjs
         .utc(message.createdAt)
         .tz()
         .isSame(dayjs.utc(messages[index - 1].createdAt).tz(), 'day')
     ) {
-      return
+      map.set(message.id, dayjs.utc(message.createdAt).tz().format('LL'))
     }
-
-    map.set(message.id, dayjs.utc(message.createdAt).tz().format('LL'))
   })
 
   return map
@@ -225,16 +261,18 @@ onMounted(() => {
 
 onActivated(() => {
   nextTick(() => {
-    messageContainer.value?.scrollTo(messageContainerTopOffset.value)
+    if (dmMessageId) {
+      jumpToSpecificMessage(dmMessageId)
+    } else {
+      messageContainer.value?.scrollTo(messageContainerTopOffset.value)
+    }
   })
 
-  ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
-
-  if (chatInput.value) {
-    chatInput.value.textarea?.focus()
-  }
+  chatInput.value?.textarea?.focus()
 
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
+
+  ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 })
 
 onDeactivated(() => {

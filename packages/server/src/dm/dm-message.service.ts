@@ -29,7 +29,7 @@ export class DMMessageService {
     });
   }
 
-  async findPaging(
+  async findBefore(
     dmSessionA: DMSession,
     dmSessionB: DMSession,
     before: number = 0,
@@ -72,6 +72,58 @@ export class DMMessageService {
           'dm_message.id <= :before AND dm_message.sessionId = :sessionBId',
           {
             before,
+            sessionBId: dmSessionB.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    }
+  }
+
+  async findAround(
+    dmSessionA: DMSession,
+    dmSessionB: DMSession,
+    around: number = 0,
+    takeCount: number = 10,
+  ): Promise<DMMessage[]> {
+    if (dmSessionA && dmSessionB) {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          '(dm_message.id >= :around OR dm_message.id < :around) AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
+          {
+            around,
+            sessionAId: dmSessionA.id,
+            sessionBId: dmSessionB.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    } else if (dmSessionA) {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          '(dm_message.id >= :around OR dm_message.id < :around) AND dm_message.sessionId = :sessionAId',
+          {
+            around,
+            sessionAId: dmSessionA.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    } else {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          '(dm_message.id >= :around OR dm_message.id < :around) AND dm_message.sessionId = :sessionBId',
+          {
+            around,
             sessionBId: dmSessionB.id,
           },
         )
