@@ -133,6 +133,58 @@ export class DMMessageService {
     }
   }
 
+  async findAfter(
+    dmSessionA: DMSession,
+    dmSessionB: DMSession,
+    after: number = 0,
+    takeCount: number = 10,
+  ): Promise<DMMessage[]> {
+    if (dmSessionA && dmSessionB) {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          'dm_message.id > :after AND (dm_message.sessionId = :sessionAId OR dm_message.sessionId = :sessionBId)',
+          {
+            after,
+            sessionAId: dmSessionA.id,
+            sessionBId: dmSessionB.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    } else if (dmSessionA) {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          'dm_message.id > :after AND dm_message.sessionId = :sessionAId',
+          {
+            after,
+            sessionAId: dmSessionA.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    } else {
+      return await this.dmMessageRepository
+        .createQueryBuilder('dm_message')
+        .leftJoinAndSelect('dm_message.author', 'author')
+        .where(
+          'dm_message.id > :after AND dm_message.sessionId = :sessionBId',
+          {
+            after,
+            sessionBId: dmSessionB.id,
+          },
+        )
+        .orderBy('dm_message.id', 'DESC')
+        .limit(takeCount)
+        .getMany();
+    }
+  }
+
   async create(
     dmSessionId: number,
     authorId: number,

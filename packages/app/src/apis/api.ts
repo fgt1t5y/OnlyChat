@@ -46,15 +46,21 @@ export const closeDMSession = (userBId: number) => {
 }
 
 // #region DM Message API
+export const getDmMessagesBefore = (dmSessionId: number, before: number, takeCount: number) => {
+  return alovaInstance.Get<DMMessage[]>('/dm/message', {
+    params: { dmSessionId, before, takeCount },
+  })
+}
+
 export const getDmMessagesAround = (dmSessionId: number, around: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm/message', {
     params: { dmSessionId, around, takeCount },
   })
 }
 
-export const getDmMessagesBefore = (dmSessionId: number, before: number, takeCount: number) => {
+export const getDmMessagesAfter = (dmSessionId: number, after: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm/message', {
-    params: { dmSessionId, before, takeCount },
+    params: { dmSessionId, after, takeCount },
   })
 }
 

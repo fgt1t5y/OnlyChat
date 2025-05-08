@@ -19,6 +19,10 @@
           @scroll="onMessageContainerScroll"
         >
           <template #head>
+            <IntersectionObserver
+              :disabled="reachedHead || fetching"
+              @reach="loadPrevBatchMessages"
+            />
             <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2">
               <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
               <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
@@ -29,7 +33,6 @@
               </div>
             </li>
             <li v-else>
-              <TextDivider text="" />
               <MessageSkeleton />
             </li>
           </template>
@@ -48,9 +51,12 @@
 
           <template #tail>
             <li v-if="!reachedTail">
-              <TextDivider text="" />
               <MessageSkeleton />
             </li>
+            <IntersectionObserver
+              :disabled="reachedTail || fetching"
+              @reach="loadNextBatchMessages"
+            />
           </template>
         </List>
         <ChatInput
@@ -112,6 +118,7 @@ import DMMessageItem from '@/components/item/DMMessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import MessageSkeleton from '@/components/skeleton/MessageSkeleton.vue'
+import IntersectionObserver from '@/components/common/IntersectionObserver.vue'
 import dayjs from 'dayjs'
 import _ from 'underscore'
 import {
@@ -139,15 +146,18 @@ const ws = useSocketIO()
 const dmSessionId = Number(route.params.dmSessionId)
 const dmMessageId = Number(route.params.dmMessageId)
 
+// Config storage
+const showUserProfilePanel = useStorage('showUserProfilePanel', true)
+
 const messageContainer = useTemplateRef('messageContainer')
 const chatInput = useTemplateRef('chatInput')
 const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
 const messageContent = ref<string>('')
-const showUserProfilePanel = useStorage('showUserProfilePanel', true)
-const reachedHead = ref<boolean>(false)
-const reachedTail = ref<boolean>(false)
+const reachedHead = ref<boolean>(true)
+const reachedTail = ref<boolean>(true)
+const fetching = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
 
 const scrollToSpecificMessage = (messageId: number) => {
@@ -162,6 +172,10 @@ const scrollToSpecificMessage = (messageId: number) => {
 }
 
 const fetchInitialMessages = async () => {
+  if (!dmSession.value?.lastMessageId) {
+    return []
+  }
+
   if (dmMessageId) {
     return await apis.getDmMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
   }
@@ -174,11 +188,14 @@ const fetchInitialMessages = async () => {
 }
 
 const loadInitialMessages = async () => {
+  fetching.value = true
+
   let messages = await fetchInitialMessages()
+
+  fetching.value = false
 
   // When message list is empty.
   if (!messages || !Array.isArray(messages) || !messages.length) {
-    reachedHead.value = reachedTail.value = true
     dmMessages.value[dmSessionId] = []
 
     return
@@ -186,15 +203,66 @@ const loadInitialMessages = async () => {
 
   messages.reverse()
 
-  if (messages.length < MESSAGE_PER_PAGE) {
-    reachedHead.value = reachedTail.value = true
-  }
-
-  if (messages[messages.length - 1].id === dmSession.value?.lastMessageId) {
-    reachedTail.value = true
+  if (messages.length === MESSAGE_PER_PAGE) {
+    reachedHead.value = false
+    reachedTail.value = messages[messages.length - 1].id === dmSession.value?.lastMessageId
   }
 
   dmMessages.value[dmSessionId] = messages
+}
+
+const loadPrevBatchMessages = async () => {
+  if (reachedHead.value || fetching.value) {
+    return
+  }
+
+  fetching.value = true
+
+  const messages = await apis.getDmMessagesBefore(
+    dmSessionId,
+    dmMessages.value[dmSessionId][0].id - 1, // skip a reduplicate message
+    MESSAGE_PER_PAGE,
+  )
+
+  fetching.value = false
+
+  if (!messages || !Array.isArray(messages) || !messages.length) {
+    reachedHead.value = true
+
+    return
+  }
+
+  messages.reverse()
+
+  reachedHead.value = messages.length < MESSAGE_PER_PAGE
+  dmMessages.value[dmSessionId].unshift(...messages)
+}
+
+const loadNextBatchMessages = async () => {
+  if (reachedTail.value || fetching.value) {
+    return
+  }
+
+  fetching.value = true
+
+  const messages = await apis.getDmMessagesAfter(
+    dmSessionId,
+    dmMessages.value[dmSessionId][dmMessages.value[dmSessionId].length - 1].id,
+    MESSAGE_PER_PAGE,
+  )
+
+  fetching.value = false
+
+  if (!messages || !Array.isArray(messages) || !messages.length) {
+    reachedTail.value = true
+
+    return
+  }
+
+  messages.reverse()
+
+  reachedTail.value = messages.length < MESSAGE_PER_PAGE
+  dmMessages.value[dmSessionId].push(...messages)
 }
 
 const handleSendDMMessage = () => {
@@ -246,7 +314,7 @@ const dayFirstMessageIdDateMap = computed(() => {
   return map
 })
 
-if (!dmMessages.value[dmSessionId]) {
+if (dmSession && !dmMessages.value[dmSessionId]) {
   await loadInitialMessages()
 }
 
