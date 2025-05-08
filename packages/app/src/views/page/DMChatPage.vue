@@ -150,12 +150,11 @@ const reachedHead = ref<boolean>(false)
 const reachedTail = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
 
-const jumpToSpecificMessage = (messageId: number) => {
+const scrollToSpecificMessage = (messageId: number) => {
   const messageElement = document.getElementById(`message-Item-${messageId}`)
 
   if (messageElement) {
-    messageContainer.value?.scrollTo(messageElement.offsetTop)
-
+    messageElement.scrollIntoView({ block: 'center' })
     messageElement.classList.add('message-Highlighted')
   } else {
     messageContainer.value?.scrollTo(messageContainerTopOffset.value)
@@ -262,7 +261,7 @@ onMounted(() => {
 onActivated(() => {
   nextTick(() => {
     if (dmMessageId) {
-      jumpToSpecificMessage(dmMessageId)
+      scrollToSpecificMessage(dmMessageId)
     } else {
       messageContainer.value?.scrollTo(messageContainerTopOffset.value)
     }
