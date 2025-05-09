@@ -19,10 +19,6 @@
           @scroll="onMessageContainerScroll"
         >
           <template #head>
-            <IntersectionObserver
-              :disabled="reachedHead || fetching"
-              @reach="loadPrevBatchMessages"
-            />
             <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2">
               <UserAvatar :user="dmSession.userB" size="l" :show-online="false" />
               <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
@@ -32,9 +28,8 @@
                 <span class="font-bold">{{ dmSession.userB.displayName }}</span>
               </div>
             </li>
-            <li v-else>
-              <MessageSkeleton />
-            </li>
+            <MessageSkeleton v-else />
+            <IntersectionObserver :disabled="reachedHead" @reach="loadPrevBatchMessages" />
           </template>
 
           <template #default="{ item, prev }">
@@ -50,13 +45,8 @@
           </template>
 
           <template #tail>
-            <li v-if="!reachedTail">
-              <MessageSkeleton />
-            </li>
-            <IntersectionObserver
-              :disabled="reachedTail || fetching"
-              @reach="loadNextBatchMessages"
-            />
+            <IntersectionObserver :disabled="reachedTail" @reach="loadNextBatchMessages" />
+            <MessageSkeleton v-if="!reachedTail" />
           </template>
         </List>
         <ChatInput
@@ -160,12 +150,15 @@ const reachedTail = ref<boolean>(true)
 const fetching = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
 
-const scrollToSpecificMessage = (messageId: number) => {
+const scrollToSpecificMessage = (messageId: number, highlight: boolean = false) => {
   const messageElement = document.getElementById(`message-Item-${messageId}`)
 
   if (messageElement) {
     messageElement.scrollIntoView({ block: 'center' })
-    messageElement.classList.add('message-Highlighted')
+
+    if (highlight) {
+      messageElement.classList.add('message-Highlighted')
+    }
   } else {
     messageContainer.value?.scrollTo(messageContainerTopOffset.value)
   }
@@ -195,17 +188,13 @@ const loadInitialMessages = async () => {
   fetching.value = false
 
   // When message list is empty.
-  if (!messages || !Array.isArray(messages) || !messages.length) {
-    dmMessages.value[dmSessionId] = []
+  if (messages.length) {
+    messages.reverse()
 
-    return
-  }
-
-  messages.reverse()
-
-  if (messages.length === MESSAGE_PER_PAGE) {
-    reachedHead.value = false
-    reachedTail.value = messages[messages.length - 1].id === dmSession.value?.lastMessageId
+    if (messages.length === MESSAGE_PER_PAGE) {
+      reachedHead.value = false
+      reachedTail.value = messages[messages.length - 1].id === dmSession.value?.lastMessageId
+    }
   }
 
   dmMessages.value[dmSessionId] = messages
@@ -233,9 +222,13 @@ const loadPrevBatchMessages = async () => {
   }
 
   messages.reverse()
+  dmMessages.value[dmSessionId].unshift(...messages)
 
   reachedHead.value = messages.length < MESSAGE_PER_PAGE
-  dmMessages.value[dmSessionId].unshift(...messages)
+
+  nextTick(() => {
+    scrollToSpecificMessage(messages[messages.length - 1].id)
+  })
 }
 
 const loadNextBatchMessages = async () => {
@@ -260,9 +253,13 @@ const loadNextBatchMessages = async () => {
   }
 
   messages.reverse()
+  dmMessages.value[dmSessionId].push(...messages)
 
   reachedTail.value = messages.length < MESSAGE_PER_PAGE
-  dmMessages.value[dmSessionId].push(...messages)
+
+  nextTick(() => {
+    scrollToSpecificMessage(messages[messages.length - 1].id)
+  })
 }
 
 const handleSendDMMessage = () => {
@@ -283,7 +280,6 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
   messageContent.value = ''
 
   chatInput.value?.textarea?.focus()
-
   messageContainer.value?.scrollToBottom()
 }
 
@@ -329,7 +325,7 @@ onMounted(() => {
 onActivated(() => {
   nextTick(() => {
     if (dmMessageId) {
-      scrollToSpecificMessage(dmMessageId)
+      scrollToSpecificMessage(dmMessageId, true)
     } else {
       messageContainer.value?.scrollTo(messageContainerTopOffset.value)
     }
