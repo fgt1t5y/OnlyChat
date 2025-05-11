@@ -227,7 +227,7 @@ const loadPrevBatchMessages = async () => {
   reachedHead.value = messages.length < MESSAGE_PER_PAGE
 
   nextTick(() => {
-    scrollToSpecificMessage(messages[messages.length - 1].id)
+    scrollToSpecificMessage(_.last(messages)!.id)
   })
 }
 
@@ -240,7 +240,7 @@ const loadNextBatchMessages = async () => {
 
   const messages = await apis.getDmMessagesAfter(
     dmSessionId,
-    dmMessages.value[dmSessionId][dmMessages.value[dmSessionId].length - 1].id,
+    _.last(dmMessages.value[dmSessionId])!.id,
     MESSAGE_PER_PAGE,
   )
 
@@ -258,7 +258,7 @@ const loadNextBatchMessages = async () => {
   reachedTail.value = messages.length < MESSAGE_PER_PAGE
 
   nextTick(() => {
-    scrollToSpecificMessage(messages[messages.length - 1].id)
+    scrollToSpecificMessage(_.last(messages)!.id)
   })
 }
 
