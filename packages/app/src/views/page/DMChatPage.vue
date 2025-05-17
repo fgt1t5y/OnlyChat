@@ -310,13 +310,13 @@ const dayFirstMessageIdDateMap = computed(() => {
   return map
 })
 
-if (dmSession && !dmMessages.value[dmSessionId]) {
-  await loadInitialMessages()
-}
-
 const chatInputPlaceholder = computed(() => {
   return `Message @${dmSession.value?.userB.displayName}`
 })
+
+if (dmSession && !dmMessages.value[dmSessionId]) {
+  await loadInitialMessages()
+}
 
 onMounted(() => {
   messageContainerTopOffset.value = messageContainer.value!.el!.scrollHeight || 0

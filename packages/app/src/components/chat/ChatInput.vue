@@ -7,6 +7,9 @@
         class="chat-Input-Textarea"
         ref="textarea"
         rows="1"
+        minlength="1"
+        maxlength="1000"
+        required
         :placeholder="placeholder"
         @input="onTextareaInput"
         @keydown="onTextareaKeydown"
