@@ -1,5 +1,5 @@
 <template>
-  <div v-if="auth.user" class="flex flex-col h-screen">
+  <div v-if="auth.user" id="app">
     <div id="main-Title">
       <div class="text-primary font-bold">OnlyChat</div>
     </div>

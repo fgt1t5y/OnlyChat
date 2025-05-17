@@ -280,7 +280,10 @@ const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
   messageContent.value = ''
 
   chatInput.value?.textarea?.focus()
-  messageContainer.value?.scrollToBottom()
+
+  if (reachedTail.value) {
+    messageContainer.value?.scrollToBottom()
+  }
 }
 
 const onMessageContainerScroll = () => {

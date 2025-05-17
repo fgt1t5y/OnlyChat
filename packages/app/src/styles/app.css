@@ -123,6 +123,10 @@
 /*
  * MARK: Components
  */
+#app {
+  @apply flex flex-col h-screen select-none;
+}
+
 #main-Title {
   @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-950;
 }

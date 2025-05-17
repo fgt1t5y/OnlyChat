@@ -109,7 +109,6 @@ export interface User {
   avatarUrl: string | null
   bannerImageUrl: string | null
   bannerColor: string
-  avatarVersion: number
   disabled: boolean
   isOnline: boolean
   createdAt: string
