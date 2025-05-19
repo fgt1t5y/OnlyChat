@@ -1,12 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, DataSource } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly dataSource: DataSource,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
