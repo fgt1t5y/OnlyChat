@@ -67,6 +67,16 @@ export interface Friend {
   userB: User
 }
 
+export interface ServerMember {
+  id: number
+  serverId: number
+  userId: number
+  createdAt: string
+
+  server: Server
+  user: User
+}
+
 export interface Server {
   id: number
   creatorId: number
@@ -114,7 +124,7 @@ export interface User {
   createdAt: string
   updatedAt: string
 
-  joinedServers: Server[]
+  joinedServers: ServerMember[]
   roles?: number[]
 }
 

@@ -86,7 +86,9 @@ const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
 const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
 const friends = ref<User[]>(await apis.getFriends())
-const joinedServers = ref<Server[]>(auth.user?.joinedServers || [])
+const joinedServers = ref<Server[]>(
+  auth.user?.joinedServers.map((serverMember) => serverMember.server) || [],
+)
 const dmSessions = ref<DMSession[]>(await apis.getDmSessions())
 const dmMessages = ref<DmSessionIdMessagesMap>({})
 

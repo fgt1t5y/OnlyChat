@@ -1,4 +1,4 @@
-import { Server } from 'src/server/server.entity';
+import { Server } from 'src/server/entities/server.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,

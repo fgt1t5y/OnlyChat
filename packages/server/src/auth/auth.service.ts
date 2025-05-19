@@ -77,8 +77,10 @@ export class AuthService {
     return await this.userRepository.findOne({
       relations: {
         joinedServers: {
-          creator: true,
-          channels: true,
+          server: {
+            creator: true,
+            channels: true,
+          },
         },
       },
       where: {
@@ -86,8 +88,10 @@ export class AuthService {
       },
       order: {
         joinedServers: {
-          channels: {
-            position: 'ASC',
+          server: {
+            channels: {
+              position: 'ASC',
+            },
           },
         },
       },

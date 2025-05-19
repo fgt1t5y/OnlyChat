@@ -6,10 +6,11 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
 import { Role } from 'src/role/role.entity';
-import { Server } from 'src/server/server.entity';
+import { ServerMember } from 'src/server/entities';
 
 @Entity({ name: 'users' })
 export class User {
@@ -56,7 +57,6 @@ export class User {
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
 
-  @ManyToMany(() => Server, (server) => server.id)
-  @JoinTable({ name: 'server_members' })
-  joinedServers: Server[];
+  @OneToMany(() => ServerMember, (serverMember) => serverMember.user)
+  joinedServers: ServerMember[];
 }

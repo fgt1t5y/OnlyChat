@@ -4,12 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ServerMember } from './server-member.entity';
 
 @Entity({ name: 'servers' })
 export class Server {
@@ -43,6 +43,6 @@ export class Server {
   @OneToMany(() => Channel, (channel) => channel.server)
   channels: Channel[];
 
-  @ManyToMany(() => User, (user) => user.id)
-  members: User[];
+  @OneToMany(() => ServerMember, (serverMember) => serverMember.server)
+  members: ServerMember[];
 }
