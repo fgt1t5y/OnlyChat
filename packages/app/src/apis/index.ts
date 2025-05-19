@@ -10,8 +10,7 @@ import {
   getDmMessagesAround,
   getDmMessagesAfter,
   sendFriendRequest,
-  getReceivedFriendRequest,
-  getSentFriendRequest,
+  getFriendRequests,
   getFriends,
   findUser,
 } from './api'
@@ -28,8 +27,7 @@ const apis = {
   getDmMessagesAround,
   getDmMessagesAfter,
   sendFriendRequest,
-  getReceivedFriendRequest,
-  getSentFriendRequest,
+  getFriendRequests,
   getFriends,
   findUser,
 }

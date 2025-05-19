@@ -82,14 +82,24 @@ const ws = useSocketIO()
 await auth.getUserProfile()
 await ws.connectAsync()
 
+const [dataFriendRequests, dataFriends, dataDMSessions] = await Promise.all([
+  apis.getFriendRequests(),
+  apis.getFriends(),
+  apis.getDmSessions(),
+])
+
 const isDev = import.meta.env.DEV
-const receivedFriendRequests = ref<FriendRequest[]>(await apis.getReceivedFriendRequest())
-const sentFriendRequests = ref<FriendRequest[]>(await apis.getSentFriendRequest())
-const friends = ref<User[]>(await apis.getFriends())
+const receivedFriendRequests = ref<FriendRequest[]>(
+  dataFriendRequests.filter((item) => item.receiverId === auth.user!.id),
+)
+const sentFriendRequests = ref<FriendRequest[]>(
+  dataFriendRequests.filter((item) => item.senderId === auth.user!.id),
+)
+const friends = ref<User[]>(dataFriends)
 const joinedServers = ref<Server[]>(
   auth.user?.joinedServers.map((serverMember) => serverMember.server) || [],
 )
-const dmSessions = ref<DMSession[]>(await apis.getDmSessions())
+const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DmSessionIdMessagesMap>({})
 
 const unacceptFriendRequestCount = computed(() => {

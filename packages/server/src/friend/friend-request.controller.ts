@@ -9,6 +9,12 @@ import { JwtPayload } from 'src/common/types';
 export class FriendRequestController {
   constructor(private readonly friendRequestService: FriendRequestService) {}
 
+  @Get('')
+  @UseGuards(JwtAuthGuard)
+  async findAll(@CurrentUser() user: JwtPayload) {
+    return await this.friendRequestService.findAll(user.id);
+  }
+
   @Get('received')
   @UseGuards(JwtAuthGuard)
   async findAllReceived(@CurrentUser() user: JwtPayload) {

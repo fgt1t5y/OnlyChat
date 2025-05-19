@@ -19,6 +19,17 @@ export class FriendRequestService {
     });
   }
 
+  async findAll(userId: number): Promise<FriendRequest[]> {
+    return this.friendRequestRepository
+      .createQueryBuilder('friend')
+      .leftJoinAndSelect('friend.receiver', 'receiver')
+      .leftJoinAndSelect('friend.sender', 'sender')
+      .where('friend.receiverId = :userId OR friend.senderId = :userId', {
+        userId: userId,
+      })
+      .getMany();
+  }
+
   async findAllReceivedBy(receiverId: number): Promise<FriendRequest[]> {
     return await this.friendRequestRepository.find({
       relations: {
