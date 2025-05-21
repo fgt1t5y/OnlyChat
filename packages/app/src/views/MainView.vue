@@ -97,7 +97,7 @@ const sentFriendRequests = ref<FriendRequest[]>(
 )
 const friends = ref<User[]>(dataFriends)
 const joinedServers = ref<Server[]>(
-  auth.user?.joinedServers.map((serverMember) => serverMember.server) || [],
+  auth.user!.joinedServers.map((serverMember) => serverMember.server) || [],
 )
 const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DmSessionIdMessagesMap>({})

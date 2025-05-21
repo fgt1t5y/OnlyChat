@@ -30,27 +30,27 @@ export class FriendRequestService {
       .getMany();
   }
 
-  async findAllReceivedBy(receiverId: number): Promise<FriendRequest[]> {
-    return await this.friendRequestRepository.find({
-      relations: {
-        sender: true,
-      },
-      where: {
-        receiverId: receiverId,
-      },
-    });
-  }
+  // async findAllReceivedBy(receiverId: number): Promise<FriendRequest[]> {
+  //   return await this.friendRequestRepository.find({
+  //     relations: {
+  //       sender: true,
+  //     },
+  //     where: {
+  //       receiverId: receiverId,
+  //     },
+  //   });
+  // }
 
-  async findAllSentBy(senderId: number): Promise<FriendRequest[]> {
-    return await this.friendRequestRepository.find({
-      relations: {
-        receiver: true,
-      },
-      where: {
-        senderId: senderId,
-      },
-    });
-  }
+  // async findAllSentBy(senderId: number): Promise<FriendRequest[]> {
+  //   return await this.friendRequestRepository.find({
+  //     relations: {
+  //       receiver: true,
+  //     },
+  //     where: {
+  //       senderId: senderId,
+  //     },
+  //   });
+  // }
 
   async create(senderId: number, receiverId: number): Promise<FriendRequest> {
     const friendRequest = new FriendRequest();

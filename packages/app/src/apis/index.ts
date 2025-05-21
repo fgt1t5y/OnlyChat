@@ -12,6 +12,7 @@ import {
   sendFriendRequest,
   getFriendRequests,
   getFriends,
+  getServerMembers,
   findUser,
 } from './api'
 
@@ -29,6 +30,7 @@ const apis = {
   sendFriendRequest,
   getFriendRequests,
   getFriends,
+  getServerMembers,
   findUser,
 }
 

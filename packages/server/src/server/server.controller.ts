@@ -1,15 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ServerService } from './server.service';
 
-@Controller('server')
+@Controller('server/:serverId')
 export class ServerController {
   constructor(private readonly serverService: ServerService) {}
 }

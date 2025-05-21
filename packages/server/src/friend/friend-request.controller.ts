@@ -15,17 +15,17 @@ export class FriendRequestController {
     return await this.friendRequestService.findAll(user.id);
   }
 
-  @Get('received')
-  @UseGuards(JwtAuthGuard)
-  async findAllReceived(@CurrentUser() user: JwtPayload) {
-    return await this.friendRequestService.findAllReceivedBy(user.id);
-  }
+  // @Get('received')
+  // @UseGuards(JwtAuthGuard)
+  // async findAllReceived(@CurrentUser() user: JwtPayload) {
+  //   return await this.friendRequestService.findAllReceivedBy(user.id);
+  // }
 
-  @Get('sent')
-  @UseGuards(JwtAuthGuard)
-  async findAllSent(@CurrentUser() user: JwtPayload) {
-    return await this.friendRequestService.findAllSentBy(user.id);
-  }
+  // @Get('sent')
+  // @UseGuards(JwtAuthGuard)
+  // async findAllSent(@CurrentUser() user: JwtPayload) {
+  //   return await this.friendRequestService.findAllSentBy(user.id);
+  // }
 
   @Post('send')
   @UseGuards(JwtAuthGuard)

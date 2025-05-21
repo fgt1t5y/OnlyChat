@@ -13,6 +13,7 @@ import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 import AppearancePage from '@/views/page/settings/AppearancePage.vue'
 import ServerAside from '@/views/aside/ServerAside.vue'
 import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
+import ServerMembersPage from '@/views/page/ServerMembersPage.vue'
 import ServerChannelChatPage from '@/views/page/ServerChannelChatPage.vue'
 
 const router = createRouter({
@@ -87,6 +88,14 @@ const router = createRouter({
           components: {
             aside: ServerAside,
             default: ServerChannelsPage,
+          },
+        },
+        {
+          path: 'members',
+          name: 'server_members',
+          components: {
+            aside: ServerAside,
+            default: ServerMembersPage,
           },
         },
         {

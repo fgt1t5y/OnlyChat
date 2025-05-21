@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
 import RouterMenu from '@/components/common/RouterMenu.vue'
+import { useAuth } from '@/stores/auth'
 import { computed, inject, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { ContextMenu, Divider } from 'primevue'
@@ -53,19 +54,38 @@ import type { Server, AppGlobalContext, RouterMenuItem, ChannelTree } from '@/ty
 
 const { joinedServers } = inject<AppGlobalContext>('OC')!
 
+const auth = useAuth()
 const route = useRoute()
 
 const serverId = Number(route.params.serverId)
 
 const serverMainMenu = useTemplateRef('serverMainMenu')
+
 const server = ref<Server | undefined>(joinedServers.value.find((server) => server.id === serverId))
-const serverAsideMenuItems = ref<RouterMenuItem[]>([
-  {
+
+const serverAsideMenuItems = computed<RouterMenuItem[]>(() => {
+  if (!server.value) {
+    return []
+  }
+
+  const items: RouterMenuItem[] = []
+
+  items.push({
     label: 'Browser Channels',
     icon: 'ti ti-list-search',
     to: { name: 'server_channels' },
-  },
-])
+  })
+
+  if (server.value?.creatorId === auth.user!.id) {
+    items.push({
+      label: 'Members',
+      icon: 'ti ti-users',
+      to: { name: 'server_members' },
+    })
+  }
+
+  return items
+})
 
 const resolvedChannels = computed<ChannelTree[]>(() => {
   if (!server.value || !Array.isArray(server.value.channels) || !server.value.channels.length) {
