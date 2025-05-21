@@ -14,7 +14,7 @@ import { DMModule } from './dm/dm.module';
 import { DMMessage, DMSession } from './dm/entities';
 import { ServerModule } from './server/server.module';
 import { ChannelModule } from './channel/channel.module';
-import { ServerMember, Server } from './server/entities';
+import { ServerMember, Server, ServerRole } from './server/entities';
 import { Channel, ChannelMessage } from './channel/entities';
 import { AttachmentModule } from './attachment/attachment.module';
 import { Attachment } from './attachment/attachment.entity';
@@ -38,6 +38,7 @@ import { Attachment } from './attachment/attachment.entity';
         DMSession,
         Server,
         ServerMember,
+        ServerRole,
         Channel,
         ChannelMessage,
         Attachment,

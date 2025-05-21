@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
 import { Role } from 'src/role/role.entity';
-import { ServerMember } from 'src/server/entities';
+import { Server, ServerMember } from 'src/server/entities';
 
 @Entity({ name: 'users' })
 export class User {
@@ -59,4 +59,7 @@ export class User {
 
   @OneToMany(() => ServerMember, (serverMember) => serverMember.user)
   joinedServers: ServerMember[];
+
+  @OneToMany(() => Server, (server) => server.creator)
+  servers: Server[];
 }

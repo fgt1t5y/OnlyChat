@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ServerMember } from './server-member.entity';
+import { ServerRole } from './server-role.entity';
 
 @Entity({ name: 'servers' })
 export class Server {
@@ -37,7 +38,7 @@ export class Server {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.servers)
   creator: User;
 
   @OneToMany(() => Channel, (channel) => channel.server)
@@ -45,4 +46,7 @@ export class Server {
 
   @OneToMany(() => ServerMember, (serverMember) => serverMember.server)
   members: ServerMember[];
+
+  @OneToMany(() => ServerRole, (serverRole) => serverRole.server)
+  roles: ServerRole[];
 }

@@ -44,7 +44,7 @@
       </nav>
       <RouterView v-slot="{ Component, route }">
         <template v-if="Component">
-          <KeepAlive :include="['DMChatPage']">
+          <KeepAlive>
             <Suspense suspensible>
               <component :is="Component" :key="route.fullPath"></component>
             </Suspense>

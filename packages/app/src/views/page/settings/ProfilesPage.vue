@@ -149,7 +149,7 @@ import Cropper from '@/components/image/Cropper.vue'
 import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import { useAuth } from '@/stores/auth'
 import { Button, Divider, Dialog, Textarea, InputText, ColorPicker, ProgressBar } from 'primevue'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, onDeactivated, ref, useTemplateRef, watch } from 'vue'
 import { useDropZone } from '@vueuse/core'
 import { useToast } from 'primevue/usetoast'
 import { useRequest } from 'alova/client'
@@ -342,4 +342,6 @@ watch(
     }
   },
 )
+
+onDeactivated(resetChanges)
 </script>
