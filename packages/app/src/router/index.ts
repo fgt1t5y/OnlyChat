@@ -6,7 +6,6 @@ import FriendsPage from '@/views/page/FriendsPage.vue'
 import AddFriendPage from '@/views/page/AddFriendPage.vue'
 import SettingsAside from '@/views/aside/SettingsAside.vue'
 import ProfilesPage from '@/views/page/settings/ProfilesPage.vue'
-import AvatarPage from '@/views/page/settings/AvatarPage.vue'
 import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
 import DMChatPage from '@/views/page/DMChatPage.vue'
 import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
@@ -15,6 +14,7 @@ import ServerAside from '@/views/aside/ServerAside.vue'
 import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
 import ServerMembersPage from '@/views/page/ServerMembersPage.vue'
 import ServerChannelChatPage from '@/views/page/ServerChannelChatPage.vue'
+import LogoutPage from '@/views/page/settings/LogoutPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -136,19 +136,19 @@ const router = createRouter({
           },
         },
         {
-          path: 'avatar',
-          name: 'settings_avatar',
-          components: {
-            aside: SettingsAside,
-            default: AvatarPage,
-          },
-        },
-        {
           path: 'appearance',
           name: 'settings_appearance',
           components: {
             aside: SettingsAside,
             default: AppearancePage,
+          },
+        },
+        {
+          path: 'logout',
+          name: 'settings_logout',
+          components: {
+            aside: SettingsAside,
+            default: LogoutPage,
           },
         },
       ],
