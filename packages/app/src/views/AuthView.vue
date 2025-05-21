@@ -64,8 +64,8 @@
 </template>
 
 <script setup lang="ts">
+import * as apis from '@/apis'
 import FieldError from '@/components/form/FieldError.vue'
-import apis from '@/apis'
 import { useForm } from '@tanstack/vue-form'
 import { useRequest } from 'alova/client'
 import { useRouter } from 'vue-router'

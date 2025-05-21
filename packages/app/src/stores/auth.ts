@@ -1,4 +1,4 @@
-import apis from '@/apis'
+import * as apis from '@/apis'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
 import type { User } from '@/types'

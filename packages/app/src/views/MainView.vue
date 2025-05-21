@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import apis from '@/apis'
+import * as apis from '@/apis'
 import ServerAvatar from '@/components/avatar/ServerAvatar.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'

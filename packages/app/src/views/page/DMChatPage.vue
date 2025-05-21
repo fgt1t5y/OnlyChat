@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import apis from '@/apis'
+import * as apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import List from '@/components/common/List.vue'
 import PageTitle from '@/components/common/PageTitle.vue'

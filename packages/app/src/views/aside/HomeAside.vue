@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import apis from '@/apis'
+import * as apis from '@/apis'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import RouterMenu from '@/components/common/RouterMenu.vue'
 import { inject, ref } from 'vue'

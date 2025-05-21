@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import * as apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
@@ -46,7 +47,6 @@ import { Button, InputText } from 'primevue'
 import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext } from '@/types'
-import apis from '@/apis'
 
 const { friends, dmSessions } = inject<AppGlobalContext>('OC')!
 
