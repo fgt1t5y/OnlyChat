@@ -30,6 +30,11 @@
   @apply hover:bg-surface-50 dark:hover:bg-surface-800;
 }
 
+@utility hoverable-2 {
+  @apply hover:bg-surface-200 dark:hover:bg-surface-800;
+}
+
+
 @utility shadow-full {
   box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.3);
 }
@@ -89,6 +94,10 @@
 
   pre {
     @apply border border-content p-2 font-mono mt-1 rounded-border relative overflow-auto;
+  }
+
+  table {
+    @apply w-full;
   }
 }
 
@@ -423,4 +432,12 @@
 
 .code-Block-Button {
   @apply absolute top-0 right-0 opacity-0;
+}
+
+.table-Cell {
+  @apply text-start p-2;
+}
+
+.table-Body-Row {
+  @apply border-b border-content hoverable-2;
 }

@@ -12,37 +12,46 @@
             <Button icon="ti ti-list" label="Sort" size="small" severity="secondary" />
           </div>
         </div>
-        <div>
-          <table class="w-full">
-            <thead>
-              <tr>
-                <th class="text-start p-2" style="width: 30%">Name</th>
-                <th class="text-start p-2" style="width: 10%">Member Since</th>
-                <th class="text-start p-2" style="width: 10%">Joined At</th>
-                <th class="text-start p-2" style="width: 30%">Roles</th>
-                <th class="text-start p-2" style="width: 10%">Handlers</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="member in serverMembers" class="hoverable">
-                <td class="text-start p-2 flex items-center gap-2">
-                  <UserAvatar size="s" :user="member.user" />
-                  <div class="flex flex-col">
-                    <div>{{ member.user.displayName }}</div>
-                    <div class="text-muted-color">{{ member.user.username }}</div>
-                  </div>
-                </td>
-                <td class="text-start p-2">{{ dayjs.utc(member.createdAt).tz().fromNow() }}</td>
-                <td class="text-start p-2">
-                  {{ dayjs.utc(member.user.createdAt).tz().fromNow() }}
-                </td>
-                <td class="text-start p-2">123</td>
-                <td class="text-start p-2">
-                  <Button icon="ti ti-dots" severity="secondary" rounded />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <table>
+          <thead>
+            <tr>
+              <th class="table-Cell" style="width: 3%">
+                <Checkbox size="large" binary />
+              </th>
+              <th class="table-Cell" style="width: 30%">Name</th>
+              <th class="table-Cell" style="width: 10%">Member Since</th>
+              <th class="table-Cell" style="width: 10%">Joined At</th>
+              <th class="table-Cell" style="width: 30%">Roles</th>
+              <th class="table-Cell" style="width: 10%">Handlers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="member in serverMembers" class="table-Body-Row">
+              <td class="table-Cell">
+                <Checkbox size="large" binary />
+              </td>
+              <td class="table-Cell flex items-center gap-2">
+                <UserAvatar size="s" :user="member.user" />
+                <div class="flex flex-col">
+                  <div>{{ member.user.displayName }}</div>
+                  <div class="text-muted-color">{{ member.user.username }}</div>
+                </div>
+              </td>
+              <td class="table-Cell">{{ dayjs.utc(member.createdAt).tz().fromNow() }}</td>
+              <td class="table-Cell">
+                {{ dayjs.utc(member.user.createdAt).tz().fromNow() }}
+              </td>
+              <td class="table-Cell">123</td>
+              <td class="table-Cell">
+                <Button icon="ti ti-dots" severity="secondary" rounded />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="p-2 text-muted-color">
+          Showing
+          <b>{{ serverMembers.length }}</b>
+          members
         </div>
       </div>
     </div>
@@ -57,7 +66,7 @@ import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { inject, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Button, IconField, InputText, InputIcon } from 'primevue'
+import { Button, Checkbox, IconField, InputText, InputIcon } from 'primevue'
 
 import type { Server, AppGlobalContext, ServerMember } from '@/types'
 
