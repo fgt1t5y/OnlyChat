@@ -18,6 +18,7 @@ export class ServerMemberService {
       where: {
         serverId: serverId,
       },
+      take: 20,
     });
   }
 }

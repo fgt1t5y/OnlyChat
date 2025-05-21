@@ -128,7 +128,7 @@
 }
 
 #main-Title {
-  @apply min-h-[36px] flex items-center justify-center bg-surface-200 dark:bg-surface-950;
+  @apply min-h-[32px] flex items-center justify-center bg-surface-200 dark:bg-surface-950;
 }
 
 #main-View {

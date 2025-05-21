@@ -6,7 +6,7 @@
       </slot>
 
       <slot name="title" :title="title">
-        <div class="text-xl">{{ title }}</div>
+        <div class="text-base">{{ title }}</div>
       </slot>
     </div>
     <slot />
