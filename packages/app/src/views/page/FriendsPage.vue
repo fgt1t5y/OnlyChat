@@ -48,7 +48,7 @@ import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext } from '@/types'
 
-const { friends, dmSessions } = inject<AppGlobalContext>('OC')!
+const { friends, dmSessions, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const router = useRouter()
 
@@ -70,5 +70,6 @@ const handleOpenDMSession = async (userBId: number) => {
 
 onActivated(() => {
   document.title = `OnlyChat | Friends`
+  mainTitleText.value = 'Friends'
 })
 </script>

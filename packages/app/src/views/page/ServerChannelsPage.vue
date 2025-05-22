@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
-import { computed, inject, ref } from 'vue'
+import { computed, inject, onActivated, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { InputText, InputIcon, IconField } from 'primevue'
 
@@ -94,5 +94,11 @@ const uncategorizedChannels = computed<ChannelTree[]>(() => {
   return server.value.channels.filter(
     (channel) => !channel.rootChannelId && !channel.isCategory,
   ) as ChannelTree[]
+})
+
+onActivated(() => {
+  if (server.value) {
+    document.title = `OnlyChat | Browser Channel | ${server.value.name}`
+  }
 })
 </script>

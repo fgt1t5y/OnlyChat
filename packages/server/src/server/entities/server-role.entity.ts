@@ -16,10 +16,10 @@ export class ServerRole {
   @Column()
   serverId: number;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
 
-  @Column({ length: 8 })
+  @Column({ default: '42B883', length: 6 })
   color: string;
 
   @CreateDateColumn()

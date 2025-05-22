@@ -64,7 +64,7 @@ import dayjs from 'dayjs'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
-import { inject, ref } from 'vue'
+import { inject, onActivated, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Button, Checkbox, IconField, InputText, InputIcon } from 'primevue'
 
@@ -78,4 +78,10 @@ const serverId = Number(route.params.serverId)
 
 const server = ref<Server | undefined>(joinedServers.value.find((server) => server.id === serverId))
 const serverMembers = ref<ServerMember[]>(await apis.getServerMembers(serverId))
+
+onActivated(() => {
+  if (server.value) {
+    document.title = `OnlyChat | Member | ${server.value.name}`
+  }
+})
 </script>

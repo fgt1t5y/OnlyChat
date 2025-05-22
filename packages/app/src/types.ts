@@ -151,6 +151,7 @@ export interface AppGlobalContext {
   joinedServers: Ref<Server[]>
   dmSessions: Ref<DMSession[]>
   dmMessages: Ref<DmSessionIdMessagesMap>
+  mainTitleText: Ref<string>
 
   unacceptFriendRequestCount?: ComputedRef<number>
 }

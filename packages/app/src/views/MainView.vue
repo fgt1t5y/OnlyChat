@@ -1,7 +1,7 @@
 <template>
   <div v-if="auth.user" id="app">
     <div id="main-Title">
-      <div class="text-primary font-bold">OnlyChat</div>
+      <div class="text-primary">{{ mainTitleText }}</div>
     </div>
     <div id="main-View" class="flex grow">
       <nav id="main-Nav">
@@ -101,6 +101,7 @@ const joinedServers = ref<Server[]>(
 )
 const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DmSessionIdMessagesMap>({})
+const mainTitleText = ref<string>('')
 
 const unacceptFriendRequestCount = computed(() => {
   let count = 0
@@ -122,6 +123,7 @@ provide<AppGlobalContext>('OC', {
   joinedServers,
   dmSessions,
   dmMessages,
+  mainTitleText,
 
   unacceptFriendRequestCount,
 })

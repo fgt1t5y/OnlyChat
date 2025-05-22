@@ -45,14 +45,14 @@
 <script setup lang="ts">
 import RouterMenu from '@/components/common/RouterMenu.vue'
 import { useAuth } from '@/stores/auth'
-import { computed, inject, ref, useTemplateRef } from 'vue'
+import { computed, inject, onMounted, ref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { ContextMenu, Divider } from 'primevue'
 
 import type { MenuItem } from 'primevue/menuitem'
 import type { Server, AppGlobalContext, RouterMenuItem, ChannelTree } from '@/types'
 
-const { joinedServers } = inject<AppGlobalContext>('OC')!
+const { joinedServers, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const auth = useAuth()
 const route = useRoute()
@@ -120,5 +120,11 @@ const serverMainMenuItems = computed<MenuItem[]>(() => {
     { label: 'Create Channel', icon: 'ti ti-circle-plus' },
     { label: 'Create Category', icon: 'ti ti-folder-plus' },
   ]
+})
+
+onMounted(() => {
+  if (server.value) {
+    mainTitleText.value = server.value.name
+  }
 })
 </script>

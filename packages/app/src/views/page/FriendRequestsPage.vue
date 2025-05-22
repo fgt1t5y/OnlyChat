@@ -71,7 +71,8 @@ import { useSocketIO } from '@/stores/socket'
 
 import type { AppGlobalContext } from '@/types'
 
-const { receivedFriendRequests, sentFriendRequests } = inject<AppGlobalContext>('OC')!
+const { receivedFriendRequests, sentFriendRequests, mainTitleText } =
+  inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
 
@@ -85,5 +86,6 @@ const handleCancelFriendRequest = (friendRequestId: number) => {
 
 onActivated(() => {
   document.title = 'OnlyChat | Friend Requests'
+  mainTitleText.value = 'Friend Requests'
 })
 </script>

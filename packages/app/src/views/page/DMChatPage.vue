@@ -128,7 +128,7 @@ import { useStorage } from '@vueuse/core'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
-const { dmSessions, dmMessages } = inject<AppGlobalContext>('OC')!
+const { dmSessions, dmMessages, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const route = useRoute()
 const ws = useSocketIO()
@@ -337,6 +337,7 @@ onActivated(() => {
   chatInput.value?.textarea?.focus()
 
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
+  mainTitleText.value = 'Direct Messages'
 
   ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 })

@@ -44,13 +44,13 @@ import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
+import { useSocketIO } from '@/stores/socket'
 import { Button, InputGroup, InputText } from 'primevue'
 import { inject, onActivated, ref } from 'vue'
 
 import type { AppGlobalContext, User } from '@/types'
-import { useSocketIO } from '@/stores/socket'
 
-const { sentFriendRequests, friends } = inject<AppGlobalContext>('OC')!
+const { sentFriendRequests, friends, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
 
@@ -84,5 +84,6 @@ const handleSendFriendRequest = (receiverId: number) => {
 
 onActivated(() => {
   document.title = 'OnlyChat | Add Friend'
+  mainTitleText.value = 'Add Friend'
 })
 </script>
