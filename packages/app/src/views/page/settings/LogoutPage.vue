@@ -1,9 +1,11 @@
 <template>
   <Page>
-    <div class="w-setting-page mx-auto text-center">
+    <div class="w-setting-page mx-auto">
       <h1>Log Out</h1>
-      <p>Are you sure log out now?</p>
-      <Button icon="ti ti-logout" label="Logout Now" severity="danger" @click="logout" />
+      <div class="flex flex-col items-center">
+        <p>Are you sure log out now?</p>
+        <Button icon="ti ti-logout" label="Logout Now" severity="danger" @click="logout" />
+      </div>
     </div>
   </Page>
 </template>

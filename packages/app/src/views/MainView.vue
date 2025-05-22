@@ -1,7 +1,7 @@
 <template>
   <div v-if="auth.user" id="app">
     <div id="main-Title">
-      <div class="text-primary">{{ mainTitleText }}</div>
+      <div class="font-bold">{{ mainTitleText }}</div>
     </div>
     <div id="main-View" class="flex grow">
       <nav id="main-Nav">

@@ -12,10 +12,12 @@
 
 <script setup lang="ts">
 import RouterMenu from '@/components/common/RouterMenu.vue'
-import { ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { Divider } from 'primevue'
 
-import type { RouterMenuItem } from '@/types'
+import type { AppGlobalContext, RouterMenuItem } from '@/types'
+
+const { mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const userSettingsAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'My Account', to: { name: 'settings_my_account' } },
@@ -29,4 +31,8 @@ const appSettingsAsideMenuItems = ref<RouterMenuItem[]>([
 const logoutAsideMenuItems = ref<RouterMenuItem[]>([
   { label: 'Log Out', to: { name: 'settings_logout' } },
 ])
+
+onMounted(() => {
+  mainTitleText.value = 'Settings'
+})
 </script>

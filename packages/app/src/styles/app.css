@@ -207,7 +207,7 @@
 }
 
 .page {
-  @apply flex flex-col grow border-t border-content bg-surface-100 dark:bg-surface-900;
+  @apply flex flex-col grow border-t border-content bg-surface-50 dark:bg-surface-900;
 }
 
 .page-Title {
