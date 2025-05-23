@@ -95,7 +95,7 @@ const receivedFriendRequests = ref<FriendRequest[]>(
 const sentFriendRequests = ref<FriendRequest[]>(
   dataFriendRequests.filter((item) => item.senderId === auth.user!.id),
 )
-const friends = ref<User[]>(dataFriends)
+const friends = ref<User[]>(dataFriends.map((friend) => friend.userB) || [])
 const joinedServers = ref<Server[]>(
   auth.user!.joinedServers.map((serverMember) => serverMember.server) || [],
 )

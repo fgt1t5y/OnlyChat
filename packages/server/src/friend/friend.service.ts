@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Friend } from './entities/friend.entity';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class FriendService {
@@ -12,8 +11,8 @@ export class FriendService {
     private readonly friendRepository: Repository<Friend>,
   ) {}
 
-  async findAll(userId: number): Promise<User[]> {
-    const friends = await this.friendRepository.find({
+  async findAll(userId: number): Promise<Friend[]> {
+    return await this.friendRepository.find({
       relations: {
         userB: true,
       },
@@ -21,8 +20,6 @@ export class FriendService {
         userAId: userId,
       },
     });
-
-    return friends.map((item) => item.userB);
   }
 
   async createBothSideRelationship(userAId: number, userBId: number) {

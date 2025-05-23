@@ -5,6 +5,7 @@ import type {
   AuthLoginPayload,
   DMMessage,
   DMSession,
+  Friend,
   FriendRequest,
   ServerMember,
   User,
@@ -76,7 +77,7 @@ export const getFriendRequests = () => {
 
 // #region Friend API
 export const getFriends = () => {
-  return alovaInstance.Get<User[]>('/friend')
+  return alovaInstance.Get<Friend[]>('/friend')
 }
 
 // #region Server Member API
