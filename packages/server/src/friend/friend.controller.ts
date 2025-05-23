@@ -4,7 +4,7 @@ import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
 import { FriendService } from './friend.service';
 
-@Controller('friend')
+@Controller('friends')
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 

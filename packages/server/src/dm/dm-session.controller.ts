@@ -14,7 +14,7 @@ import { JwtPayload } from 'src/common/types';
 import { CloseDMSessionDto, OpenDMSessionDto } from './dm.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
-@Controller('dm/session')
+@Controller('dm-sessions')
 export class DMSessionController {
   constructor(private readonly dmSessionService: DMSessionService) {}
 

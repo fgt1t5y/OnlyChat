@@ -7,7 +7,7 @@ import { CreateDMMessageDto, GetDMMessageDto } from './dm.dto';
 import { DMSessionService } from './dm-session.service';
 import { WsException } from '@nestjs/websockets';
 
-@Controller('dm/message')
+@Controller('dm-messages')
 export class DMMessageController {
   constructor(
     private readonly dmSessionService: DMSessionService,

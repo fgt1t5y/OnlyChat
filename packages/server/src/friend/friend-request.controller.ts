@@ -5,7 +5,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
 
-@Controller('friend/request')
+@Controller('friend-requests')
 export class FriendRequestController {
   constructor(private readonly friendRequestService: FriendRequestService) {}
 
