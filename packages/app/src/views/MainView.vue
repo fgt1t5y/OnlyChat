@@ -66,14 +66,15 @@ import { Avatar, Button } from 'primevue'
 import { computed, provide, ref } from 'vue'
 
 import type {
-  AcceptFriendRequestDto,
-  AppGlobalContext,
   DMSession,
   FriendRequest,
   Server,
   User,
-  DmSessionIdMessagesMap,
   DMMessage,
+  AppGlobalContext,
+  DMSessionIdMessagesMap,
+  AcceptFriendRequestDto,
+  CancelFriendRequestDto,
 } from '@/types'
 
 const auth = useAuth()
@@ -100,7 +101,7 @@ const joinedServers = ref<Server[]>(
   auth.user!.joinedServers.map((serverMember) => serverMember.server) || [],
 )
 const dmSessions = ref<DMSession[]>(dataDMSessions)
-const dmMessages = ref<DmSessionIdMessagesMap>({})
+const dmMessages = ref<DMSessionIdMessagesMap>({})
 const mainTitleText = ref<string>('')
 
 const unacceptFriendRequestCount = computed(() => {
@@ -186,7 +187,7 @@ const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequ
   friends.value.unshift(sentFriendRequests.value[friendRequestIndex].receiver)
 }
 
-const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: AcceptFriendRequestDto) => {
+const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: CancelFriendRequestDto) => {
   console.log('Canceled this friend request', friendRequestId)
 
   const friendRequestIndex = sentFriendRequests.value.findIndex(
@@ -198,7 +199,7 @@ const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: AcceptFriendRe
   }
 }
 
-const onFriendRequestCanceledBySender = ({ friendRequestId }: AcceptFriendRequestDto) => {
+const onFriendRequestCanceledBySender = ({ friendRequestId }: CancelFriendRequestDto) => {
   console.log('Sender is canceled this friend request', friendRequestId)
 
   const friendRequestIndex = receivedFriendRequests.value.findIndex(

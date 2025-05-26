@@ -135,12 +135,8 @@ export interface RouterMenuItem {
   badge?: MaybeRef<number | boolean>
 }
 
-export interface DmSessionIdMessagesMap {
+export interface DMSessionIdMessagesMap {
   [dmSessionId: number]: DMMessage[]
-}
-
-export interface ServerChannelsMap {
-  // [serverId: number]: Channel
 }
 
 export interface AppGlobalContext {
@@ -150,7 +146,7 @@ export interface AppGlobalContext {
   friends: Ref<User[]>
   joinedServers: Ref<Server[]>
   dmSessions: Ref<DMSession[]>
-  dmMessages: Ref<DmSessionIdMessagesMap>
+  dmMessages: Ref<DMSessionIdMessagesMap>
   mainTitleText: Ref<string>
 
   unacceptFriendRequestCount?: ComputedRef<number>
