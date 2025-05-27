@@ -6,13 +6,13 @@ const ESCAPE_CHARS: Record<string, string> = {
   '>': '&gt;',
 }
 
+const escape = (text: string) => text.replace(/[&<>]/g, (c) => ESCAPE_CHARS[c] || c)
+
 const _markedInstance = new Marked()
 const renderer = new Renderer()
 
 renderer.html = function ({ text }) {
-  const escaped = text.replace(/[&<>]/g, (c) => ESCAPE_CHARS[c] || c)
-
-  return `<span>${_markedInstance.parseInline(escaped)}</span>`
+  return `<span>${_markedInstance.parseInline(escape(text))}</span>`
 }
 
 renderer.text = function ({ text }) {

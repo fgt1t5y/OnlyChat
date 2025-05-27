@@ -25,6 +25,12 @@ const nodeToVNode = (element: Element): VNode | null => {
     }
   }
 
+  if (element.nodeName === 'A') {
+    const href = (element as HTMLAnchorElement).href
+
+    return h('a', { href: href }, href)
+  }
+
   if (element.children.length) {
     return h(element.nodeName.toLowerCase(), Array.from(element.children).map(treeToVNode))
   }
