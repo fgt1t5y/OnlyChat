@@ -33,7 +33,26 @@
             <Divider />
             <div class="flex flex-col gap-2">
               <div>{{ $t('banner_color') }}</div>
-              <ColorPicker v-model="auth.userShadow.bannerColor" />
+              <div class="flex gap-2 items-center">
+                <ColorPicker v-model="auth.userShadow.bannerColor" />
+                <InputText
+                  class="w-20 select-all"
+                  size="small"
+                  maxlength="6"
+                  :default-value="auth.userShadow.bannerColor"
+                  @update:model-value="onColorHexInputUpdate"
+                />
+                <Button
+                  v-if="isSupported"
+                  icon="ti ti-color-picker"
+                  size="small"
+                  severity="secondary"
+                  rounded
+                  :title="$t('pick_color_from_screen')"
+                  :aria-label="$t('pick_color_from_screen')"
+                  @click="pickColorFromScreen"
+                />
+              </div>
             </div>
             <Divider />
             <label class="flex flex-col gap-2">
@@ -150,7 +169,7 @@ import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import { useAuth } from '@/stores/auth'
 import { Button, Divider, Dialog, Textarea, InputText, ColorPicker, ProgressBar } from 'primevue'
 import { computed, onDeactivated, ref, useTemplateRef, watch } from 'vue'
-import { useDropZone } from '@vueuse/core'
+import { useDropZone, useEyeDropper } from '@vueuse/core'
 import { useToast } from 'primevue/usetoast'
 import { useRequest } from 'alova/client'
 
@@ -172,6 +191,12 @@ const { send: uploadAvatar, loading: avatarUploading } = useRequest(apis.uploadA
 const { send: updateProfiles, loading: profileUpdating } = useRequest(apis.updateProfile, {
   immediate: false,
 })
+
+const { isSupported, sRGBHex, open: openColorPicker } = useEyeDropper()
+
+const pickColorFromScreen = () => {
+  openColorPicker()
+}
 
 const onAvatarFileDropped = (file: File | null) => {
   if (!file) {
@@ -237,6 +262,14 @@ const onAvatarApplied = async () => {
   }
 
   showChangeAvatarModel.value = false
+}
+
+const onColorHexInputUpdate = (value: string | undefined) => {
+  if (!value || value.length < 6 || value.startsWith('#')) {
+    return
+  }
+
+  auth.userShadow!.bannerColor = value
 }
 
 const removeAvatar = () => {
@@ -340,6 +373,17 @@ watch(
         avatarFileInput.value.value = ''
       }
     }
+  },
+)
+
+watch(
+  () => sRGBHex.value,
+  (colorHex) => {
+    if (!auth.userShadow) {
+      return
+    }
+
+    auth.userShadow.bannerColor = colorHex.slice(1) // Remove the leading '#'
   },
 )
 
