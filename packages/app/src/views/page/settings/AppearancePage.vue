@@ -1,21 +1,21 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <h1>Appearance</h1>
+      <h1>{{ $t('settings.appearance') }}</h1>
       <div class="border border-content rounded-border p-2 bg-surface-200 dark:bg-surface-900">
-        <div class="font-bold">Preview Text</div>
-        <p>
+        <div class="font-bold mb-2">Preview Text</div>
+        <div>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
           ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
           ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
           sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
           est laborum.
-        </p>
+        </div>
       </div>
-      <h2>Theme</h2>
-      <h3>Default Themes</h3>
-      <p>Adjust the color of the interface for better visibility.</p>
+      <h2>{{ $t('theme') }}</h2>
+      <h3>{{ $t('default_theme') }}</h3>
+      <p>{{ $t('adjust_theme_tip') }}</p>
       <div class="flex gap-2">
         <div class="flex flex-col gap-2 items-center">
           <label
@@ -36,7 +36,7 @@
             for="autoRadio"
             class="flex items-center justify-center h-15 w-15 rounded-full border border-surface-500 cursor-pointer"
           >
-            <div class="text-[12px]">AUTO</div>
+            <div class="text-[12px]">{{ $t('auto') }}</div>
           </label>
           <RadioButton v-model="currentThemeMode" inputId="autoRadio" value="auto" />
         </div>

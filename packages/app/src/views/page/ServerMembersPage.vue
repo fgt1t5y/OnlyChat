@@ -1,15 +1,15 @@
 <template>
   <Page v-if="server">
-    <PageTitle title="Members" icon="ti ti-users" />
+    <PageTitle icon="ti ti-users" :title="$t('members')" />
     <div class="p-2">
       <div>
         <div class="p-2 flex items-center justify-end border-b border-content">
           <div class="flex gap-2">
             <IconField>
-              <InputText placeholder="Search Member" />
+              <InputText :placeholder="$t('search_members')" />
               <InputIcon class="ti ti-search" />
             </IconField>
-            <Button icon="ti ti-list" label="Sort" size="small" severity="secondary" />
+            <Button icon="ti ti-list" size="small" severity="secondary" :label="$t('sort')" />
           </div>
         </div>
         <table>
@@ -18,11 +18,11 @@
               <th class="table-Cell" style="width: 3%">
                 <Checkbox size="large" binary />
               </th>
-              <th class="table-Cell" style="width: 30%">Name</th>
-              <th class="table-Cell" style="width: 10%">Member Since</th>
-              <th class="table-Cell" style="width: 10%">Joined At</th>
-              <th class="table-Cell" style="width: 30%">Roles</th>
-              <th class="table-Cell" style="width: 10%">Handlers</th>
+              <th class="table-Cell" style="width: 30%">{{ $t('member_name') }}</th>
+              <th class="table-Cell" style="width: 10%">{{ $t('member_since') }}</th>
+              <th class="table-Cell" style="width: 10%">{{ $t('joined_since') }}</th>
+              <th class="table-Cell" style="width: 30%">{{ $t('role') }}</th>
+              <th class="table-Cell" style="width: 10%">{{ $t('handlers') }}</th>
             </tr>
           </thead>
           <tbody>

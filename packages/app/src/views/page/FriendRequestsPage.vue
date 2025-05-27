@@ -1,8 +1,10 @@
 <template>
   <Page>
-    <PageTitle title="Friend Requests" icon="ti ti-user-plus" />
+    <PageTitle icon="ti ti-user-plus" :title="$t('friend_requests')" />
     <div v-if="receivedFriendRequests" class="p-2">
-      <div class="text-muted-color p-2">Received - {{ receivedFriendRequests.length }}</div>
+      <div class="text-muted-color p-2">
+        {{ $t('received_friend_requests', [receivedFriendRequests.length]) }}
+      </div>
       <ul>
         <li v-for="item in receivedFriendRequests" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item.sender" />
@@ -11,7 +13,7 @@
             <div class="text-muted-color">@{{ item.sender.username }}</div>
           </div>
           <div v-if="item.accepted">
-            <Button label="Accepted" icon="ti ti-check" severity="secondary" disabled />
+            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
           </div>
           <div v-else>
             <Button
@@ -32,7 +34,9 @@
       </ul>
     </div>
     <div v-if="sentFriendRequests" class="p-2">
-      <div class="text-muted-color px-2">Sent - {{ sentFriendRequests.length }}</div>
+      <div class="text-muted-color px-2">
+        {{ $t('sent_friend_requests', [sentFriendRequests.length]) }}
+      </div>
       <ul>
         <li v-for="item in sentFriendRequests" class="list-Item flex items-center gap-2">
           <UserAvatar :user="item.receiver" />
@@ -42,10 +46,10 @@
           </div>
           <Button
             v-if="item.accepted"
-            label="Accepted"
             icon="ti ti-check"
             severity="secondary"
             disabled
+            :label="$t('accepted')"
           />
           <Button
             v-else
@@ -66,6 +70,7 @@ import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { inject, onActivated } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from 'primevue'
 import { useSocketIO } from '@/stores/socket'
 
@@ -75,6 +80,7 @@ const { receivedFriendRequests, sentFriendRequests, mainTitleText } =
   inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
+const { t } = useI18n()
 
 const handleAcceptFriendRequest = (friendRequestId: number) => {
   ws.emit('friend_request.accept', { friendRequestId })
@@ -85,7 +91,7 @@ const handleCancelFriendRequest = (friendRequestId: number) => {
 }
 
 onActivated(() => {
-  document.title = 'OnlyChat | Friend Requests'
-  mainTitleText.value = 'Friend Requests'
+  document.title = `OnlyChat | ${t('friend_requests')}`
+  mainTitleText.value = t('page.home')
 })
 </script>

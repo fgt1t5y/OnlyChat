@@ -1,16 +1,16 @@
 <template>
   <Page>
-    <PageTitle title="Add Friend" icon="ti ti-user-search" />
+    <PageTitle icon="ti ti-user-search" :title="$t('add_friend')" />
     <form @submit.prevent.stop="handleSearch" class="p-2">
       <InputGroup>
         <InputText
           v-model="searchKeyword"
-          placeholder="Search username here..."
           autofocus
           fluid
           required
+          :placeholder="$t('search_friends_placeholder')"
         />
-        <Button label="Search" type="submit" icon="ti ti-search" :loading="finding" />
+        <Button type="submit" icon="ti ti-search" :loading="finding" :label="$t('search')" />
       </InputGroup>
     </form>
     <div v-if="foundItems" class="p-2">
@@ -23,11 +23,16 @@
             <div class="text-muted-color">@{{ item.username }}</div>
           </div>
           <div v-if="isFriend(item)"></div>
-          <Button v-else-if="wasRequested(item)" label="Requested" severity="secondary" disabled />
+          <Button
+            v-else-if="wasRequested(item)"
+            severity="secondary"
+            disabled
+            :label="$t('sent')"
+          />
           <Button
             v-else
-            label="Send request"
             severity="secondary"
+            :label="$t('send_friend_request')"
             @click="handleSendFriendRequest(item.id)"
           />
         </li>
@@ -47,12 +52,14 @@ import { useRequest } from 'alova/client'
 import { useSocketIO } from '@/stores/socket'
 import { Button, InputGroup, InputText } from 'primevue'
 import { inject, onActivated, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import type { AppGlobalContext, User } from '@/types'
 
 const { sentFriendRequests, friends, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
+const { t } = useI18n()
 
 const searchKeyword = ref<string>('')
 
@@ -83,7 +90,7 @@ const handleSendFriendRequest = (receiverId: number) => {
 }
 
 onActivated(() => {
-  document.title = 'OnlyChat | Add Friend'
-  mainTitleText.value = 'Add Friend'
+  document.title = `OnlyChat | ${t('add_friend')}`
+  mainTitleText.value = t('page.home')
 })
 </script>

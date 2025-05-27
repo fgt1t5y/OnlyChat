@@ -46,6 +46,7 @@
 import RouterMenu from '@/components/common/RouterMenu.vue'
 import { useAuth } from '@/stores/auth'
 import { computed, inject, onMounted, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ContextMenu, Divider } from 'primevue'
 
@@ -56,6 +57,7 @@ const { joinedServers, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const auth = useAuth()
 const route = useRoute()
+const { t } = useI18n()
 
 const serverId = Number(route.params.serverId)
 
@@ -71,14 +73,14 @@ const serverAsideMenuItems = computed<RouterMenuItem[]>(() => {
   const items: RouterMenuItem[] = []
 
   items.push({
-    label: 'Browser Channels',
+    label: t('browser_channels'),
     icon: 'ti ti-list-search',
     to: { name: 'server_channels' },
   })
 
   if (server.value?.creatorId === auth.user!.id) {
     items.push({
-      label: 'Members',
+      label: t('members'),
       icon: 'ti ti-users',
       to: { name: 'server_members' },
     })
@@ -116,9 +118,9 @@ const resolvedChannels = computed<ChannelTree[]>(() => {
 
 const serverMainMenuItems = computed<MenuItem[]>(() => {
   return [
-    { label: 'Server Settings', icon: 'ti ti-settings' },
-    { label: 'Create Channel', icon: 'ti ti-circle-plus' },
-    { label: 'Create Category', icon: 'ti ti-folder-plus' },
+    { label: t('server_settings'), icon: 'ti ti-settings' },
+    { label: t('create_channel'), icon: 'ti ti-circle-plus' },
+    { label: t('create_category'), icon: 'ti ti-folder-plus' },
   ]
 })
 

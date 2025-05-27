@@ -24,8 +24,7 @@
               <div class="text-3xl font-bold">{{ dmSession.userB.displayName }}</div>
               <div class="text-2xl">{{ dmSession.userB.username }}</div>
               <div>
-                This is the beginning of your direct message history with
-                <span class="font-bold">{{ dmSession.userB.displayName }}</span>
+                {{ $t('start_message_with_somebody', [dmSession.userB.displayName]) }}
               </div>
             </li>
             <MessageSkeleton v-else />
@@ -78,13 +77,13 @@
             class="rounded-border border border-content mx-5 mt-2 p-2 bg-surface-50 dark:bg-surface-700"
           >
             <div v-if="dmSession.userB.introduction" class="flex flex-col">
-              <div class="text-muted-color">Introduction</div>
+              <div class="text-muted-color">{{ $t('introduction') }}</div>
               <div>
                 <MarkdownBlock :text="dmSession.userB.introduction" inline />
               </div>
             </div>
             <div class="flex flex-col">
-              <div class="text-muted-color">Member Since</div>
+              <div class="text-muted-color">{{ $t('member_since') }}</div>
               <div class="text-base">
                 {{ dayjs.utc(dmSession.userB.createdAt).tz().format('LL') }}
               </div>
@@ -121,6 +120,7 @@ import {
   nextTick,
   onMounted,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useSocketIO } from '@/stores/socket'
 import { MESSAGE_PER_PAGE } from '@/constants'
@@ -132,6 +132,7 @@ const { dmSessions, dmMessages, mainTitleText } = inject<AppGlobalContext>('OC')
 
 const route = useRoute()
 const ws = useSocketIO()
+const { t } = useI18n()
 
 const dmSessionId = Number(route.params.dmSessionId)
 const dmMessageId = Number(route.params.dmMessageId)
@@ -314,7 +315,7 @@ const dayFirstMessageIdDateMap = computed(() => {
 })
 
 const chatInputPlaceholder = computed(() => {
-  return `Message @${dmSession.value?.userB.displayName}`
+  return t('message_to_somebody', [dmSession.value?.userB.displayName])
 })
 
 if (dmSession && !dmMessages.value[dmSessionId]) {
@@ -337,7 +338,7 @@ onActivated(() => {
   chatInput.value?.textarea?.focus()
 
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
-  mainTitleText.value = 'Direct Messages'
+  mainTitleText.value = t('direct_messages')
 
   ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
 })

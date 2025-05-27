@@ -11,6 +11,7 @@ import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import ToastService from 'primevue/toastservice'
+import i18n from './i18n'
 
 import App from './App.vue'
 import router from './router'
@@ -34,5 +35,6 @@ app.use(PrimeVue, {
   },
 })
 app.use(ToastService)
+app.use(i18n)
 
 app.mount(document.body)

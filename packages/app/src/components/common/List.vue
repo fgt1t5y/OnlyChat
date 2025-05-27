@@ -28,7 +28,7 @@ defineSlots<{
   tail: () => void
 }>()
 
-const props = defineProps<{
+const { items = [] } = defineProps<{
   items: T[]
 }>()
 

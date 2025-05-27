@@ -36,8 +36,8 @@
             size="large"
             severity="secondary"
             rounded
-            title="Settings"
-            aria-label="Settings"
+            :title="$t('page.settings')"
+            :aria-label="$t('page.settings')"
             @click="$router.push({ name: 'settings' })"
           />
         </section>

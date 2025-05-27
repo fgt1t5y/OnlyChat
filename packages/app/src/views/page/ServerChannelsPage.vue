@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <PageTitle title="Browser Channels" icon="ti ti-list-search" />
+    <PageTitle icon="ti ti-list-search" :title="$t('browser_channels')" />
     <form class="p-2 mb-5">
       <IconField>
         <InputText placeholder="Search Channels" fluid />
@@ -9,7 +9,7 @@
     </form>
     <div class="p-2">
       <div v-if="uncategorizedChannels.length" class="router-Menu">
-        <div class="text-muted-color mx-2">Uncategorized</div>
+        <div class="text-muted-color mx-2">{{ $t('uncategorized') }}</div>
         <RouterLink
           v-for="channel in uncategorizedChannels"
           class="router-Menu-Item"

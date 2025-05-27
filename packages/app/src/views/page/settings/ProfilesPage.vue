@@ -1,12 +1,12 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <h1>Profiles</h1>
+      <h1>{{ $t('settings.profiles') }}</h1>
       <div v-if="auth.userShadow" class="flex gap-6">
         <div class="grow">
           <div class="flex flex-col gap-2">
             <label class="flex flex-col gap-2">
-              <div>Display Name</div>
+              <div>{{ $t('display_name') }}</div>
               <InputText
                 v-model="auth.userShadow.displayName"
                 name="displayName"
@@ -15,30 +15,30 @@
             </label>
             <Divider />
             <div class="flex flex-col gap-2">
-              <div>Avatar</div>
+              <div>{{ $t('avatar') }}</div>
               <div class="flex gap-2">
                 <Button
-                  label="Change Avatar"
                   :disabled="avatarUploading"
+                  :label="$t('change_avatar')"
                   @click="showChangeAvatarModel = true"
                 />
                 <Button
-                  label="Remove Avatar"
-                  :disabled="avatarUploading"
                   variant="text"
+                  :disabled="avatarUploading"
+                  :label="$t('remove_avatar')"
                   @click="removeAvatar"
                 />
               </div>
             </div>
             <Divider />
             <div class="flex flex-col gap-2">
-              <div>Banner Color</div>
+              <div>{{ $t('banner_color') }}</div>
               <ColorPicker v-model="auth.userShadow.bannerColor" />
             </div>
             <Divider />
             <label class="flex flex-col gap-2">
-              <div>Introduction</div>
-              <div>You can use markdown and links if you’d like.</div>
+              <div>{{ $t('introduction') }}</div>
+              <div>{{ $t('markdown_supported_tip') }}</div>
               <Textarea
                 v-model="auth.userShadow.introduction"
                 name="introduction"
@@ -49,7 +49,7 @@
           </div>
         </div>
         <div style="max-width: 348px" class="w-full">
-          <div>Preview</div>
+          <div class="mb-2">{{ $t('preview') }}</div>
           <div class="relative rounded-border overflow-hidden bg-surface-200 dark:bg-surface-800">
             <div
               :style="{ backgroundColor: `#${auth.userShadow.bannerColor}` }"
@@ -73,16 +73,16 @@
               <MarkdownBlock :text="auth.userShadow.introduction" inline />
             </div>
             <div class="flex flex-col m-3">
-              <Button label="Example Button" severity="secondary" variant="outlined" />
+              <Button severity="secondary" variant="outlined" :label="$t('example_button')" />
             </div>
           </div>
         </div>
       </div>
       <Divider />
       <div class="flex gap-2 justify-end">
-        <Button label="Reset" variant="text" :disabled="!hasChange" @click="resetChanges" />
+        <Button variant="text" :disabled="!hasChange" :label="$t('reset')" @click="resetChanges" />
         <Button
-          label="Save Changes"
+          :label="$t('save_changes')"
           :disabled="!hasChange"
           :loading="avatarUploading || profileUpdating"
           @click="saveChanges"
@@ -93,9 +93,9 @@
   <Dialog
     v-model:visible="showChangeAvatarModel"
     class="w-[400px]"
-    header="Change Avatar"
-    :draggable="false"
     modal
+    :header="$t('change_avatar')"
+    :draggable="false"
   >
     <div v-if="avatarFile && !imageCropperReady">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
@@ -111,12 +111,12 @@
       </div>
       <div class="flex justify-end gap-2">
         <Button
-          label="Cancel"
           severity="secondary"
           variant="outlined"
+          :label="$t('cancel')"
           @click="onImageCropperCancel"
         />
-        <Button label="Crop and Apply" @click="onAvatarApplied" />
+        <Button :label="$t('crop_and_apply')" @click="onAvatarApplied" />
       </div>
     </div>
     <div v-show="!avatarFile" class="flex flex-col gap-2">
@@ -124,11 +124,11 @@
         ref="avatarFileDropZone"
         class="flex items-center justify-center h-[120px] border border-dashed border-content rounded-border"
       >
-        <div class="text-muted-color">Drop a image here</div>
+        <div class="text-muted-color">{{ $t('drop_an_image_here') }}</div>
       </div>
-      <div class="text-center text-muted-color">OR</div>
+      <div class="text-center text-muted-color">{{ $t('or') }}</div>
       <div class="flex flex-col">
-        <Button label="Select an Image" @click="avatarFileInput?.click()" />
+        <Button :label="$t('action.pick_image')" @click="avatarFileInput?.click()" />
       </div>
       <input
         ref="avatarFileInput"

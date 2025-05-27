@@ -11,15 +11,17 @@
             }"
           >
             <template v-slot="{ field, state }">
-              <label class="text-muted-color" :for="field.name">Username</label>
-              <InputText
-                :name="field.name"
-                :id="field.name"
-                :model-value="field.state.value"
-                autofocus
-                @input="field.handleChange(($event.target as HTMLInputElement).value)"
-                @blur="field.handleBlur"
-              />
+              <label class="text-muted-color">
+                <div>{{ $t('username') }}</div>
+                <InputText
+                  :name="field.name"
+                  :model-value="field.state.value"
+                  autofocus
+                  fluid
+                  @input="field.handleChange(($event.target as HTMLInputElement).value)"
+                  @blur="field.handleBlur"
+                />
+              </label>
               <FieldError :state="state" />
             </template>
           </Field>
@@ -37,24 +39,30 @@
             }"
           >
             <template v-slot="{ field, state }">
-              <label class="text-muted-color" :for="field.name">Password</label>
-              <Password
-                :name="field.name"
-                :id="field.name"
-                :value="field.state.value"
-                :feedback="false"
-                toggleMask
-                fluid
-                @input="field.handleChange(($event.target as HTMLInputElement).value)"
-                @blur="field.handleBlur"
-              />
+              <label class="text-muted-color">
+                <div>{{ $t('password') }}</div>
+                <Password
+                  :name="field.name"
+                  :value="field.state.value"
+                  :feedback="false"
+                  toggleMask
+                  fluid
+                  @input="field.handleChange(($event.target as HTMLInputElement).value)"
+                  @blur="field.handleBlur"
+                />
+              </label>
               <FieldError :state="state" />
             </template>
           </Field>
         </div>
         <Subscribe>
           <template v-slot="{ canSubmit }">
-            <Button label="Login" type="submit" :loading="loading" :disabled="!canSubmit" />
+            <Button
+              type="submit"
+              :label="$t('action.login')"
+              :loading="loading"
+              :disabled="!canSubmit"
+            />
           </template>
         </Subscribe>
         <div v-if="error?.message" class="text-red-500">{{ error.message }}</div>

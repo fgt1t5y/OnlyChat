@@ -1,10 +1,15 @@
 <template>
   <Page>
     <div class="w-setting-page mx-auto">
-      <h1>Log Out</h1>
+      <h1>{{ $t('action.logout') }}</h1>
       <div class="flex flex-col items-center">
-        <p>Are you sure log out now?</p>
-        <Button icon="ti ti-logout" label="Logout Now" severity="danger" @click="logout" />
+        <p>{{ $t('logout_ask') }}</p>
+        <Button
+          icon="ti ti-logout"
+          severity="danger"
+          :label="$t('action.logout')"
+          @click="logout"
+        />
       </div>
     </div>
   </Page>

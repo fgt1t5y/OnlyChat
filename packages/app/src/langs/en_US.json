@@ -1,0 +1,102 @@
+{
+  "loading": "Loading",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "auto": "AUTO",
+  "search": "Search",
+  "or": "OR",
+
+  "email": "E-mail",
+  "display_name": "Display Name",
+  "username": "Username",
+  "password": "Password",
+  "role": "Roles",
+
+  "activity_now": "Activity Now",
+
+  "friends": "Friends",
+  "friend_requests": "Friend Requests",
+  "send_friend_request": "Send Request",
+  "received_friend_requests": "Received {0} request(s)",
+  "sent_friend_requests": "Sent {0} request(s)",
+  "accepted": "Accepted",
+  "sent": "Sent",
+  "add_friend": "Add Friend",
+  "direct_messages": "Direct Messages",
+  "search_friends": "Search Friends",
+  "search_friends_placeholder": "Search username here...",
+  "no_friend_yet": "No friend yet",
+
+  "edit_user_profile": "Edit User Profile",
+
+  "password_and_authentication": "Password and Authentication",
+  "change_password": "Change Password",
+
+  "account_removal": "Account Removal",
+  "disable_account": "Disable Account",
+  "delete_account": "Delete Account",
+  "disable_account_tip": "Disabling your account means you can recover it at any time after taking this action.",
+
+  "avatar": "Avatar",
+  "change_avatar": "Change Avatar",
+  "remove_avatar": "Remove Avatar",
+  "drop_an_image_here": "Drop an image here",
+  "crop_and_apply": "Crop and Apply",
+
+  "banner_color": "Banner Color",
+
+  "introduction": "Introduction",
+  "markdown_supported_tip": "You can use markdown and links if you’d like.",
+  "example_button": "Example Button",
+
+  "member_since": "Member Since",
+  "joined_since": "Joined Since",
+
+  "theme": "Theme",
+  "default_theme": "Default Theme",
+  "adjust_theme_tip": "Adjust the color of the interface for better visibility.",
+
+  "logout_ask": "Are you sure logoout now?",
+
+  "save_changes": "Save Changes",
+  "reset": "Reset",
+  "preview": "Preview",
+  "handlers": "Handlers",
+  "sort": "Sort",
+
+  "enter_keyword": "Enter something...",
+
+  "message_to_somebody": "Message {0}",
+  "start_message_with_somebody": "Start to message with {0}",
+
+  "server": "Server",
+  "server_settings": "Server Settings",
+  "create_channel": "Create Channle",
+  "create_category": "Create Category",
+  "browser_channels": "Browser Channels",
+  "members": "Members",
+  "search_members": "Search Members",
+  "member_name": "Name",
+  "uncategorized": "Uncategorized",
+
+  "page": {
+    "home": "Home",
+    "settings": "Settings"
+  },
+
+  "action": {
+    "logout": "Logout",
+    "login": "Login",
+
+    "pick_image": "Pick Image"
+  },
+
+  "settings": {
+    "group_user_settings": "User Settings",
+    "my_account": "My Account",
+    "profiles": "Profiles",
+
+    "group_app_settings": "App Settings",
+    "appearance": "Appearance"
+  }
+}
