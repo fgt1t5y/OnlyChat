@@ -85,6 +85,7 @@
   },
 
   "action": {
+    "edit": "Edit",
     "logout": "Logout",
     "login": "Login",
 

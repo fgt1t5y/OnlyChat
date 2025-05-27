@@ -85,6 +85,7 @@
   },
 
   "action": {
+    "edit": "编辑",
     "logout": "退出登录",
     "login": "登录",
 
