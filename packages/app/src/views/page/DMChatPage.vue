@@ -36,7 +36,7 @@
               v-if="dayFirstMessageIdDateMap.has(item.id)"
               :text="dayFirstMessageIdDateMap.get(item.id)!"
             />
-            <DMMessageItem
+            <MessageItem
               :item="item"
               :is-head="item.authorId !== prev?.authorId || dayFirstMessageIdDateMap.has(item.id)"
               :key="item.id"
@@ -101,9 +101,9 @@ import Page from '@/components/common/Page.vue'
 import List from '@/components/common/List.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
-import ChatInput from '@/components/chat/ChatInput.vue'
+import ChatInput from '@/components/input/ChatInput.vue'
 import ToggleButton from '@/components/button/ToggleButton.vue'
-import DMMessageItem from '@/components/item/DMMessageItem.vue'
+import MessageItem from '@/components/item/MessageItem.vue'
 import TextDivider from '@/components/common/TextDivider.vue'
 import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import MessageSkeleton from '@/components/skeleton/MessageSkeleton.vue'
