@@ -4,41 +4,15 @@
     <form @submit.prevent.stop="handleSearch" class="p-2">
       <InputGroup>
         <InputText
-          v-model="searchKeyword"
+          v-model="receiverUsername"
           autofocus
           fluid
           required
           :placeholder="$t('search_friends_placeholder')"
         />
-        <Button type="submit" icon="ti ti-search" :loading="finding" :label="$t('search')" />
+        <Button type="submit" icon="ti ti-search" :loading="loading" :label="$t('search')" />
       </InputGroup>
     </form>
-    <div v-if="foundItems" class="p-2">
-      <div class="text-muted-color px-2">Hitted {{ foundItems.length }} user(s)</div>
-      <ul v-if="foundItems.length">
-        <li v-for="item in foundItems" class="list-Item flex items-center gap-2">
-          <UserAvatar :user="item" />
-          <div class="grow">
-            <div class="font-bold">{{ item.displayName }}</div>
-            <div class="text-muted-color">@{{ item.username }}</div>
-          </div>
-          <div v-if="isFriend(item)"></div>
-          <Button
-            v-else-if="wasRequested(item)"
-            severity="secondary"
-            disabled
-            :label="$t('sent')"
-          />
-          <Button
-            v-else
-            severity="secondary"
-            :label="$t('send_friend_request')"
-            @click="handleSendFriendRequest(item.id)"
-          />
-        </li>
-      </ul>
-    </div>
-    <SearchPlaceholder v-else />
   </Page>
 </template>
 
@@ -46,11 +20,9 @@
 import * as apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
-import UserAvatar from '@/components/avatar/UserAvatar.vue'
-import SearchPlaceholder from '@/components/placeholder/SearchPlaceholder.vue'
 import { useRequest } from 'alova/client'
 import { useSocketIO } from '@/stores/socket'
-import { Button, InputGroup, InputText } from 'primevue'
+import { Button, InputGroup, InputText, useToast } from 'primevue'
 import { inject, onActivated, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -59,30 +31,74 @@ import type { AppGlobalContext, User } from '@/types'
 const { sentFriendRequests, friends, mainTitleText } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
+const toast = useToast()
 const { t } = useI18n()
 
-const searchKeyword = ref<string>('')
+const receiverUsername = ref<string>('')
 
 const {
-  data: foundItems,
-  loading: finding,
-  send: find,
-} = useRequest(apis.findUser, { immediate: false })
+  data: user,
+  loading,
+  send: checkUser,
+} = useRequest(apis.getUser, { immediate: false })
+  .onSuccess(() => {
+    if (!user.value || isFriend(user.value.username) || wasRequested(user.value.username)) {
+      return
+    }
+
+    handleSendFriendRequest(user.value.id)
+
+    toast.add({
+      severity: 'success',
+      detail: t('sent'),
+      life: 3000,
+    })
+  })
+  .onError(() => {
+    toast.add({
+      severity: 'error',
+      summary: t('searching_user_not_found'),
+      life: 3000,
+    })
+  })
 
 const handleSearch = () => {
-  if (!searchKeyword) {
+  if (!receiverUsername) {
     return
   }
 
-  find(searchKeyword.value.trim())
+  if (isFriend(receiverUsername.value)) {
+    toast.add({
+      severity: 'error',
+      summary: t('error'),
+      detail: t('friend_already_exists'),
+      life: 3000,
+    })
+
+    return
+  }
+
+  if (wasRequested(receiverUsername.value)) {
+    toast.add({
+      severity: 'success',
+      detail: t('sent'),
+      life: 3000,
+    })
+
+    return
+  }
+
+  checkUser(receiverUsername.value.trim())
 }
 
-const isFriend = (receiver: User) => {
-  return friends.value.some((friend) => friend.id === receiver.id)
+const isFriend = (username: string) => {
+  return friends.value.some((friend) => friend.username === username)
 }
 
-const wasRequested = (receiver: User) => {
-  return sentFriendRequests.value.some((friendRequest) => friendRequest.receiverId === receiver.id)
+const wasRequested = (receiverUsername: string) => {
+  return sentFriendRequests.value.some(
+    (friendRequest) => friendRequest.receiver.username === receiverUsername,
+  )
 }
 
 const handleSendFriendRequest = (receiverId: number) => {

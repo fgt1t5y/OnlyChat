@@ -86,6 +86,6 @@ export const getServerMembers = (serverId: number) => {
 }
 
 // #region User API
-export const findUser = (searchKeyword: string) => {
-  return alovaInstance.Get<User[]>('/user/find', { params: { searchKeyword } })
+export const getUser = (username: string) => {
+  return alovaInstance.Get<User>('/user', { params: { username } })
 }

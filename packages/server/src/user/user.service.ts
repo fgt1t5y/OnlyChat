@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable()
@@ -10,15 +10,13 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findBy(searchKeyword: string): Promise<User[]> {
-    if (!searchKeyword) {
-      throw new BadRequestException('Search keyword is required');
+  async findBy(username: string): Promise<User> {
+    if (!username) {
+      throw new BadRequestException('Username is required');
     }
 
-    return await this.userRepository.find({
-      where: {
-        username: Like(`%${searchKeyword}%`),
-      },
+    return await this.userRepository.findOneBy({
+      username: username,
     });
   }
 

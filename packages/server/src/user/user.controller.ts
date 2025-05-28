@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  NotFoundException,
   Post,
   Query,
   UploadedFile,
@@ -17,10 +18,16 @@ import { JwtPayload } from 'src/common/types';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('find')
+  @Get()
   @UseGuards(JwtAuthGuard)
-  async findUser(@Query('searchKeyword') searchKeyword: string) {
-    return this.userService.findBy(searchKeyword);
+  async findUser(@Query('username') username: string) {
+    const user = await this.userService.findBy(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
   }
 
   @Post('avatar')

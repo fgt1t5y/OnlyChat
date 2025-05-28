@@ -1,4 +1,4 @@
-import { Logger, UseFilters } from '@nestjs/common';
+import { BadRequestException, Logger, UseFilters } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -127,6 +127,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() { receiverId }: SendFriendRequestDto,
     @ConnectedSocket() socket: Socket,
   ): Promise<WsResponse> {
+    const existingFrienRequest = await this.friendRequestService.findOne(
+      user.id,
+      receiverId,
+    );
+
+    if (existingFrienRequest) {
+      throw new BadRequestException(
+        'Friend request already exists between these users.',
+      );
+    }
+
     const friendRequest = await this.friendRequestService.create(
       user.id,
       receiverId,

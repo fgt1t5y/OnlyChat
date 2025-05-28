@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  BadRequestException,
+} from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
 import { SendFriendRequestDto, AcceptFriendRequestDto } from './friend.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
@@ -15,24 +22,23 @@ export class FriendRequestController {
     return await this.friendRequestService.findAll(user.id);
   }
 
-  // @Get('received')
-  // @UseGuards(JwtAuthGuard)
-  // async findAllReceived(@CurrentUser() user: JwtPayload) {
-  //   return await this.friendRequestService.findAllReceivedBy(user.id);
-  // }
-
-  // @Get('sent')
-  // @UseGuards(JwtAuthGuard)
-  // async findAllSent(@CurrentUser() user: JwtPayload) {
-  //   return await this.friendRequestService.findAllSentBy(user.id);
-  // }
-
   @Post('send')
   @UseGuards(JwtAuthGuard)
-  sendRequest(
+  async sendRequest(
     @CurrentUser() user: JwtPayload,
     @Body() sendFriendRequestDto: SendFriendRequestDto,
   ) {
+    const existingFrienRequest = await this.friendRequestService.findOne(
+      user.id,
+      sendFriendRequestDto.receiverId,
+    );
+
+    if (existingFrienRequest) {
+      throw new BadRequestException(
+        'Friend request already exists between these users.',
+      );
+    }
+
     return this.friendRequestService.create(
       user.id,
       sendFriendRequestDto.receiverId,

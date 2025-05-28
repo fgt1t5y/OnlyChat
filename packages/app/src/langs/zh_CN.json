@@ -5,6 +5,7 @@
   "auto": "自动",
   "search": "搜索",
   "or": "或",
+  "error": "错误",
 
   "email": "电子邮箱",
   "display_name": "昵称",
@@ -100,5 +101,8 @@
 
     "group_app_settings": "APP设置",
     "appearance": "外观"
-  }
+  },
+
+  "searching_user_not_found": "你搜索的用户不存在。",
+  "friend_already_exists": "你已经是对方的好友了。"
 }

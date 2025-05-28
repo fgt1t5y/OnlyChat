@@ -11,10 +11,23 @@ export class FriendRequestService {
     private readonly friendRequestRepository: Repository<FriendRequest>,
   ) {}
 
-  async findOne(friendRequestId: number) {
+  async findOneById(friendRequestId: number) {
     return await this.friendRequestRepository.findOne({
       where: {
         id: friendRequestId,
+      },
+    });
+  }
+
+  async findOne(senderId: number, receiverId: number) {
+    return await this.friendRequestRepository.findOne({
+      relations: {
+        receiver: true,
+        sender: true,
+      },
+      where: {
+        senderId: senderId,
+        receiverId: receiverId,
       },
     });
   }
@@ -29,28 +42,6 @@ export class FriendRequestService {
       })
       .getMany();
   }
-
-  // async findAllReceivedBy(receiverId: number): Promise<FriendRequest[]> {
-  //   return await this.friendRequestRepository.find({
-  //     relations: {
-  //       sender: true,
-  //     },
-  //     where: {
-  //       receiverId: receiverId,
-  //     },
-  //   });
-  // }
-
-  // async findAllSentBy(senderId: number): Promise<FriendRequest[]> {
-  //   return await this.friendRequestRepository.find({
-  //     relations: {
-  //       receiver: true,
-  //     },
-  //     where: {
-  //       senderId: senderId,
-  //     },
-  //   });
-  // }
 
   async create(senderId: number, receiverId: number): Promise<FriendRequest> {
     const friendRequest = new FriendRequest();
@@ -76,9 +67,13 @@ export class FriendRequestService {
     userId: number,
     friendRequestId: number,
   ): Promise<FriendRequest> {
-    const friendRequest = await this.findOne(friendRequestId);
+    const friendRequest = await this.findOneById(friendRequestId);
 
-    if (!friendRequest || friendRequest.receiverId !== userId) {
+    if (
+      !friendRequest ||
+      friendRequest.accepted ||
+      friendRequest.receiverId !== userId
+    ) {
       throw new WsException('Friend request not found.');
     }
 
@@ -90,7 +85,7 @@ export class FriendRequestService {
   }
 
   async cancel(userId: number, friendRequestId: number) {
-    const friendRequest = await this.findOne(friendRequestId);
+    const friendRequest = await this.findOneById(friendRequestId);
 
     if (!friendRequest || friendRequest.senderId !== userId) {
       throw new WsException('Friend request not found.');

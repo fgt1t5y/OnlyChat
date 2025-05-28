@@ -100,5 +100,8 @@
 
     "group_app_settings": "App Settings",
     "appearance": "Appearance"
-  }
+  },
+
+  "searching_user_not_found": "The user you searched for does not found.",
+  "friend_already_exists": "You are already friends with the other person."
 }
