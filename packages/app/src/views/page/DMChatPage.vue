@@ -188,7 +188,6 @@ const loadInitialMessages = async () => {
 
   fetching.value = false
 
-  // When message list is empty.
   if (messages.length) {
     messages.reverse()
 
@@ -271,20 +270,22 @@ const handleSendDMMessage = () => {
   ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: messageContent.value })
 }
 
-const onDMMessageSuccessfullySent = (dmMessage: DMMessage) => {
+const onDMMessageSent = (dmMessage: DMMessage) => {
   console.log('You sent this dm message', dmMessage)
 
-  if (dmMessages.value[dmMessage.sessionId]) {
-    dmMessages.value[dmMessage.sessionId].push(dmMessage)
+  if (!dmMessages.value[dmMessage.sessionId]) {
+    dmMessages.value[dmMessage.sessionId] = []
   }
 
-  messageContent.value = ''
-
+  dmMessages.value[dmMessage.sessionId].push(dmMessage)
   chatInput.value?.textarea?.focus()
 
   if (reachedTail.value) {
     messageContainer.value?.scrollToBottom()
   }
+
+  dmSession.value!.lastMessageId = dmMessage.id
+  messageContent.value = ''
 }
 
 const onMessageContainerScroll = () => {
@@ -340,10 +341,10 @@ onActivated(() => {
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
   mainTitleText.value = t('direct_messages')
 
-  ws.socket.on('dm_message.send.success', onDMMessageSuccessfullySent)
+  ws.socket.on('dm_message.send.success', onDMMessageSent)
 })
 
 onDeactivated(() => {
-  ws.socket.off('dm_message.send.success', onDMMessageSuccessfullySent)
+  ws.socket.off('dm_message.send.success', onDMMessageSent)
 })
 </script>

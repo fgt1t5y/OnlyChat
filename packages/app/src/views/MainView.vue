@@ -132,18 +132,21 @@ provide<AppGlobalContext>('OC', {
 const onDMMessageReceived = (dmMessage: DMMessage) => {
   console.log('You received this dm message', dmMessage)
 
-  const dmSessionId = dmSessions.value.findIndex((dmSession) => {
-    console.log(dmSession.userBId, dmMessage.authorId)
-
+  const dmSession = dmSessions.value.find((dmSession) => {
     return dmSession.userBId === dmMessage.authorId
   })
 
-  if (dmSessionId !== -1) {
-    dmMessages.value[dmSessions.value[dmSessionId].id].push(dmMessage)
+  if (dmSession) {
+    if (!dmMessages.value[dmSession.id]) {
+      dmMessages.value[dmSession.id] = []
+    }
+
+    dmMessages.value[dmSession.id].push(dmMessage)
+    dmSession.lastMessageId = dmMessage.id
   }
 }
 
-const onFriendRequestSuccessfullySent = (friendRequest: FriendRequest) => {
+const onFriendRequestSent = (friendRequest: FriendRequest) => {
   console.log('You sent this friend request', friendRequest)
 
   if (friendRequest) {
@@ -151,7 +154,7 @@ const onFriendRequestSuccessfullySent = (friendRequest: FriendRequest) => {
   }
 }
 
-const onFriendRequestReceivedByReceiver = (friendRequest: FriendRequest) => {
+const onFriendRequestReceived = (friendRequest: FriendRequest) => {
   console.log('You received this friend request', friendRequest)
 
   if (friendRequest) {
@@ -159,36 +162,28 @@ const onFriendRequestReceivedByReceiver = (friendRequest: FriendRequest) => {
   }
 }
 
-const onFriendRequestSuccessfullyAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {
+const onFriendRequestAccepted = ({ friendRequestId }: AcceptFriendRequestDto) => {
   console.log('You accepted this friend request', friendRequestId)
 
-  const friendRequestIndex = receivedFriendRequests.value.findIndex(
-    (item) => item.id === friendRequestId,
-  )
+  const friendRequest = receivedFriendRequests.value.find((item) => item.id === friendRequestId)
 
-  if (friendRequestIndex !== -1) {
-    receivedFriendRequests.value[friendRequestIndex].accepted = true
+  if (friendRequest) {
+    friends.value.unshift(friendRequest.sender)
   }
-
-  friends.value.unshift(receivedFriendRequests.value[friendRequestIndex].sender)
 }
 
 const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequestDto) => {
   console.log('Receiver is accepted this friend request', friendRequestId)
 
-  const friendRequestIndex = sentFriendRequests.value.findIndex(
-    (item) => item.id === friendRequestId,
-  )
+  const friendRequest = sentFriendRequests.value.find((item) => item.id === friendRequestId)
 
-  if (friendRequestIndex !== -1) {
-    sentFriendRequests.value[friendRequestIndex].accepted = true
+  if (friendRequest) {
+    friends.value.unshift(friendRequest.receiver)
   }
-
-  friends.value.unshift(sentFriendRequests.value[friendRequestIndex].receiver)
 }
 
-const onFriendRequestSuccessfullyCanceled = ({ friendRequestId }: CancelFriendRequestDto) => {
-  console.log('Canceled this friend request', friendRequestId)
+const onFriendRequestCanceled = ({ friendRequestId }: CancelFriendRequestDto) => {
+  console.log('You canceled this friend request', friendRequestId)
 
   const friendRequestIndex = sentFriendRequests.value.findIndex(
     (item) => item.id === friendRequestId,
@@ -212,10 +207,10 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: CancelFriendReques
 }
 
 ws.socket.on('dm_message.received', onDMMessageReceived)
-ws.socket.on('friend_request.send.success', onFriendRequestSuccessfullySent)
-ws.socket.on('friend_request.received', onFriendRequestReceivedByReceiver)
-ws.socket.on('friend_request.accept.success', onFriendRequestSuccessfullyAccepted)
+ws.socket.on('friend_request.send.success', onFriendRequestSent)
+ws.socket.on('friend_request.received', onFriendRequestReceived)
+ws.socket.on('friend_request.accept.success', onFriendRequestAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
-ws.socket.on('friend_request.cancel.success', onFriendRequestSuccessfullyCanceled)
+ws.socket.on('friend_request.cancel.success', onFriendRequestCanceled)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
 </script>
