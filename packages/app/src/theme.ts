@@ -23,6 +23,7 @@ const semantic: AuraBaseTokenSections.Semantic = {
       },
     },
   },
+  transitionDuration: 'none',
 }
 
 const OnlyChat = definePreset(Aura, {
