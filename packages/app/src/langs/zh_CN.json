@@ -18,7 +18,7 @@
   "friends": "好友",
   "friend_requests": "好友请求",
   "send_friend_request": "发送好友请求",
-  "received_friend_requests": "收到 {0} 个好友请求",
+  "received_friend_requests": "已收到 {0} 个好友请求",
   "sent_friend_requests": "已发送 {0} 个好友请求",
   "accepted": "已接受",
   "sent": "已发送",
@@ -26,6 +26,7 @@
   "direct_messages": "私信",
   "search_friends": "搜索好友",
   "search_friends_placeholder": "搜索用户名来搜索好友。",
+  "add_friends_placeholder": "输入用户名向对方发送好友请求。",
   "no_friend_yet": "还没有好友",
 
   "edit_user_profile": "编辑用户个人资料",

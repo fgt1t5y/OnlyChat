@@ -25,6 +25,7 @@
   "direct_messages": "Direct Messages",
   "search_friends": "Search Friends",
   "search_friends_placeholder": "Search username here...",
+  "add_friends_placeholder": "Enter username to send a friend request.",
   "no_friend_yet": "No friend yet",
 
   "edit_user_profile": "Edit User Profile",

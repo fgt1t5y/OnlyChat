@@ -8,9 +8,14 @@
           autofocus
           fluid
           required
-          :placeholder="$t('search_friends_placeholder')"
+          :placeholder="$t('add_friends_placeholder')"
         />
-        <Button type="submit" icon="ti ti-search" :loading="loading" :label="$t('search')" />
+        <Button
+          type="submit"
+          icon="ti ti-send"
+          :loading="loading"
+          :label="$t('send_friend_request')"
+        />
       </InputGroup>
     </form>
   </Page>
@@ -26,9 +31,9 @@ import { Button, InputGroup, InputText, useToast } from 'primevue'
 import { inject, onActivated, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { AppGlobalContext, User } from '@/types'
+import type { AppGlobalContext } from '@/types'
 
-const { sentFriendRequests, friends, mainTitleText } = inject<AppGlobalContext>('OC')!
+const { sentFriendRequests, friends, mainTitleText, user } = inject<AppGlobalContext>('OC')!
 
 const ws = useSocketIO()
 const toast = useToast()
@@ -37,22 +42,28 @@ const { t } = useI18n()
 const receiverUsername = ref<string>('')
 
 const {
-  data: user,
+  data: receiver,
   loading,
   send: checkUser,
 } = useRequest(apis.getUser, { immediate: false })
   .onSuccess(() => {
-    if (!user.value || isFriend(user.value.username) || wasRequested(user.value.username)) {
+    if (
+      !receiver.value ||
+      isFriend(receiver.value.username) ||
+      wasRequested(receiver.value.username)
+    ) {
       return
     }
 
-    handleSendFriendRequest(user.value.id)
+    handleSendFriendRequest(receiver.value.id)
 
     toast.add({
       severity: 'success',
       detail: t('sent'),
       life: 3000,
     })
+
+    receiverUsername.value = ''
   })
   .onError(() => {
     toast.add({
@@ -63,7 +74,7 @@ const {
   })
 
 const handleSearch = () => {
-  if (!receiverUsername) {
+  if (!receiverUsername.value || receiverUsername.value === user.username) {
     return
   }
 

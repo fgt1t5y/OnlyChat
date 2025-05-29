@@ -118,7 +118,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .to(this.userSocketsRoom(dmSession.userBId))
       .emit('dm_message.received', dmMessage);
 
-    return { event: 'dm_message.send.success', data: dmMessage };
+    return { event: 'dm_message.send', data: dmMessage };
   }
 
   @SubscribeMessage('friend_request.send')
@@ -147,7 +147,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .to(this.userSocketsRoom(friendRequest.senderId))
       .emit('friend_request.received', friendRequest);
 
-    return { event: 'friend_request.send.success', data: friendRequest };
+    return { event: 'friend_request.send', data: friendRequest };
   }
 
   @SubscribeMessage('friend_request.accept')
@@ -171,7 +171,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('friend_request.accepted', acceptFriendRequestDto);
 
     return {
-      event: 'friend_request.accept.success',
+      event: 'friend_request.accept',
       data: acceptFriendRequestDto,
     };
   }
@@ -192,7 +192,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('friend_request.canceled', cancelFriendRequestDto);
 
     return {
-      event: 'friend_request.cancel.success',
+      event: 'friend_request.cancel',
       data: cancelFriendRequestDto,
     };
   }

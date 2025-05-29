@@ -148,6 +148,7 @@ export interface AppGlobalContext {
   dmSessions: Ref<DMSession[]>
   dmMessages: Ref<DMSessionIdMessagesMap>
   mainTitleText: Ref<string>
+  user: User
 
   unacceptFriendRequestCount?: ComputedRef<number>
 }

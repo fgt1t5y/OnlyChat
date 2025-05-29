@@ -267,7 +267,7 @@ const handleSendDMMessage = () => {
     return
   }
 
-  ws.emit('dm_message.send', { dmSessionId: dmSessionId, content: messageContent.value })
+  ws.emit('dm_message.send', { dmSessionId, content: messageContent.value })
 }
 
 const onDMMessageSent = (dmMessage: DMMessage) => {
@@ -341,10 +341,10 @@ onActivated(() => {
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
   mainTitleText.value = t('direct_messages')
 
-  ws.socket.on('dm_message.send.success', onDMMessageSent)
+  ws.socket.on('dm_message.send', onDMMessageSent)
 })
 
 onDeactivated(() => {
-  ws.socket.off('dm_message.send.success', onDMMessageSent)
+  ws.socket.off('dm_message.send', onDMMessageSent)
 })
 </script>

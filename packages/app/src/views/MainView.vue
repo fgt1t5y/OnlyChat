@@ -125,6 +125,7 @@ provide<AppGlobalContext>('OC', {
   dmSessions,
   dmMessages,
   mainTitleText,
+  user: auth.user!,
 
   unacceptFriendRequestCount,
 })
@@ -207,10 +208,10 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: CancelFriendReques
 }
 
 ws.socket.on('dm_message.received', onDMMessageReceived)
-ws.socket.on('friend_request.send.success', onFriendRequestSent)
+ws.socket.on('friend_request.send', onFriendRequestSent)
 ws.socket.on('friend_request.received', onFriendRequestReceived)
-ws.socket.on('friend_request.accept.success', onFriendRequestAccepted)
+ws.socket.on('friend_request.accept', onFriendRequestAccepted)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
-ws.socket.on('friend_request.cancel.success', onFriendRequestCanceled)
+ws.socket.on('friend_request.cancel', onFriendRequestCanceled)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
 </script>
