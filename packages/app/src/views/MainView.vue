@@ -61,7 +61,7 @@ import * as apis from '@/apis'
 import ServerAvatar from '@/components/avatar/ServerAvatar.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'
-import { useSocketIO } from '@/stores/socket'
+import { useSocketIO } from '@/stores/socket-io'
 import { Avatar, Button } from 'primevue'
 import { computed, provide, ref } from 'vue'
 

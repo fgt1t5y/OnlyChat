@@ -20,7 +20,7 @@ import Page from '@/components/common/Page.vue'
 import { Button } from 'primevue'
 import { useAuth } from '@/stores/auth'
 import { useRouter } from 'vue-router'
-import { useSocketIO } from '@/stores/socket'
+import { useSocketIO } from '@/stores/socket-io'
 
 const auth = useAuth()
 const ws = useSocketIO()

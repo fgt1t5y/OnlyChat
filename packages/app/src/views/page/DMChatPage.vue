@@ -122,7 +122,7 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { useSocketIO } from '@/stores/socket'
+import { useSocketIO } from '@/stores/socket-io'
 import { MESSAGE_PER_PAGE } from '@/constants'
 import { useStorage } from '@vueuse/core'
 

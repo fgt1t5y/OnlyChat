@@ -72,7 +72,7 @@ import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { inject, onActivated } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from 'primevue'
-import { useSocketIO } from '@/stores/socket'
+import { useSocketIO } from '@/stores/socket-io'
 
 import type { AppGlobalContext } from '@/types'
 
