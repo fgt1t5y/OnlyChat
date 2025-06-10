@@ -7,11 +7,11 @@ import { Server } from './entities';
 export class ServerService {
   constructor(
     @InjectRepository(Server)
-    private readonly serverMemberRepository: Repository<Server>,
+    private readonly serverRepository: Repository<Server>,
   ) {}
 
   async findById(serverId: number) {
-    return await this.serverMemberRepository.findOneBy({
+    return await this.serverRepository.findOneBy({
       id: serverId,
     });
   }

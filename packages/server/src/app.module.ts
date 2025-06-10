@@ -1,23 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/user.entity';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { Role } from './role/role.entity';
-import { RoleModule } from './role/role.module';
-import { PermissionModule } from './permission/permission.module';
-import { Permission } from './permission/permission.entity';
-import { ChatModule } from './chat/chat.module';
-import { FriendModule } from './friend/friend.module';
-import { FriendRequest, Friend } from './friend/entities';
-import { DMModule } from './dm/dm.module';
-import { DMMessage, DMSession } from './dm/entities';
-import { ServerModule } from './server/server.module';
-import { ChannelModule } from './channel/channel.module';
-import { ServerMember, Server, ServerRole } from './server/entities';
-import { Channel, ChannelMessage } from './channel/entities';
-import { AttachmentModule } from './attachment/attachment.module';
-import { Attachment } from './attachment/attachment.entity';
+// Modules
+import { AuthModule } from 'src/auth/auth.module';
+import { UserModule } from 'src/user/user.module';
+import { RoleModule } from 'src/role/role.module';
+import { PermissionModule } from 'src/permission/permission.module';
+import { FriendModule } from 'src/friend/friend.module';
+import { ChatModule } from 'src/chat/chat.module';
+import { DMModule } from 'src/dm/dm.module';
+import { ServerModule } from 'src/server/server.module';
+import { ChannelModule } from 'src/channel/channel.module';
+import { AttachmentModule } from 'src/attachment/attachment.module';
+// Entities
+import { User } from 'src/user/user.entity';
+import { Role } from 'src/role/role.entity';
+import { Permission } from 'src/permission/permission.entity';
+import { FriendRequest, Friend } from 'src/friend/entities';
+import { DMMessage, DMSession } from 'src/dm/entities';
+import { Server, ServerMember, ServerRole } from 'src/server/entities';
+import { Channel, ChannelMessage } from 'src/channel/entities';
+import { Attachment } from 'src/attachment/attachment.entity';
 
 @Module({
   imports: [
@@ -45,8 +47,8 @@ import { Attachment } from './attachment/attachment.entity';
       ],
       synchronize: true,
     }),
-    UserModule,
     AuthModule,
+    UserModule,
     RoleModule,
     PermissionModule,
     ChatModule,
