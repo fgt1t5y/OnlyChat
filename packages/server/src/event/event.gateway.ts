@@ -32,7 +32,7 @@ import { DMMessageService } from 'src/dm/dm-message.service';
   cors: { origin: '*' },
   transports: ['websocket'],
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class EventGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger('ChatGateway');
 
   constructor(
