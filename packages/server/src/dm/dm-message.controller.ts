@@ -96,7 +96,7 @@ export class DMMessageController {
     );
 
     this.eventGateway.broadcastToUser(
-      dmSession.userAId,
+      dmSession.userBId,
       'dm_message.received',
       dmMessage,
     );
