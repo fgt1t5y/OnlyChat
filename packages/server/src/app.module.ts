@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // Modules
 import { AuthModule } from 'src/auth/auth.module';
@@ -23,13 +24,16 @@ import { Attachment } from 'src/attachment/attachment.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
-      type: 'mariadb',
-      host: 'localhost',
-      port: 3307,
-      username: 'root',
-      password: 'lyghj456',
-      database: 'onlychat',
+      type: 'mysql',
+      host: process.env.DB_HOST || 'localhost',
+      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306,
+      username: process.env.DB_USER || 'root',
+      password: process.env.DB_PASS || 'root',
+      database: process.env.DB_NAME || 'anyform',
       entities: [
         User,
         Role,
@@ -45,7 +49,7 @@ import { Attachment } from 'src/attachment/attachment.entity';
         ChannelMessage,
         Attachment,
       ],
-      synchronize: true,
+      synchronize: process.env.DB_SYNC === 'true',
     }),
     AuthModule,
     UserModule,
