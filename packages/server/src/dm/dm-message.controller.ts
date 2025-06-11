@@ -1,15 +1,24 @@
-import { Controller, UseGuards, Get, Query, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Query,
+  Post,
+  Body,
+  BadRequestException,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { EventGateway } from 'src/event/event.gateway';
 import { DMMessageService } from './dm-message.service';
-import { CreateDMMessageDto, GetDMMessageDto } from './dm.dto';
 import { DMSessionService } from './dm-session.service';
-import { WsException } from '@nestjs/websockets';
+import { CreateDMMessageDto, GetDMMessageDto } from './dm.dto';
 
 @Controller('dm-messages')
 export class DMMessageController {
   constructor(
+    private readonly eventGateway: EventGateway,
     private readonly dmSessionService: DMSessionService,
     private readonly dmMessageService: DMMessageService,
   ) {}
@@ -61,14 +70,37 @@ export class DMMessageController {
   }
 
   @Post()
-  async createDMMessage(
+  @UseGuards(JwtAuthGuard)
+  async sendDMMessage(
     @CurrentUser() user: JwtPayload,
     @Body() { dmSessionId, content }: CreateDMMessageDto,
   ) {
     if (!content.trim()) {
-      throw new WsException('Content is required.');
+      throw new BadRequestException('Content is required.');
     }
 
-    return await this.dmMessageService.create(dmSessionId, user.id, content);
+    const dmSession = await this.dmSessionService.findById(dmSessionId);
+
+    const newDMMessage = await this.dmMessageService.create(
+      dmSessionId,
+      user.id,
+      content,
+    );
+
+    const dmMessage = await this.dmMessageService.findById(newDMMessage.id);
+
+    await this.dmSessionService.updateLastMessageId(
+      user.id,
+      dmSession.userBId,
+      dmMessage.id,
+    );
+
+    this.eventGateway.broadcastToUser(
+      dmSession.userAId,
+      'dm_message.received',
+      dmMessage,
+    );
+
+    return dmMessage;
   }
 }

@@ -109,7 +109,7 @@ import MarkdownBlock from '@/components/common/MarkdownBlock.vue'
 import MessageSkeleton from '@/components/skeleton/MessageSkeleton.vue'
 import IntersectionObserver from '@/components/common/IntersectionObserver.vue'
 import dayjs from 'dayjs'
-import _ from 'underscore'
+import { last } from 'underscore'
 import {
   computed,
   inject,
@@ -122,6 +122,7 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { useRequest } from 'alova/client'
 import { useSocketIO } from '@/stores/socket-io'
 import { MESSAGE_PER_PAGE } from '@/constants'
 import { useStorage } from '@vueuse/core'
@@ -142,6 +143,7 @@ const showUserProfilePanel = useStorage('showUserProfilePanel', true)
 
 const messageContainer = useTemplateRef('messageContainer')
 const chatInput = useTemplateRef('chatInput')
+
 const dmSession = ref<DMSession | undefined>(
   dmSessions.value.find((dmSession) => dmSession.id === dmSessionId),
 )
@@ -150,6 +152,15 @@ const reachedHead = ref<boolean>(true)
 const reachedTail = ref<boolean>(true)
 const fetching = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
+
+const {
+  data: message,
+  send: sendMessage,
+} = useRequest(apis.sendDMMessage, {
+  immediate: false,
+}).onSuccess(() => {
+  onDMMessageSent(message.value)
+})
 
 const scrollToSpecificMessage = (messageId: number, highlight: boolean = false) => {
   const messageElement = document.getElementById(`message-Item-${messageId}`)
@@ -165,26 +176,22 @@ const scrollToSpecificMessage = (messageId: number, highlight: boolean = false) 
   }
 }
 
-const fetchInitialMessages = async () => {
+const loadInitialMessages = async () => {
   if (!dmSession.value?.lastMessageId) {
     return []
   }
 
   if (dmMessageId) {
-    return await apis.getDmMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
+    return await apis.getDMMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
   }
 
-  return await apis.getDmMessagesBefore(
+  fetching.value = true
+
+  let messages = await apis.getDMMessagesBefore(
     dmSessionId,
     dmSession.value!.lastMessageId,
     MESSAGE_PER_PAGE,
   )
-}
-
-const loadInitialMessages = async () => {
-  fetching.value = true
-
-  let messages = await fetchInitialMessages()
 
   fetching.value = false
 
@@ -193,7 +200,7 @@ const loadInitialMessages = async () => {
 
     if (messages.length === MESSAGE_PER_PAGE) {
       reachedHead.value = false
-      reachedTail.value = messages[messages.length - 1].id === dmSession.value?.lastMessageId
+      reachedTail.value = last(messages)!.id === dmSession.value?.lastMessageId
     }
   }
 
@@ -207,7 +214,7 @@ const loadPrevBatchMessages = async () => {
 
   fetching.value = true
 
-  const messages = await apis.getDmMessagesBefore(
+  const messages = await apis.getDMMessagesBefore(
     dmSessionId,
     dmMessages.value[dmSessionId][0].id - 1, // skip a reduplicate message
     MESSAGE_PER_PAGE,
@@ -226,9 +233,9 @@ const loadPrevBatchMessages = async () => {
 
   reachedHead.value = messages.length < MESSAGE_PER_PAGE
 
-  nextTick(() => {
-    scrollToSpecificMessage(_.last(messages)!.id)
-  })
+  await nextTick()
+
+  scrollToSpecificMessage(last(messages)!.id)
 }
 
 const loadNextBatchMessages = async () => {
@@ -238,9 +245,9 @@ const loadNextBatchMessages = async () => {
 
   fetching.value = true
 
-  const messages = await apis.getDmMessagesAfter(
+  const messages = await apis.getDMMessagesAfter(
     dmSessionId,
-    _.last(dmMessages.value[dmSessionId])!.id,
+    last(dmMessages.value[dmSessionId])!.id,
     MESSAGE_PER_PAGE,
   )
 
@@ -257,9 +264,9 @@ const loadNextBatchMessages = async () => {
 
   reachedTail.value = messages.length < MESSAGE_PER_PAGE
 
-  nextTick(() => {
-    scrollToSpecificMessage(_.last(messages)!.id)
-  })
+  await nextTick()
+
+  scrollToSpecificMessage(last(messages)!.id)
 }
 
 const handleSendDMMessage = () => {
@@ -267,7 +274,7 @@ const handleSendDMMessage = () => {
     return
   }
 
-  ws.emit('dm_message.send', { dmSessionId, content: messageContent.value })
+  sendMessage(dmSessionId, messageContent.value)
 }
 
 const onDMMessageSent = (dmMessage: DMMessage) => {
@@ -340,11 +347,5 @@ onActivated(() => {
 
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
   mainTitleText.value = t('direct_messages')
-
-  ws.socket.on('dm_message.send', onDMMessageSent)
-})
-
-onDeactivated(() => {
-  ws.socket.off('dm_message.send', onDMMessageSent)
 })
 </script>

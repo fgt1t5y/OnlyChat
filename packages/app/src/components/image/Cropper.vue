@@ -189,8 +189,6 @@ const mouseup = (ev: MouseEvent) => {
 }
 
 const destroyCropper = () => {
-  console.log('[Cropper] Destroy Cropper.')
-
   URL.revokeObjectURL(imageURL.value)
 }
 

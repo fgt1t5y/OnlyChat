@@ -2,8 +2,6 @@ import { useAuth } from '@/stores/auth'
 import { defineStore } from 'pinia'
 import { io } from 'socket.io-client'
 
-import type { WsEventBodyMap } from '@/types'
-
 export const useSocketIO = defineStore('socket', {
   state: () => ({
     socket: io('http://localhost:3000', {
@@ -28,9 +26,6 @@ export const useSocketIO = defineStore('socket', {
     },
     disconnect() {
       this.socket.connected && this.socket.disconnect()
-    },
-    emit<E extends keyof WsEventBodyMap>(event: E, body: WsEventBodyMap[E]) {
-      this.socket.emit(event, body)
     },
   },
 })

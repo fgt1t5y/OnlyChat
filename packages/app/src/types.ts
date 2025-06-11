@@ -1,5 +1,6 @@
 import type { ComputedRef, MaybeRef, Ref } from 'vue'
 import type { RouteLocationAsRelativeGeneric } from 'vue-router'
+import type { UseEventBusReturn } from '@vueuse/core'
 
 export interface IResponse<T> {
   success?: boolean
@@ -139,6 +140,12 @@ export interface DMSessionIdMessagesMap {
   [dmSessionId: number]: DMMessage[]
 }
 
+export interface AppGlobalEventBusMap {
+  onFriendRequestSent: UseEventBusReturn<FriendRequest, any>
+  onFriendRequestAccepted: UseEventBusReturn<AcceptFriendRequestDto, any>
+  onFriendRequestCanceled: UseEventBusReturn<AcceptFriendRequestDto, any>
+}
+
 export interface AppGlobalContext {
   isDev: boolean
   receivedFriendRequests: Ref<FriendRequest[]>
@@ -149,6 +156,7 @@ export interface AppGlobalContext {
   dmMessages: Ref<DMSessionIdMessagesMap>
   mainTitleText: Ref<string>
   user: User
+  events: AppGlobalEventBusMap
 
   unacceptFriendRequestCount?: ComputedRef<number>
 }
@@ -172,11 +180,4 @@ export interface AcceptFriendRequestDto {
 
 export interface CancelFriendRequestDto {
   friendRequestId: number
-}
-
-export interface WsEventBodyMap {
-  'dm_message.send': SendDMMessageDto
-  'friend_request.send': SendFriendRequestDto
-  'friend_request.accept': AcceptFriendRequestDto
-  'friend_request.cancel': CancelFriendRequestDto
 }

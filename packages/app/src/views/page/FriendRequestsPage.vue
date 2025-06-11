@@ -66,28 +66,36 @@
 </template>
 
 <script setup lang="ts">
+import * as apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { inject, onActivated } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRequest } from 'alova/client'
 import { Button } from 'primevue'
-import { useSocketIO } from '@/stores/socket-io'
 
 import type { AppGlobalContext } from '@/types'
 
-const { receivedFriendRequests, sentFriendRequests, mainTitleText } =
+const { receivedFriendRequests, sentFriendRequests, mainTitleText, events } =
   inject<AppGlobalContext>('OC')!
 
-const ws = useSocketIO()
 const { t } = useI18n()
 
+const { send: acceptFriendRequest } = useRequest(apis.acceptFriendRequest).onSuccess((res) => {
+  events.onFriendRequestAccepted.emit({ friendRequestId: res.args[0] })
+})
+
+const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest).onSuccess((res) => {
+  events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
+})
+
 const handleAcceptFriendRequest = (friendRequestId: number) => {
-  ws.emit('friend_request.accept', { friendRequestId })
+  acceptFriendRequest(friendRequestId)
 }
 
 const handleCancelFriendRequest = (friendRequestId: number) => {
-  ws.emit('friend_request.cancel', { friendRequestId })
+  cancelFriendRequest(friendRequestId)
 }
 
 onActivated(() => {

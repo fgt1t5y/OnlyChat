@@ -31,7 +31,7 @@ import { useRouter } from 'vue-router'
 
 import type { AppGlobalContext, RouterMenuItem } from '@/types'
 
-const { dmSessions, unacceptFriendRequestCount, mainTitleText } = inject<AppGlobalContext>('OC')!
+const { dmSessions, unacceptFriendRequestCount } = inject<AppGlobalContext>('OC')!
 
 const router = useRouter()
 const { t } = useI18n()

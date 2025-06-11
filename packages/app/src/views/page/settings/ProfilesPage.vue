@@ -188,7 +188,7 @@ const { send: uploadAvatar, loading: avatarUploading } = useRequest(apis.uploadA
   immediate: false,
 })
 
-const { send: updateProfiles, loading: profileUpdating } = useRequest(apis.updateProfile, {
+const { send: updateProfiles, loading: profileUpdating } = useRequest(apis.updateProfiles, {
   immediate: false,
 })
 

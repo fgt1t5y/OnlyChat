@@ -5,16 +5,24 @@ import {
   UseGuards,
   Get,
   BadRequestException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
-import { FriendRequestService } from './friend-request.service';
-import { SendFriendRequestDto, AcceptFriendRequestDto } from './friend.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtPayload } from 'src/common/types';
+import { EventGateway } from 'src/event/event.gateway';
+import { FriendRequestService } from './friend-request.service';
+import { FriendService } from './friend.service';
+import { SendFriendRequestDto, AcceptFriendRequestDto } from './friend.dto';
 
 @Controller('friend-requests')
 export class FriendRequestController {
-  constructor(private readonly friendRequestService: FriendRequestService) {}
+  constructor(
+    private readonly eventGateway: EventGateway,
+    private readonly friendRequestService: FriendRequestService,
+    private readonly friendService: FriendService,
+  ) {}
 
   @Get('')
   @UseGuards(JwtAuthGuard)
@@ -26,11 +34,11 @@ export class FriendRequestController {
   @UseGuards(JwtAuthGuard)
   async sendRequest(
     @CurrentUser() user: JwtPayload,
-    @Body() sendFriendRequestDto: SendFriendRequestDto,
+    @Body() data: SendFriendRequestDto,
   ) {
     const existingFrienRequest = await this.friendRequestService.findOne(
       user.id,
-      sendFriendRequestDto.receiverId,
+      data.receiverId,
     );
 
     if (existingFrienRequest) {
@@ -39,33 +47,60 @@ export class FriendRequestController {
       );
     }
 
-    return this.friendRequestService.create(
+    const friendRequest = await this.friendRequestService.create(
       user.id,
-      sendFriendRequestDto.receiverId,
+      data.receiverId,
     );
+
+    this.eventGateway.broadcastToUser(
+      friendRequest.senderId,
+      'friend_request.received',
+      friendRequest,
+    );
+
+    return friendRequest;
   }
 
   @Post('accept')
   @UseGuards(JwtAuthGuard)
-  acceptRequest(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async acceptRequest(
     @CurrentUser() user: JwtPayload,
-    @Body() acceptFriendRequestDto: AcceptFriendRequestDto,
+    @Body() data: AcceptFriendRequestDto,
   ) {
-    return this.friendRequestService.accept(
+    const friendRequest = await this.friendRequestService.accept(
       user.id,
-      acceptFriendRequestDto.friendRequestId,
+      data.friendRequestId,
+    );
+
+    await this.friendService.createBothSideRelationship(
+      user.id,
+      friendRequest.senderId,
+    );
+
+    this.eventGateway.broadcastToUser(
+      friendRequest.senderId,
+      'friend_request.accepted',
+      data,
     );
   }
 
   @Post('cancel')
   @UseGuards(JwtAuthGuard)
-  cancelRequest(
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async cancelRequest(
     @CurrentUser() user: JwtPayload,
-    @Body() acceptFriendRequestDto: AcceptFriendRequestDto,
+    @Body() data: AcceptFriendRequestDto,
   ) {
-    return this.friendRequestService.cancel(
+    const friendRequest = await this.friendRequestService.cancel(
       user.id,
-      acceptFriendRequestDto.friendRequestId,
+      data.friendRequestId,
+    );
+
+    this.eventGateway.broadcastToUser(
+      friendRequest.receiverId,
+      'friend_request.canceled',
+      data,
     );
   }
 }

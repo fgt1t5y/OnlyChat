@@ -22,7 +22,7 @@ export const getProfile = () => {
   })
 }
 
-export const updateProfile = (patchedUser: Partial<User>) => {
+export const updateProfiles = (patchedUser: Partial<User>) => {
   return alovaInstance.Post<Partial<User>>('/auth/profile', patchedUser)
 }
 
@@ -35,7 +35,7 @@ export const uploadAvatar = (blob: Blob) => {
 }
 
 // #region DM Session API
-export const getDmSessions = () => {
+export const getDMSessions = () => {
   return alovaInstance.Get<DMSession[]>('/dm-sessions')
 }
 
@@ -48,27 +48,39 @@ export const closeDMSession = (userBId: number) => {
 }
 
 // #region DM Message API
-export const getDmMessagesBefore = (dmSessionId: number, before: number, takeCount: number) => {
+export const getDMMessagesBefore = (dmSessionId: number, before: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm-messages', {
     params: { dmSessionId, before, takeCount },
   })
 }
 
-export const getDmMessagesAround = (dmSessionId: number, around: number, takeCount: number) => {
+export const getDMMessagesAround = (dmSessionId: number, around: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm-messages', {
     params: { dmSessionId, around, takeCount },
   })
 }
 
-export const getDmMessagesAfter = (dmSessionId: number, after: number, takeCount: number) => {
+export const getDMMessagesAfter = (dmSessionId: number, after: number, takeCount: number) => {
   return alovaInstance.Get<DMMessage[]>('/dm-messages', {
     params: { dmSessionId, after, takeCount },
   })
 }
 
+export const sendDMMessage = (dmSessionId: number, content: string) => {
+  return alovaInstance.Post<DMMessage>('/dm-messages', { dmSessionId, content })
+}
+
 // #region Friend Request API
 export const sendFriendRequest = (receiverId: number) => {
   return alovaInstance.Post<FriendRequest>('/friend-requests/send', { receiverId })
+}
+
+export const acceptFriendRequest = (friendRequestId: number) => {
+  return alovaInstance.Post<void>('/friend-requests/accept', { friendRequestId })
+}
+
+export const cancelFriendRequest = (friendRequestId: number) => {
+  return alovaInstance.Post<void>('/friend-requests/cancel', { friendRequestId })
 }
 
 export const getFriendRequests = () => {

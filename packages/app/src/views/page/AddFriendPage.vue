@@ -13,7 +13,7 @@
         <Button
           type="submit"
           icon="ti ti-send"
-          :loading="loading"
+          :loading="loading || sending"
           :label="$t('send_friend_request')"
         />
       </InputGroup>
@@ -33,13 +33,28 @@ import { useI18n } from 'vue-i18n'
 
 import type { AppGlobalContext } from '@/types'
 
-const { sentFriendRequests, friends, mainTitleText, user } = inject<AppGlobalContext>('OC')!
+const { sentFriendRequests, friends, mainTitleText, user, events } = inject<AppGlobalContext>('OC')!
 
-const ws = useSocketIO()
 const toast = useToast()
 const { t } = useI18n()
 
 const receiverUsername = ref<string>('')
+
+const {
+  data: friendRequest,
+  send: sendFriendRequest,
+  loading: sending,
+} = useRequest(apis.sendFriendRequest).onSuccess(() => {
+  toast.add({
+    severity: 'success',
+    detail: t('sent'),
+    life: 3000,
+  })
+  events.onFriendRequestSent.emit(friendRequest.value)
+
+  receiverUsername.value = ''
+
+})
 
 const {
   data: receiver,
@@ -56,14 +71,6 @@ const {
     }
 
     handleSendFriendRequest(receiver.value.id)
-
-    toast.add({
-      severity: 'success',
-      detail: t('sent'),
-      life: 3000,
-    })
-
-    receiverUsername.value = ''
   })
   .onError(() => {
     toast.add({
@@ -113,7 +120,7 @@ const wasRequested = (receiverUsername: string) => {
 }
 
 const handleSendFriendRequest = (receiverId: number) => {
-  ws.emit('friend_request.send', { receiverId })
+  sendFriendRequest(receiverId)
 }
 
 onActivated(() => {

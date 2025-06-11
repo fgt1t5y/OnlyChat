@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventModule } from 'src/event/event.module';
 import { DMSessionService } from './dm-session.service';
 import { DMSessionController } from './dm-session.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +9,7 @@ import { DMMessageService } from './dm-message.service';
 
 @Module({
   controllers: [DMSessionController, DMMessageController],
-  imports: [TypeOrmModule.forFeature([DMSession, DMMessage])],
+  imports: [TypeOrmModule.forFeature([DMSession, DMMessage]), EventModule],
   providers: [DMSessionService, DMMessageService],
   exports: [DMSessionService, DMMessageService],
 })
