@@ -28,13 +28,31 @@
             />
           </div>
           <div v-else-if="item.accepted">
-            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
+            <Button
+              icon="ti ti-check"
+              severity="success"
+              variant="outlined"
+              disabled
+              :label="$t('accepted')"
+            />
           </div>
           <div v-else-if="item.denied">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
+            <Button
+              icon="ti ti-x"
+              severity="danger"
+              variant="outlined"
+              disabled
+              :label="$t('denied')"
+            />
           </div>
           <div v-else="item.canceled">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
+            <Button
+              icon="ti ti-x"
+              severity="secondary"
+              variant="outlined"
+              disabled
+              :label="$t('canceled')"
+            />
           </div>
         </li>
       </ul>
@@ -60,13 +78,31 @@
             />
           </div>
           <div v-else-if="item.accepted">
-            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
+            <Button
+              icon="ti ti-check"
+              severity="success"
+              variant="outlined"
+              disabled
+              :label="$t('accepted')"
+            />
           </div>
           <div v-else-if="item.denied">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
+            <Button
+              icon="ti ti-x"
+              severity="danger"
+              variant="outlined"
+              disabled
+              :label="$t('denied')"
+            />
           </div>
           <div v-else="item.canceled">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
+            <Button
+              icon="ti ti-x"
+              severity="secondary"
+              variant="outlined"
+              disabled
+              :label="$t('canceled')"
+            />
           </div>
         </li>
       </ul>
