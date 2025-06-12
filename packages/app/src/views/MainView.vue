@@ -105,18 +105,6 @@ const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DMSessionIdMessagesMap>({})
 const mainTitleText = ref<string>('')
 
-const unacceptFriendRequestCount = computed(() => {
-  let count = 0
-
-  receivedFriendRequests.value.forEach((item) => {
-    if (!item.accepted) {
-      count++
-    }
-  })
-
-  return count
-})
-
 const events = {
   onFriendRequestSent: useEventBus<FriendRequest>('onFriendRequestSent'),
   onFriendRequestAccepted: useEventBus<AcceptFriendRequestDto>('onFriendRequestAccepted'),
@@ -193,8 +181,6 @@ const onFriendRequestDenied = ({ friendRequestId }: AcceptFriendRequestDto) => {
   const friendRequest = receivedFriendRequests.value.find((item) => item.id === friendRequestId)
 
   if (friendRequest) {
-    friends.value.unshift(friendRequest.sender)
-
     friendRequest.denied = true
     friendRequest.resolved = true
   }
@@ -206,8 +192,6 @@ const onFriendRequestDeniedByReceiver = ({ friendRequestId }: AcceptFriendReques
   const friendRequest = sentFriendRequests.value.find((item) => item.id === friendRequestId)
 
   if (friendRequest) {
-    friends.value.unshift(friendRequest.receiver)
-
     friendRequest.denied = true
     friendRequest.resolved = true
   }
@@ -237,7 +221,7 @@ const onFriendRequestCanceledBySender = ({ friendRequestId }: CancelFriendReques
 
 events.onFriendRequestSent.on(onFriendRequestSent)
 events.onFriendRequestAccepted.on(onFriendRequestAccepted)
-events.onFriendRequestAccepted.on(onFriendRequestDenied)
+events.onFriendRequestDenied.on(onFriendRequestDenied)
 events.onFriendRequestCanceled.on(onFriendRequestCanceled)
 
 ws.socket.on('dm_message.received', onDMMessageReceived)
@@ -246,6 +230,18 @@ ws.socket.on('friend_request.received', onFriendRequestReceived)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
 ws.socket.on('friend_request.denied', onFriendRequestDeniedByReceiver)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
+
+const unacceptFriendRequestCount = computed(() => {
+  let count = 0
+
+  receivedFriendRequests.value.forEach((item) => {
+    if (!item.accepted && !item.resolved) {
+      count++
+    }
+  })
+
+  return count
+})
 
 provide<AppGlobalContext>('OC', {
   isDev,

@@ -12,13 +12,7 @@
             <div class="font-bold">{{ item.sender.displayName }}</div>
             <div class="text-muted-color">@{{ item.sender.username }}</div>
           </div>
-          <div v-if="item.accepted">
-            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
-          </div>
-          <div v-else-if="item.denied">
-            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('denied')" />
-          </div>
-          <div v-else>
+          <div v-if="!item.resolved">
             <Button
               icon="ti ti-check"
               variant="text"
@@ -32,6 +26,15 @@
               rounded
               @click="handleDenyFriendRequest(item.id)"
             />
+          </div>
+          <div v-else-if="item.accepted">
+            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
+          </div>
+          <div v-else-if="item.denied">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
+          </div>
+          <div v-else="item.canceled">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
           </div>
         </li>
       </ul>
@@ -47,16 +50,7 @@
             <div class="font-bold">{{ item.receiver.displayName }}</div>
             <div class="text-muted-color">@{{ item.receiver.username }}</div>
           </div>
-          <div v-if="item.accepted">
-            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
-          </div>
-          <div v-else-if="item.denied">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
-          </div>
-          <div v-else-if="item.canceled">
-            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
-          </div>
-          <div v-else>
+          <div v-if="!item.resolved">
             <Button
               icon="ti ti-x"
               severity="danger"
@@ -64,6 +58,15 @@
               rounded
               @click="handleCancelFriendRequest(item.id)"
             />
+          </div>
+          <div v-else-if="item.accepted">
+            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
+          </div>
+          <div v-else-if="item.denied">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
+          </div>
+          <div v-else="item.canceled">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
           </div>
         </li>
       </ul>
@@ -94,16 +97,16 @@ const { send: acceptFriendRequest } = useRequest(apis.acceptFriendRequest, {
   events.onFriendRequestAccepted.emit({ friendRequestId: res.args[0] })
 })
 
-const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest, {
-  immediate: false,
-}).onSuccess((res) => {
-  events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
-})
-
 const { send: denyFriendRequest } = useRequest(apis.denyFriendRequest, {
   immediate: false,
 }).onSuccess((res) => {
   events.onFriendRequestDenied.emit({ friendRequestId: res.args[0] })
+})
+
+const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest, {
+  immediate: false,
+}).onSuccess((res) => {
+  events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
 })
 
 const handleAcceptFriendRequest = (friendRequestId: number) => {
