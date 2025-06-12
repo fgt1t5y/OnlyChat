@@ -123,16 +123,14 @@ import {
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useRequest } from 'alova/client'
-import { useSocketIO } from '@/stores/socket-io'
 import { MESSAGE_PER_PAGE } from '@/constants'
 import { useStorage } from '@vueuse/core'
 
 import type { AppGlobalContext, DMMessage, DMSession } from '@/types'
 
-const { dmSessions, dmMessages, mainTitleText } = inject<AppGlobalContext>('OC')!
+const { dmSessions, dmMessages, mainTitleText, devLog } = inject<AppGlobalContext>('OC')!
 
 const route = useRoute()
-const ws = useSocketIO()
 const { t } = useI18n()
 
 const dmSessionId = Number(route.params.dmSessionId)
@@ -278,7 +276,7 @@ const handleSendDMMessage = () => {
 }
 
 const onDMMessageSent = (dmMessage: DMMessage) => {
-  console.log('You sent this dm message', dmMessage)
+  devLog('You sent this dm message', dmMessage)
 
   if (!dmMessages.value[dmMessage.sessionId]) {
     dmMessages.value[dmMessage.sessionId] = []

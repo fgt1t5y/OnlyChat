@@ -123,6 +123,10 @@ const events = {
   onFriendRequestCanceled: useEventBus<AcceptFriendRequestDto>('onFriendRequestCanceled'),
 }
 
+const devLog = (...data: any[]) => {
+  isDev && console.log(...data)
+}
+
 provide<AppGlobalContext>('OC', {
   isDev,
   receivedFriendRequests,
@@ -136,11 +140,10 @@ provide<AppGlobalContext>('OC', {
   events,
 
   unacceptFriendRequestCount,
+
+  devLog
 })
 
-const devLog = (...data: any[]) => {
-  isDev && console.log(...data)
-}
 
 const onDMMessageReceived = (dmMessage: DMMessage) => {
   devLog('You received this dm message', dmMessage)

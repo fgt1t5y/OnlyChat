@@ -159,6 +159,8 @@ export interface AppGlobalContext {
   events: AppGlobalEventBusMap
 
   unacceptFriendRequestCount?: ComputedRef<number>
+
+  devLog: (...data: any[]) => void
 }
 
 export interface OpenDMSessionDto {
