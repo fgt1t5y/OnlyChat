@@ -5,7 +5,7 @@
       <div class="p-2 grow">
         <div class="flex gap-2 justify-end mb-2">
           <InputText class="grow" :placeholder="$t('search_friends')" />
-          <RouterLink :to="{ name: 'friend_add' }">
+          <RouterLink :to="{ name: 'add_friend' }">
             <Button icon="ti ti-plus" :label="$t('add_friend')" />
           </RouterLink>
         </div>

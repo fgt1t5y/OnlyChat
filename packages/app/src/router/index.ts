@@ -1,20 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// Auth page
 import AuthView from '@/views/AuthView.vue'
+// Root layouts
 import MainView from '@/views/MainView.vue'
+// Aside
 import HomeAside from '@/views/aside/HomeAside.vue'
-import FriendsPage from '@/views/page/FriendsPage.vue'
-import AddFriendPage from '@/views/page/AddFriendPage.vue'
+import ServerAside from '@/views/aside/ServerAside.vue'
 import SettingsAside from '@/views/aside/SettingsAside.vue'
+// Home pages
+import FriendsPage from '@/views/page/home/FriendsPage.vue'
+import FriendRequestsPage from '@/views/page/home/FriendRequestsPage.vue'
+import AddFriendPage from '@/views/page/home/AddFriendPage.vue'
+import DMChatPage from '@/views/page/home/DMChatPage.vue'
+// Settings pages
 import ProfilesPage from '@/views/page/settings/ProfilesPage.vue'
-import FriendRequestsPage from '@/views/page/FriendRequestsPage.vue'
-import DMChatPage from '@/views/page/DMChatPage.vue'
 import MyAccountPage from '@/views/page/settings/MyAccountPage.vue'
 import AppearancePage from '@/views/page/settings/AppearancePage.vue'
-import ServerAside from '@/views/aside/ServerAside.vue'
-import ServerChannelsPage from '@/views/page/ServerChannelsPage.vue'
-import ServerMembersPage from '@/views/page/ServerMembersPage.vue'
-import ServerChannelChatPage from '@/views/page/ServerChannelChatPage.vue'
 import LogoutPage from '@/views/page/settings/LogoutPage.vue'
+// Server pages
+import ServerChannelsPage from '@/views/page/server/ServerChannelsPage.vue'
+import ServerMembersPage from '@/views/page/server/ServerMembersPage.vue'
+import ServerChannelChatPage from '@/views/page/server/ServerChannelChatPage.vue'
+
+export const pageNames = {
+  home: ['friends', 'friend_requests', 'add_friend'],
+  server: ['server_channels', 'server_members', 'server_channel_chat'],
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,7 +59,7 @@ const router = createRouter({
         },
         {
           path: 'friend/add',
-          name: 'friend_add',
+          name: 'add_friend',
           components: {
             aside: HomeAside,
             default: AddFriendPage,

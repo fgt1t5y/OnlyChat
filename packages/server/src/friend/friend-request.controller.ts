@@ -53,7 +53,7 @@ export class FriendRequestController {
     );
 
     this.eventGateway.broadcastToUser(
-      friendRequest.senderId,
+      data.receiverId,
       'friend_request.received',
       friendRequest,
     );
@@ -100,6 +100,25 @@ export class FriendRequestController {
     this.eventGateway.broadcastToUser(
       friendRequest.receiverId,
       'friend_request.canceled',
+      data,
+    );
+  }
+
+  @Post('deny')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async denyRequest(
+    @CurrentUser() user: JwtPayload,
+    @Body() data: AcceptFriendRequestDto,
+  ) {
+    const friendRequest = await this.friendRequestService.deny(
+      user.id,
+      data.friendRequestId,
+    );
+
+    this.eventGateway.broadcastToUser(
+      friendRequest.senderId,
+      'friend_request.denied',
       data,
     );
   }

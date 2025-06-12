@@ -83,6 +83,10 @@ export const cancelFriendRequest = (friendRequestId: number) => {
   return alovaInstance.Post<void>('/friend-requests/cancel', { friendRequestId })
 }
 
+export const denyFriendRequest = (friendRequestId: number) => {
+  return alovaInstance.Post<void>('/friend-requests/deny', { friendRequestId })
+}
+
 export const getFriendRequests = () => {
   return alovaInstance.Get<FriendRequest[]>('/friend-requests')
 }

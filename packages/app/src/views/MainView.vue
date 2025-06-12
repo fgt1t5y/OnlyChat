@@ -167,6 +167,8 @@ const onFriendRequestAccepted = ({ friendRequestId }: AcceptFriendRequestDto) =>
 
   if (friendRequest) {
     friends.value.unshift(friendRequest.sender)
+
+    friendRequest.accepted = true
   }
 }
 

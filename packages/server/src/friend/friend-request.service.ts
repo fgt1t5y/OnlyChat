@@ -94,4 +94,16 @@ export class FriendRequestService {
 
     return friendRequest;
   }
+
+  async deny(userId: number, friendRequestId: number) {
+    const friendRequest = await this.findOneById(friendRequestId);
+
+    if (!friendRequest || friendRequest.receiverId !== userId) {
+      throw new NotFoundException('Friend request not found.');
+    }
+
+    await this.friendRequestRepository.delete(friendRequestId);
+
+    return friendRequest;
+  }
 }

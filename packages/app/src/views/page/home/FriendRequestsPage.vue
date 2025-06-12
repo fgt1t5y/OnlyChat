@@ -27,7 +27,7 @@
               severity="danger"
               variant="text"
               rounded
-              @click="handleAcceptFriendRequest(item.id)"
+              @click="handleDenyFriendRequest(item.id)"
             />
           </div>
         </li>
@@ -94,8 +94,18 @@ const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest, {
   events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
 })
 
+const { send: denyFriendRequest } = useRequest(apis.denyFriendRequest, {
+  immediate: false,
+}).onSuccess((res) => {
+  events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
+})
+
 const handleAcceptFriendRequest = (friendRequestId: number) => {
   acceptFriendRequest(friendRequestId)
+}
+
+const handleDenyFriendRequest = (friendRequestId: number) => {
+  denyFriendRequest(friendRequestId)
 }
 
 const handleCancelFriendRequest = (friendRequestId: number) => {

@@ -44,7 +44,7 @@ const homeAsideMenuItems = ref<RouterMenuItem[]>([
     to: { name: 'friend_requests' },
     badge: unacceptFriendRequestCount,
   },
-  { label: t('add_friend'), icon: 'ti ti-user-search', to: { name: 'friend_add' } },
+  { label: t('add_friend'), icon: 'ti ti-user-search', to: { name: 'add_friend' } },
 ])
 
 const handleCloseDMSession = (dmSessionId: number, userBId: number) => {
