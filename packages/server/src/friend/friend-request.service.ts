@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FriendRequest } from './entities/friend-request.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class FriendRequestService {
@@ -74,7 +73,7 @@ export class FriendRequestService {
       friendRequest.accepted ||
       friendRequest.receiverId !== userId
     ) {
-      throw new WsException('Friend request not found.');
+      throw new NotFoundException('Friend request not found.');
     }
 
     await this.friendRequestRepository.update(friendRequestId, {
@@ -88,7 +87,7 @@ export class FriendRequestService {
     const friendRequest = await this.findOneById(friendRequestId);
 
     if (!friendRequest || friendRequest.senderId !== userId) {
-      throw new WsException('Friend request not found.');
+      throw new NotFoundException('Friend request not found.');
     }
 
     await this.friendRequestRepository.delete(friendRequestId);

@@ -82,11 +82,15 @@ const { receivedFriendRequests, sentFriendRequests, mainTitleText, events } =
 
 const { t } = useI18n()
 
-const { send: acceptFriendRequest } = useRequest(apis.acceptFriendRequest).onSuccess((res) => {
+const { send: acceptFriendRequest } = useRequest(apis.acceptFriendRequest, {
+  immediate: false,
+}).onSuccess((res) => {
   events.onFriendRequestAccepted.emit({ friendRequestId: res.args[0] })
 })
 
-const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest).onSuccess((res) => {
+const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest, {
+  immediate: false,
+}).onSuccess((res) => {
   events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
 })
 

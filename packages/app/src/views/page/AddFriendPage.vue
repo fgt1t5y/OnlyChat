@@ -44,7 +44,9 @@ const {
   data: friendRequest,
   send: sendFriendRequest,
   loading: sending,
-} = useRequest(apis.sendFriendRequest).onSuccess(() => {
+} = useRequest(apis.sendFriendRequest, {
+  immediate: false,
+}).onSuccess(() => {
   toast.add({
     severity: 'success',
     detail: t('sent'),
@@ -53,7 +55,6 @@ const {
   events.onFriendRequestSent.emit(friendRequest.value)
 
   receiverUsername.value = ''
-
 })
 
 const {
