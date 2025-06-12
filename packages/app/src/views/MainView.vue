@@ -120,6 +120,7 @@ const unacceptFriendRequestCount = computed(() => {
 const events = {
   onFriendRequestSent: useEventBus<FriendRequest>('onFriendRequestSent'),
   onFriendRequestAccepted: useEventBus<AcceptFriendRequestDto>('onFriendRequestAccepted'),
+  onFriendRequestDenied: useEventBus<AcceptFriendRequestDto>('onFriendRequestDenied'),
   onFriendRequestCanceled: useEventBus<AcceptFriendRequestDto>('onFriendRequestCanceled'),
 }
 
@@ -169,6 +170,7 @@ const onFriendRequestAccepted = ({ friendRequestId }: AcceptFriendRequestDto) =>
     friends.value.unshift(friendRequest.sender)
 
     friendRequest.accepted = true
+    friendRequest.resolved = true
   }
 }
 
@@ -181,40 +183,68 @@ const onFriendRequestAcceptedByReceiver = ({ friendRequestId }: AcceptFriendRequ
     friends.value.unshift(friendRequest.receiver)
 
     friendRequest.accepted = true
+    friendRequest.resolved = true
+  }
+}
+
+const onFriendRequestDenied = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  devLog('You denied this friend request', friendRequestId)
+
+  const friendRequest = receivedFriendRequests.value.find((item) => item.id === friendRequestId)
+
+  if (friendRequest) {
+    friends.value.unshift(friendRequest.sender)
+
+    friendRequest.denied = true
+    friendRequest.resolved = true
+  }
+}
+
+const onFriendRequestDeniedByReceiver = ({ friendRequestId }: AcceptFriendRequestDto) => {
+  devLog('Receiver is denied this friend request', friendRequestId)
+
+  const friendRequest = sentFriendRequests.value.find((item) => item.id === friendRequestId)
+
+  if (friendRequest) {
+    friends.value.unshift(friendRequest.receiver)
+
+    friendRequest.denied = true
+    friendRequest.resolved = true
   }
 }
 
 const onFriendRequestCanceled = ({ friendRequestId }: CancelFriendRequestDto) => {
   devLog('You canceled this friend request', friendRequestId)
 
-  const friendRequestIndex = sentFriendRequests.value.findIndex(
-    (item) => item.id === friendRequestId,
-  )
+  const friendRequest = sentFriendRequests.value.find((item) => item.id === friendRequestId)
 
-  if (friendRequestIndex !== -1) {
-    sentFriendRequests.value.splice(friendRequestIndex, 1)
+  if (friendRequest) {
+    friendRequest.canceled = true
+    friendRequest.resolved = true
   }
 }
 
 const onFriendRequestCanceledBySender = ({ friendRequestId }: CancelFriendRequestDto) => {
   devLog('Sender is canceled this friend request', friendRequestId)
 
-  const friendRequestIndex = receivedFriendRequests.value.findIndex(
-    (item) => item.id === friendRequestId,
-  )
+  const friendRequest = receivedFriendRequests.value.find((item) => item.id === friendRequestId)
 
-  if (friendRequestIndex !== -1) {
-    receivedFriendRequests.value.splice(friendRequestIndex, 1)
+  if (friendRequest) {
+    friendRequest.canceled = true
+    friendRequest.resolved = true
   }
 }
 
 events.onFriendRequestSent.on(onFriendRequestSent)
 events.onFriendRequestAccepted.on(onFriendRequestAccepted)
+events.onFriendRequestAccepted.on(onFriendRequestDenied)
 events.onFriendRequestCanceled.on(onFriendRequestCanceled)
 
 ws.socket.on('dm_message.received', onDMMessageReceived)
+
 ws.socket.on('friend_request.received', onFriendRequestReceived)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
+ws.socket.on('friend_request.denied', onFriendRequestDeniedByReceiver)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
 
 provide<AppGlobalContext>('OC', {

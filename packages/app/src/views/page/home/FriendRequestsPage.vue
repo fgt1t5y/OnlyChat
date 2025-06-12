@@ -15,6 +15,9 @@
           <div v-if="item.accepted">
             <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
           </div>
+          <div v-else-if="item.denied">
+            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('denied')" />
+          </div>
           <div v-else>
             <Button
               icon="ti ti-check"
@@ -44,21 +47,24 @@
             <div class="font-bold">{{ item.receiver.displayName }}</div>
             <div class="text-muted-color">@{{ item.receiver.username }}</div>
           </div>
-          <Button
-            v-if="item.accepted"
-            icon="ti ti-check"
-            severity="secondary"
-            disabled
-            :label="$t('accepted')"
-          />
-          <Button
-            v-else
-            icon="ti ti-x"
-            severity="danger"
-            variant="text"
-            rounded
-            @click="handleCancelFriendRequest(item.id)"
-          />
+          <div v-if="item.accepted">
+            <Button icon="ti ti-check" severity="secondary" disabled :label="$t('accepted')" />
+          </div>
+          <div v-else-if="item.denied">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('denied')" />
+          </div>
+          <div v-else-if="item.canceled">
+            <Button icon="ti ti-x" severity="secondary" disabled :label="$t('canceled')" />
+          </div>
+          <div v-else>
+            <Button
+              icon="ti ti-x"
+              severity="danger"
+              variant="text"
+              rounded
+              @click="handleCancelFriendRequest(item.id)"
+            />
+          </div>
         </li>
       </ul>
     </div>
@@ -97,7 +103,7 @@ const { send: cancelFriendRequest } = useRequest(apis.cancelFriendRequest, {
 const { send: denyFriendRequest } = useRequest(apis.denyFriendRequest, {
   immediate: false,
 }).onSuccess((res) => {
-  events.onFriendRequestCanceled.emit({ friendRequestId: res.args[0] })
+  events.onFriendRequestDenied.emit({ friendRequestId: res.args[0] })
 })
 
 const handleAcceptFriendRequest = (friendRequestId: number) => {

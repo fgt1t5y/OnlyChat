@@ -26,7 +26,6 @@ import * as apis from '@/apis'
 import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import { useRequest } from 'alova/client'
-import { useSocketIO } from '@/stores/socket-io'
 import { Button, InputGroup, InputText, useToast } from 'primevue'
 import { inject, onActivated, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -116,7 +115,8 @@ const isFriend = (username: string) => {
 
 const wasRequested = (receiverUsername: string) => {
   return sentFriendRequests.value.some(
-    (friendRequest) => friendRequest.receiver.username === receiverUsername,
+    (friendRequest) =>
+      friendRequest.receiver.username === receiverUsername && !friendRequest.resolved,
   )
 }
 

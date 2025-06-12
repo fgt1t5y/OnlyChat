@@ -22,6 +22,15 @@ export class FriendRequest {
   @Column({ default: false })
   accepted: boolean;
 
+  @Column({ default: false })
+  denied: boolean;
+
+  @Column({ default: false })
+  canceled: boolean;
+
+  @Column({ default: false })
+  resolved: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

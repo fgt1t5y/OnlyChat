@@ -41,7 +41,7 @@ export class FriendRequestController {
       data.receiverId,
     );
 
-    if (existingFrienRequest) {
+    if (existingFrienRequest && !existingFrienRequest.resolved) {
       throw new BadRequestException(
         'Friend request already exists between these users.',
       );
@@ -85,25 +85,6 @@ export class FriendRequestController {
     );
   }
 
-  @Post('cancel')
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async cancelRequest(
-    @CurrentUser() user: JwtPayload,
-    @Body() data: AcceptFriendRequestDto,
-  ) {
-    const friendRequest = await this.friendRequestService.cancel(
-      user.id,
-      data.friendRequestId,
-    );
-
-    this.eventGateway.broadcastToUser(
-      friendRequest.receiverId,
-      'friend_request.canceled',
-      data,
-    );
-  }
-
   @Post('deny')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -119,6 +100,25 @@ export class FriendRequestController {
     this.eventGateway.broadcastToUser(
       friendRequest.senderId,
       'friend_request.denied',
+      data,
+    );
+  }
+
+  @Post('cancel')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async cancelRequest(
+    @CurrentUser() user: JwtPayload,
+    @Body() data: AcceptFriendRequestDto,
+  ) {
+    const friendRequest = await this.friendRequestService.cancel(
+      user.id,
+      data.friendRequestId,
+    );
+
+    this.eventGateway.broadcastToUser(
+      friendRequest.receiverId,
+      'friend_request.canceled',
       data,
     );
   }

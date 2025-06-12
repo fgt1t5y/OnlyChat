@@ -39,6 +39,7 @@ export class FriendRequestService {
       .where('friend.receiverId = :userId OR friend.senderId = :userId', {
         userId: userId,
       })
+      .orderBy('friend.updatedAt', 'DESC')
       .getMany();
   }
 
@@ -48,7 +49,8 @@ export class FriendRequestService {
     friendRequest.senderId = senderId;
     friendRequest.receiverId = receiverId;
 
-    await this.friendRequestRepository.save(friendRequest);
+    const savedFriendRequest =
+      await this.friendRequestRepository.save(friendRequest);
 
     return await this.friendRequestRepository.findOne({
       relations: {
@@ -56,8 +58,7 @@ export class FriendRequestService {
         sender: true,
       },
       where: {
-        senderId,
-        receiverId,
+        id: savedFriendRequest.id,
       },
     });
   }
@@ -78,6 +79,22 @@ export class FriendRequestService {
 
     await this.friendRequestRepository.update(friendRequestId, {
       accepted: true,
+      resolved: true,
+    });
+
+    return friendRequest;
+  }
+
+  async deny(userId: number, friendRequestId: number) {
+    const friendRequest = await this.findOneById(friendRequestId);
+
+    if (!friendRequest || friendRequest.receiverId !== userId) {
+      throw new NotFoundException('Friend request not found.');
+    }
+
+    await this.friendRequestRepository.update(friendRequestId, {
+      denied: true,
+      resolved: true,
     });
 
     return friendRequest;
@@ -90,19 +107,10 @@ export class FriendRequestService {
       throw new NotFoundException('Friend request not found.');
     }
 
-    await this.friendRequestRepository.delete(friendRequestId);
-
-    return friendRequest;
-  }
-
-  async deny(userId: number, friendRequestId: number) {
-    const friendRequest = await this.findOneById(friendRequestId);
-
-    if (!friendRequest || friendRequest.receiverId !== userId) {
-      throw new NotFoundException('Friend request not found.');
-    }
-
-    await this.friendRequestRepository.delete(friendRequestId);
+    await this.friendRequestRepository.update(friendRequestId, {
+      canceled: true,
+      resolved: true,
+    });
 
     return friendRequest;
   }

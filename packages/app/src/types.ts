@@ -49,6 +49,9 @@ export interface FriendRequest {
   receiverId: number
   desciription?: string
   accepted: boolean
+  denied: boolean
+  canceled: boolean
+  resolved: boolean
   createdAt: string
   updatedAt: string
 
@@ -143,6 +146,7 @@ export interface DMSessionIdMessagesMap {
 export interface AppGlobalEventBusMap {
   onFriendRequestSent: UseEventBusReturn<FriendRequest, any>
   onFriendRequestAccepted: UseEventBusReturn<AcceptFriendRequestDto, any>
+  onFriendRequestDenied: UseEventBusReturn<AcceptFriendRequestDto, any>
   onFriendRequestCanceled: UseEventBusReturn<AcceptFriendRequestDto, any>
 }
 
