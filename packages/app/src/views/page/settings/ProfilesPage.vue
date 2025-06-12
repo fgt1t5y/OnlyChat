@@ -308,6 +308,8 @@ const saveChanges = async () => {
 
         cropoedAvatarFileBlob.value = null
         auth.userShadow!.avatarUrl = uploadResult.avatarUrl
+      } else {
+        throw new Error('Failed to upload avatar')
       }
     } catch {
       toast.add({

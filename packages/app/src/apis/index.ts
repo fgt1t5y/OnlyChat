@@ -98,7 +98,7 @@ export const getFriends = () => {
 
 // #region Server Member API
 export const getServerMembers = (serverId: number) => {
-  return alovaInstance.Get<ServerMember[]>(`server/${serverId}/members`)
+  return alovaInstance.Get<ServerMember[]>(`/server/${serverId}/members`)
 }
 
 // #region User API

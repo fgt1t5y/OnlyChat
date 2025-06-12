@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -11,10 +11,6 @@ export class UserService {
   ) {}
 
   async findBy(username: string): Promise<User> {
-    if (!username) {
-      throw new BadRequestException('Username is required');
-    }
-
     return await this.userRepository.findOneBy({
       username: username,
     });
