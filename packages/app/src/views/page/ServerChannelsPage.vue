@@ -47,6 +47,7 @@ import Page from '@/components/common/Page.vue'
 import PageTitle from '@/components/common/PageTitle.vue'
 import { computed, inject, onActivated, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { InputText, InputIcon, IconField } from 'primevue'
 
 import type { Server, AppGlobalContext, ChannelTree } from '@/types'
@@ -54,6 +55,7 @@ import type { Server, AppGlobalContext, ChannelTree } from '@/types'
 const { joinedServers } = inject<AppGlobalContext>('OC')!
 
 const route = useRoute()
+const { t } = useI18n()
 
 const serverId = Number(route.params.serverId)
 
@@ -98,7 +100,7 @@ const uncategorizedChannels = computed<ChannelTree[]>(() => {
 
 onActivated(() => {
   if (server.value) {
-    document.title = `OnlyChat | Browser Channel | ${server.value.name}`
+    document.title = `OnlyChat | ${t('browser_channels')} | ${server.value.name}`
   }
 })
 </script>

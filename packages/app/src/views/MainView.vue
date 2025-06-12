@@ -127,24 +127,6 @@ const devLog = (...data: any[]) => {
   isDev && console.log(...data)
 }
 
-provide<AppGlobalContext>('OC', {
-  isDev,
-  receivedFriendRequests,
-  sentFriendRequests,
-  friends,
-  joinedServers,
-  dmSessions,
-  dmMessages,
-  mainTitleText,
-  user: auth.user!,
-  events,
-
-  unacceptFriendRequestCount,
-
-  devLog
-})
-
-
 const onDMMessageReceived = (dmMessage: DMMessage) => {
   devLog('You received this dm message', dmMessage)
 
@@ -230,4 +212,21 @@ ws.socket.on('dm_message.received', onDMMessageReceived)
 ws.socket.on('friend_request.received', onFriendRequestReceived)
 ws.socket.on('friend_request.accepted', onFriendRequestAcceptedByReceiver)
 ws.socket.on('friend_request.canceled', onFriendRequestCanceledBySender)
+
+provide<AppGlobalContext>('OC', {
+  isDev,
+  receivedFriendRequests,
+  sentFriendRequests,
+  friends,
+  joinedServers,
+  dmSessions,
+  dmMessages,
+  mainTitleText,
+  user: auth.user!,
+  events,
+
+  unacceptFriendRequestCount,
+
+  devLog,
+})
 </script>
