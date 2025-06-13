@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { watchEffect, useTemplateRef } from 'vue'
+import { watchEffect, useTemplateRef, onBeforeUnmount } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 
 defineOptions({
@@ -26,7 +26,7 @@ const emits = defineEmits<{
 
 const observeTarget = useTemplateRef('observeTarget')
 
-const { pause, resume } = useIntersectionObserver(
+const { pause, resume, stop } = useIntersectionObserver(
   observeTarget,
   ([{ isIntersecting }]) => {
     if (props.disabled) {
@@ -47,4 +47,6 @@ watchEffect(() => {
     resume()
   }
 })
+
+onBeforeUnmount(stop)
 </script>

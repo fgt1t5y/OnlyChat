@@ -27,8 +27,10 @@
                 {{ $t('start_message_with_somebody', [dmSession.userB.displayName]) }}
               </div>
             </li>
-            <MessageSkeleton v-else />
-            <IntersectionObserver :disabled="reachedHead" @reach="loadPrevBatchMessages" />
+            <div v-else>
+              <MessageSkeleton />
+              <IntersectionObserver :disabled="reachedHead" @reach="loadPrevBatchMessages" />
+            </div>
           </template>
 
           <template #default="{ item, prev }">
@@ -44,8 +46,10 @@
           </template>
 
           <template #tail>
-            <IntersectionObserver :disabled="reachedTail" @reach="loadNextBatchMessages" />
-            <MessageSkeleton v-if="!reachedTail" />
+            <div v-if="!reachedTail">
+              <IntersectionObserver :disabled="reachedTail" @reach="loadNextBatchMessages" />
+              <MessageSkeleton />
+            </div>
           </template>
         </List>
         <ChatInput
@@ -151,10 +155,7 @@ const reachedTail = ref<boolean>(true)
 const fetching = ref<boolean>(false)
 const messageContainerTopOffset = ref<number>(0)
 
-const {
-  data: message,
-  send: sendMessage,
-} = useRequest(apis.sendDMMessage, {
+const { data: message, send: sendMessage } = useRequest(apis.sendDMMessage, {
   immediate: false,
 }).onSuccess(() => {
   onDMMessageSent(message.value)
@@ -164,10 +165,18 @@ const scrollToSpecificMessage = (messageId: number, highlight: boolean = false) 
   const messageElement = document.getElementById(`message-Item-${messageId}`)
 
   if (messageElement) {
-    messageElement.scrollIntoView({ block: 'center' })
+    messageElement.scrollIntoView({ block: 'start' })
 
     if (highlight) {
       messageElement.classList.add('message-Highlighted')
+
+      let timerId = window.setTimeout(() => {
+        messageElement.classList.remove('message-Highlighted')
+
+        if (timerId) {
+          window.clearTimeout(timerId)
+        }
+      }, 3000)
     }
   } else {
     messageContainer.value?.scrollTo(messageContainerTopOffset.value)
@@ -175,19 +184,23 @@ const scrollToSpecificMessage = (messageId: number, highlight: boolean = false) 
 }
 
 const loadInitialMessages = async () => {
-  if (!dmSession.value?.lastMessageId) {
-    return []
+  if (!dmSession.value || !dmSession.value.lastMessageId) {
+    dmMessages.value[dmSessionId] = []
+
+    return
   }
 
   if (dmMessageId) {
-    return await apis.getDMMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
+    await apis.getDMMessagesAround(dmSessionId, dmMessageId, MESSAGE_PER_PAGE)
+
+    return
   }
 
   fetching.value = true
 
   let messages = await apis.getDMMessagesBefore(
     dmSessionId,
-    dmSession.value!.lastMessageId,
+    dmSession.value.lastMessageId,
     MESSAGE_PER_PAGE,
   )
 
@@ -233,7 +246,7 @@ const loadPrevBatchMessages = async () => {
 
   await nextTick()
 
-  scrollToSpecificMessage(last(messages)!.id)
+  scrollToSpecificMessage(last(messages)!.id, true)
 }
 
 const loadNextBatchMessages = async () => {
@@ -264,7 +277,7 @@ const loadNextBatchMessages = async () => {
 
   await nextTick()
 
-  scrollToSpecificMessage(last(messages)!.id)
+  scrollToSpecificMessage(last(messages)!.id, true)
 }
 
 const handleSendDMMessage = () => {
@@ -324,10 +337,6 @@ const chatInputPlaceholder = computed(() => {
   return t('message_to_somebody', [dmSession.value?.userB.displayName])
 })
 
-if (dmSession && !dmMessages.value[dmSessionId]) {
-  await loadInitialMessages()
-}
-
 onMounted(() => {
   messageContainerTopOffset.value = messageContainer.value!.el!.scrollHeight || 0
 })
@@ -346,4 +355,8 @@ onActivated(() => {
   document.title = `OnlyChat | @${dmSession.value?.userB.displayName}`
   mainTitleText.value = t('direct_messages')
 })
+
+if (dmSession && !dmMessages.value[dmSessionId]) {
+  await loadInitialMessages()
+}
 </script>
