@@ -107,5 +107,11 @@
   },
 
   "searching_user_not_found": "你搜索的用户不存在。",
-  "friend_already_exists": "你已经是对方的好友了。"
+  "friend_already_exists": "你已经是对方的好友了。",
+
+  "set_my_state": "设置我的状态",
+  "online": "在线",
+  "busy": "请勿打扰",
+  "invisible": "隐身",
+  "custom_state": "自定义状态"
 }

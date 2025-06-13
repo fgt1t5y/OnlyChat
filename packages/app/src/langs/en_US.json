@@ -106,5 +106,11 @@
   },
 
   "searching_user_not_found": "The user you searched for does not found.",
-  "friend_already_exists": "You are already friends with the other person."
+  "friend_already_exists": "You are already friends with the other person.",
+
+  "set_my_state": "Set my state",
+  "online": "Online",
+  "busy": "Busy",
+  "invisible": "Invisible",
+  "custom_state": "Custom State"
 }

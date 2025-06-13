@@ -27,13 +27,26 @@
         </section>
         <section id="main-Nav-User">
           <UserAvatar :user="auth.user" is-online />
-          <div class="flex flex-col justify-center grow">
-            <div>{{ auth.user.displayName }}</div>
-            <div class="text-muted-color">@{{ auth.user.username }}</div>
+          <div class="flex flex-col justify-center grow ml-2 w-[45%]">
+            <div class="overflow-ellipsis overflow-hidden whitespace-nowrap">
+              {{ auth.user.displayName }}
+            </div>
+            <div class="text-muted-color overflow-ellipsis overflow-hidden whitespace-nowrap">
+              @{{ auth.user.username }}
+            </div>
           </div>
           <Button
+            severity="secondary"
+            rounded
+            :title="$t('set_my_state')"
+            :aria-label="$t('set_my_state')"
+            @click="userStateMenu?.show"
+          >
+            <span class="point-Online"></span>
+            <span>{{ $t('online') }}</span>
+          </Button>
+          <Button
             icon="ti ti-settings"
-            size="large"
             severity="secondary"
             rounded
             :title="$t('page.settings')"
@@ -54,6 +67,17 @@
     </div>
   </div>
   <div v-else class="text-center">Failed to load user profile, plase try refresh page.</div>
+  <ContextMenu ref="userStateMenu" :model="userStateMenuItems">
+    <template #item="{ item, props }">
+      <a class="flex items-center justify-between" v-bind="props.action">
+        <div class="flex gap-2 items-center">
+          <i v-if="item.icon" style="font-size: 1.25rem" :class="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </div>
+        <i v-if="item.checked" class="ti ti-check"></i>
+      </a>
+    </template>
+  </ContextMenu>
 </template>
 
 <script setup lang="ts">
@@ -62,8 +86,9 @@ import ServerAvatar from '@/components/avatar/ServerAvatar.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import { useAuth } from '@/stores/auth'
 import { useSocketIO } from '@/stores/socket-io'
-import { Avatar, Button } from 'primevue'
-import { computed, provide, ref } from 'vue'
+import { Avatar, Button, ContextMenu } from 'primevue'
+import { computed, provide, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useEventBus } from '@vueuse/core'
 
 import type {
@@ -73,13 +98,16 @@ import type {
   User,
   DMMessage,
   AppGlobalContext,
+  AppGlobalEventBusMap,
   DMSessionIdMessagesMap,
   AcceptFriendRequestDto,
   CancelFriendRequestDto,
 } from '@/types'
+import type { MenuItem } from 'primevue/menuitem'
 
 const auth = useAuth()
 const ws = useSocketIO()
+const { t } = useI18n()
 
 await auth.getUserProfile()
 await ws.connectAsync()
@@ -89,6 +117,8 @@ const [dataFriendRequests, dataFriends, dataDMSessions] = await Promise.all([
   apis.getFriends(),
   apis.getDMSessions(),
 ])
+
+const userStateMenu = useTemplateRef('userStateMenu')
 
 const isDev = import.meta.env.DEV
 const receivedFriendRequests = ref<FriendRequest[]>(
@@ -105,7 +135,7 @@ const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DMSessionIdMessagesMap>({})
 const mainTitleText = ref<string>('')
 
-const events = {
+const events: AppGlobalEventBusMap = {
   onFriendRequestSent: useEventBus<FriendRequest>('onFriendRequestSent'),
   onFriendRequestAccepted: useEventBus<AcceptFriendRequestDto>('onFriendRequestAccepted'),
   onFriendRequestDenied: useEventBus<AcceptFriendRequestDto>('onFriendRequestDenied'),
@@ -241,6 +271,20 @@ const unacceptFriendRequestCount = computed(() => {
   })
 
   return count
+})
+
+const userStateMenuItems = computed<MenuItem[]>(() => {
+  return [
+    {
+      label: t('online'),
+      icon: 'point-Online',
+      checked: true,
+    },
+    { label: t('busy'), icon: 'point-Busy', checked: false },
+    { label: t('invisible'), icon: 'point-Invisible', checked: false },
+    { separator: true },
+    { label: t('custom_state') },
+  ]
 })
 
 provide<AppGlobalContext>('OC', {

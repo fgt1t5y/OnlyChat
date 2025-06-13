@@ -187,3 +187,10 @@ export interface AcceptFriendRequestDto {
 export interface CancelFriendRequestDto {
   friendRequestId: number
 }
+
+export enum UserState {
+  Online,
+  Busy,
+  Invisible,
+  Custom,
+}
