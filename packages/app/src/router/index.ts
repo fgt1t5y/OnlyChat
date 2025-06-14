@@ -22,9 +22,41 @@ import ServerChannelsPage from '@/views/page/server/ServerChannelsPage.vue'
 import ServerMembersPage from '@/views/page/server/ServerMembersPage.vue'
 import ServerChannelChatPage from '@/views/page/server/ServerChannelChatPage.vue'
 
-export const pageNames = {
-  home: ['friends', 'friend_requests', 'add_friend'],
-  server: ['server_channels', 'server_members', 'server_channel_chat'],
+import type { Component } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+
+type PathPageMap = Record<string, Component>
+
+const settingsPages: PathPageMap = {
+  my_account: MyAccountPage,
+  profiles: ProfilesPage,
+  appearance: AppearancePage,
+  logout: LogoutPage,
+}
+
+const settings = (): RouteRecordRaw[] => {
+  const routes: RouteRecordRaw[] = [
+    {
+      path: '',
+      name: 'settings',
+      redirect() {
+        return { name: 'settings_my_account' }
+      },
+    },
+  ]
+
+  Object.keys(settingsPages).forEach((item) => {
+    routes.push({
+      path: item,
+      name: `settings_${item}`,
+      components: {
+        aside: SettingsAside,
+        default: settingsPages[item],
+      },
+    })
+  })
+
+  return routes
 }
 
 const router = createRouter({
@@ -122,47 +154,7 @@ const router = createRouter({
     {
       path: '/settings',
       component: MainView,
-      children: [
-        {
-          path: '',
-          name: 'settings',
-          redirect() {
-            return { name: 'settings_my_account' }
-          },
-        },
-        {
-          path: 'my_account',
-          name: 'settings_my_account',
-          components: {
-            aside: SettingsAside,
-            default: MyAccountPage,
-          },
-        },
-        {
-          path: 'profiles',
-          name: 'settings_profiles',
-          components: {
-            aside: SettingsAside,
-            default: ProfilesPage,
-          },
-        },
-        {
-          path: 'appearance',
-          name: 'settings_appearance',
-          components: {
-            aside: SettingsAside,
-            default: AppearancePage,
-          },
-        },
-        {
-          path: 'logout',
-          name: 'settings_logout',
-          components: {
-            aside: SettingsAside,
-            default: LogoutPage,
-          },
-        },
-      ],
+      children: settings(),
     },
     {
       path: '/login',
