@@ -34,10 +34,10 @@ import dayjs from 'dayjs'
 import { computed } from 'vue'
 import { useAuth } from '@/stores/auth'
 
-import type { DMMessage } from '@/types'
+import type { Message } from '@/types'
 
 const { item, isHead } = defineProps<{
-  item: DMMessage
+  item: Message
   isHead: boolean
 }>()
 

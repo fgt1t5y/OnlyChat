@@ -18,6 +18,16 @@ export interface AuthLoginPayload {
   token: string
 }
 
+export interface Message {
+  id: number
+  authorId: number
+  content: string
+  createdAt: string
+  updatedAt: string
+
+  author: User
+}
+
 export interface DMSession {
   id: number
   userAId: number
@@ -31,16 +41,10 @@ export interface DMSession {
   userB: User
 }
 
-export interface DMMessage {
-  id: number
-  authorId: number
+export interface DMMessage extends Message {
   sessionId: number
-  content: string
-  createdAt: string
-  updatedAt: string
 
-  author: User
-  session: User
+  session: DMSession
 }
 
 export interface FriendRequest {
@@ -101,6 +105,7 @@ export interface Channel {
   serverId: number
   groupId: number
   creatorId: number
+  lastMessageId: number
   name: string
   description: string
   iconClass: string
@@ -110,6 +115,12 @@ export interface Channel {
 
   server: Server
   creator: User
+}
+
+export interface ChannelMessage extends Message {
+  channelId: number
+
+  channel: Channel
 }
 
 export type ChannelTree = Channel & { children: Channel[] }
@@ -143,6 +154,10 @@ export interface DMSessionIdMessagesMap {
   [dmSessionId: number]: DMMessage[]
 }
 
+export interface ChannelIdMessagesMap {
+  [channelId: number]: ChannelMessage[]
+}
+
 export interface AppGlobalEventBusMap {
   onFriendRequestSent: UseEventBusReturn<FriendRequest, any>
   onFriendRequestAccepted: UseEventBusReturn<AcceptFriendRequestDto, any>
@@ -158,6 +173,7 @@ export interface AppGlobalContext {
   joinedServers: Ref<Server[]>
   dmSessions: Ref<DMSession[]>
   dmMessages: Ref<DMSessionIdMessagesMap>
+  channelMessages: Ref<ChannelIdMessagesMap>
   mainTitleText: Ref<string>
   user: User
   events: AppGlobalEventBusMap

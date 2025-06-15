@@ -7,7 +7,6 @@ export interface CloseDMSessionDto {
 }
 
 export interface GetDMMessageDto {
-  dmSessionId: number;
   before: number;
   around: number;
   after: number;
@@ -15,6 +14,5 @@ export interface GetDMMessageDto {
 }
 
 export interface CreateDMMessageDto {
-  dmSessionId: number;
   content: string;
 }

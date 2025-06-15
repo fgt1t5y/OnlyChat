@@ -26,6 +26,9 @@ export class Channel {
   @Column()
   creatorId: number;
 
+  @Column({ nullable: true })
+  lastMessageId: number;
+
   @Column({ length: 64 })
   name: string;
 

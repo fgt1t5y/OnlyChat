@@ -6,6 +6,7 @@ import type {
   DMMessage,
   DMSession,
   Friend,
+  ChannelMessage,
   FriendRequest,
   ServerMember,
   User,
@@ -49,25 +50,25 @@ export const closeDMSession = (userBId: number) => {
 
 // #region DM Message API
 export const getDMMessagesBefore = (dmSessionId: number, before: number, takeCount: number) => {
-  return alovaInstance.Get<DMMessage[]>('/dm-messages', {
-    params: { dmSessionId, before, takeCount },
+  return alovaInstance.Get<DMMessage[]>(`/dm/${dmSessionId}/messages`, {
+    params: { before, takeCount },
   })
 }
 
 export const getDMMessagesAround = (dmSessionId: number, around: number, takeCount: number) => {
-  return alovaInstance.Get<DMMessage[]>('/dm-messages', {
-    params: { dmSessionId, around, takeCount },
+  return alovaInstance.Get<DMMessage[]>(`/dm/${dmSessionId}/messages`, {
+    params: { around, takeCount },
   })
 }
 
 export const getDMMessagesAfter = (dmSessionId: number, after: number, takeCount: number) => {
-  return alovaInstance.Get<DMMessage[]>('/dm-messages', {
-    params: { dmSessionId, after, takeCount },
+  return alovaInstance.Get<DMMessage[]>(`/dm/${dmSessionId}/messages`, {
+    params: { after, takeCount },
   })
 }
 
 export const sendDMMessage = (dmSessionId: number, content: string) => {
-  return alovaInstance.Post<DMMessage>('/dm-messages', { dmSessionId, content })
+  return alovaInstance.Post<DMMessage>(`/dm/${dmSessionId}/messages`, { content })
 }
 
 // #region Friend Request API
@@ -104,4 +105,27 @@ export const getServerMembers = (serverId: number) => {
 // #region User API
 export const getUser = (username: string) => {
   return alovaInstance.Get<User>('/user', { params: { username } })
+}
+
+// #region Channel Message API
+export const getChannelMessagesBefore = (channelId: number, before: number, takeCount: number) => {
+  return alovaInstance.Get<ChannelMessage[]>(`/channel/${channelId}/messages`, {
+    params: { before, takeCount },
+  })
+}
+
+export const getChannelMessagesAround = (channelId: number, around: number, takeCount: number) => {
+  return alovaInstance.Get<ChannelMessage[]>(`/channel/${channelId}/messages`, {
+    params: { around, takeCount },
+  })
+}
+
+export const getChannelMessagesAfter = (channelId: number, after: number, takeCount: number) => {
+  return alovaInstance.Get<ChannelMessage[]>(`/channel/${channelId}/messages`, {
+    params: { after, takeCount },
+  })
+}
+
+export const sendChannelMessage = (channelId: number, content: string) => {
+  return alovaInstance.Post<ChannelMessage>(`/channel/${channelId}/messages`, { content })
 }

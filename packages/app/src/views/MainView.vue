@@ -100,6 +100,7 @@ import type {
   AppGlobalContext,
   AppGlobalEventBusMap,
   DMSessionIdMessagesMap,
+  ChannelIdMessagesMap,
   AcceptFriendRequestDto,
   CancelFriendRequestDto,
 } from '@/types'
@@ -133,6 +134,7 @@ const joinedServers = ref<Server[]>(
 )
 const dmSessions = ref<DMSession[]>(dataDMSessions)
 const dmMessages = ref<DMSessionIdMessagesMap>({})
+const channelMessages = ref<ChannelIdMessagesMap>({})
 const mainTitleText = ref<string>('')
 
 const events: AppGlobalEventBusMap = {
@@ -295,6 +297,7 @@ provide<AppGlobalContext>('OC', {
   joinedServers,
   dmSessions,
   dmMessages,
+  channelMessages,
   mainTitleText,
   user: auth.user!,
   events,

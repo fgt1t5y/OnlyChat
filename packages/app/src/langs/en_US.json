@@ -71,7 +71,9 @@
   "enter_keyword": "Enter something...",
 
   "message_to_somebody": "Message {0}",
+  "message_to_channel": "Message ${0}",
   "start_message_with_somebody": "Start to message with {0}",
+  "start_channel_message": "Welcome to channel {0}, Start to message now",
 
   "server": "Server",
   "server_settings": "Server Settings",

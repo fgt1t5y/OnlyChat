@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DMSession } from './dm-session.entity';
 import { User } from 'src/user/user.entity';
 import { Attachment } from 'src/attachment/attachment.entity';
+import { DMSession } from './dm-session.entity';
 
 @Entity({ name: 'dm_messages' })
 export class DMMessage {

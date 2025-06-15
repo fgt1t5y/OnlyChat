@@ -5,6 +5,7 @@ import {
   Query,
   Post,
   Body,
+  Param,
   BadRequestException,
 } from '@nestjs/common';
 import { CurrentUser } from 'src/common/decorators';
@@ -15,7 +16,7 @@ import { DMMessageService } from './dm-message.service';
 import { DMSessionService } from './dm-session.service';
 import { CreateDMMessageDto, GetDMMessageDto } from './dm.dto';
 
-@Controller('dm-messages')
+@Controller('dm/:dmSessionId/messages')
 export class DMMessageController {
   constructor(
     private readonly eventGateway: EventGateway,
@@ -27,7 +28,8 @@ export class DMMessageController {
   @UseGuards(JwtAuthGuard)
   async getDMMessages(
     @CurrentUser() user: JwtPayload,
-    @Query() { dmSessionId, before, around, after, takeCount }: GetDMMessageDto,
+    @Query() { before, around, after, takeCount }: GetDMMessageDto,
+    @Param('dmSessionId') dmSessionId: number,
   ) {
     const dmSessionB = await this.dmSessionService.findById(dmSessionId);
     const dmSessionA = await this.dmSessionService.findBy(
@@ -73,7 +75,8 @@ export class DMMessageController {
   @UseGuards(JwtAuthGuard)
   async sendDMMessage(
     @CurrentUser() user: JwtPayload,
-    @Body() { dmSessionId, content }: CreateDMMessageDto,
+    @Body() { content }: CreateDMMessageDto,
+    @Param('dmSessionId') dmSessionId: number,
   ) {
     if (!content.trim()) {
       throw new BadRequestException('Content is required.');

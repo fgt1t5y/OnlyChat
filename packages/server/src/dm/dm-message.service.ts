@@ -19,11 +19,11 @@ export class DMMessageService {
     });
   }
 
-  async findBy(dmSessionId: number, authorId: number) {
+  async findBy(authorId: number, dmSessionId: number) {
     return await this.dmMessageRepository.findOne({
       relations: { author: true },
       where: {
-        authorId: authorId,
+        authorId,
         sessionId: dmSessionId,
       },
     });
@@ -186,16 +186,14 @@ export class DMMessageService {
   }
 
   async create(
-    dmSessionId: number,
     authorId: number,
+    dmSessionId: number,
     content: string,
   ): Promise<DMMessage> {
-    const dmMessage = this.dmMessageRepository.create({
-      authorId: authorId,
+    return await this.dmMessageRepository.save({
+      authorId,
       sessionId: dmSessionId,
-      content: content,
+      content,
     });
-
-    return await this.dmMessageRepository.save(dmMessage);
   }
 }

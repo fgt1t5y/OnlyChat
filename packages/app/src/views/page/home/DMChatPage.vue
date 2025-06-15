@@ -118,7 +118,6 @@ import {
   computed,
   inject,
   onActivated,
-  onDeactivated,
   ref,
   useTemplateRef,
   nextTick,
@@ -211,7 +210,7 @@ const loadInitialMessages = async () => {
 
     if (messages.length === MESSAGE_PER_PAGE) {
       reachedHead.value = false
-      reachedTail.value = last(messages)!.id === dmSession.value?.lastMessageId
+      reachedTail.value = last(messages)!.id === dmSession.value.lastMessageId
     }
   }
 
@@ -356,7 +355,7 @@ onActivated(() => {
   mainTitleText.value = t('direct_messages')
 })
 
-if (dmSession && !dmMessages.value[dmSessionId]) {
+if (!dmMessages.value[dmSessionId]) {
   await loadInitialMessages()
 }
 </script>
