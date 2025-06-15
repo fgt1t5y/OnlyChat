@@ -190,10 +190,12 @@ export class DMMessageService {
     dmSessionId: number,
     content: string,
   ): Promise<DMMessage> {
-    return await this.dmMessageRepository.save({
-      authorId,
+    const dmMessage = this.dmMessageRepository.create({
+      authorId: authorId,
       sessionId: dmSessionId,
-      content,
+      content: content,
     });
+
+    return await this.dmMessageRepository.save(dmMessage);
   }
 }
