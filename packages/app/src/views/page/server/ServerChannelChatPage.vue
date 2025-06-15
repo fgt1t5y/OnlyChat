@@ -23,7 +23,9 @@
                   class="ti ti-hash text-4xl bg-surface-200 dark:bg-surface-800 p-2 rounded-full"
                 ></i>
               </div>
-              <div class="text-3xl font-bold">{{ channel.name }}</div>
+              <div class="text-3xl font-bold">
+                {{ $t('welcome_to_channel', [channel.name]) }}
+              </div>
               <div>
                 {{ $t('start_channel_message', [channel.name]) }}
               </div>

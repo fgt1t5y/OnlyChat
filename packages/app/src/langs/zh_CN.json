@@ -74,7 +74,8 @@
   "message_to_somebody": "给 {0} 发送消息",
   "message_to_channel": "给 #{0} 发送消息",
   "start_message_with_somebody": "开始与 {0} 的对话",
-  "start_channel_message": "欢迎来到频道 {0}，这频道消息的开头",
+  "start_channel_message": "这是频道 #{0} 消息的开头",
+  "welcome_to_channel": "欢迎来到 #{0}！",
 
   "server": "服务器",
   "server_settings": "服务器设置",
