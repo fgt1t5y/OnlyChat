@@ -19,7 +19,9 @@
           <template #head>
             <li v-if="reachedHead" class="flex flex-col gap-2 p-2 mb-2">
               <div>
-                <i class="ti ti-hash text-4xl bg-surface-800 p-2 rounded-full"></i>
+                <i
+                  class="ti ti-hash text-4xl bg-surface-200 dark:bg-surface-800 p-2 rounded-full"
+                ></i>
               </div>
               <div class="text-3xl font-bold">{{ channel.name }}</div>
               <div>
