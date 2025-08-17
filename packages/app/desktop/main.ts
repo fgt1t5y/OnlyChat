@@ -2,12 +2,12 @@ import { app, BrowserWindow } from "electron";
 
 const createMainWindow = () => {
   const win = new BrowserWindow({
-    title: "LitePad",
+    title: "OnlyChat",
     width: 1060,
     height: 660,
     minWidth: 800,
     minHeight: 600,
-    icon: "public/appicon.png",
+    // icon: "public/appicon.png",
     center: true,
   });
 

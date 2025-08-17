@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 // import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
+import electron from 'vite-plugin-electron/simple'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,6 +12,15 @@ export default defineConfig({
     vue(),
     // vueDevTools(),
     tailwindcss(),
+    electron({
+      main: {
+        entry: 'desktop/main.ts',
+      },
+      preload: {
+        input: 'desktop/preload.ts',
+      },
+      renderer: {},
+    }),
   ],
   resolve: {
     alias: {
