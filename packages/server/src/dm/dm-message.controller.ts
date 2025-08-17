@@ -85,8 +85,8 @@ export class DMMessageController {
     const dmSession = await this.dmSessionService.findById(dmSessionId);
 
     const newDMMessage = await this.dmMessageService.create(
-      dmSessionId,
       user.id,
+      dmSessionId,
       content,
     );
 
