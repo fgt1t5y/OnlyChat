@@ -1,29 +1,29 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow } from 'electron'
 
 const createMainWindow = () => {
   const win = new BrowserWindow({
-    title: "OnlyChat",
+    title: 'OnlyChat',
     width: 1060,
     height: 660,
     minWidth: 800,
     minHeight: 600,
     // icon: "public/appicon.png",
     center: true,
-  });
+  })
 
   if (process.env.VITE_DEV_SERVER_URL) {
-    win.loadURL(process.env.VITE_DEV_SERVER_URL);
+    win.loadURL(process.env.VITE_DEV_SERVER_URL)
   } else {
-    win.loadFile("dist/index.html");
+    win.loadFile('dist/index.html')
   }
-};
+}
 
 app.whenReady().then(() => {
-  createMainWindow();
+  createMainWindow()
 
-  app.on("activate", () => {
+  app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createMainWindow();
+      createMainWindow()
     }
-  });
-});
+  })
+})
